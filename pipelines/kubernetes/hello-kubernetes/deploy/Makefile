@@ -5,7 +5,7 @@ EXECUTABLES = git helmfile kubeval
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-.PHONY: build template validate lint diff sync status destroy
+.PHONY: build template validate lint diff release_notes sync status destroy
 
 GIT_COMMIT_SHORT ?= $(shell git rev-parse --short HEAD)
 
@@ -30,6 +30,9 @@ lint:
 
 diff:
 	helmfile diff
+
+release_notes:
+	git-chglog
 
 sync: validate
 	helmfile sync

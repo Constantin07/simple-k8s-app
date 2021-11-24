@@ -58,6 +58,23 @@ pipeline {
       }
     }
 
+    stage('Generate release notes') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make release_notes'
+        }
+        milestone null
+      }
+    }
+
     stage('Deploy hello-kubernetes app') {
       agent {
         docker {

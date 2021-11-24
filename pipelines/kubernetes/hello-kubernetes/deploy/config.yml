@@ -5,5 +5,5 @@ description: Deploy a simple test hello-kubernetes application.
 extensions:
   cleanBeforeCheckout: true
   cloneOptions:
-    shallow: true
-    noTags: true
+    shallow: false
+    noTags: false

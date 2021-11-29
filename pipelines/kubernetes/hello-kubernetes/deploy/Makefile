@@ -32,7 +32,7 @@ diff:
 	helmfile diff
 
 release_notes:
-	git-chglog
+	git-chglog | tee -a release_notes.yaml
 
 sync: validate
 	helmfile sync

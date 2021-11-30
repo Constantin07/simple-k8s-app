@@ -51,7 +51,7 @@ pipeline {
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make login push'
+            sh 'make login push clean'
           }
         }
         milestone null

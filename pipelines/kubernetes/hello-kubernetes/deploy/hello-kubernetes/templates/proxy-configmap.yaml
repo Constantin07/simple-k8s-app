@@ -6,7 +6,7 @@ metadata:
   labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
 data:
   nginx.conf: |
-    ## user nobody;
+    # user nobody;
     worker_processes  auto;
 
     # Enable the use of JIT for regular expressions to speed-up their processing.
@@ -81,14 +81,7 @@ data:
           allow 127.0.0.1;
           deny all;
           content_by_lua_block {
-            local res = os.execute("/bin/echo Hello")
-            ngx.header["Content-type"] = "text/plain"
-            if res == 0 then
-              ngx.say('SUCCESS')
-            else
-              ngx.status = ngx.HTTP_NOT_FOUND
-              ngx.say('FAILURE')
-            end
+            os.execute("/usr/bin/openresty -s reload")
           }
         }
 

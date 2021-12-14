@@ -21,10 +21,6 @@ build:
 template:
 	helmfile template
 
-#validate:
-#	helmfile template | kubeval --strict \
-#	--kubernetes-version 1.21.7 --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
-
 validate:
 	mkdir -p /tmp/kubeconform
 	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.7

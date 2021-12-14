@@ -20,6 +20,9 @@ pipeline {
 
     stage('Build image') {
       agent any
+      environment {
+        PATH ="/usr/local/bin:$PATH"
+      }
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
@@ -48,6 +51,9 @@ pipeline {
 
     stage('Push image') {
       agent any
+      environment {
+        PATH ="/usr/local/bin:$PATH"
+      }
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {

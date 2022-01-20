@@ -1,7 +1,7 @@
 export NAMESPACE ?= default
 
 # Check for required binaries
-EXECUTABLES = git helmfile kubeval
+EXECUTABLES = git helmfile kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -23,7 +23,7 @@ template:
 
 validate:
 	mkdir -p /tmp/kubeconform
-	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.8
+	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.21.9
 
 lint:
 	helmfile lint

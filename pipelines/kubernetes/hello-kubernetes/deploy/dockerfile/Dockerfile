@@ -1,6 +1,6 @@
 FROM alpine:3.15 AS builder
 
-ARG VAULT_VERSION=1.9.1
+ARG VAULT_VERSION=1.9.3
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
     update-ca-certificates && \

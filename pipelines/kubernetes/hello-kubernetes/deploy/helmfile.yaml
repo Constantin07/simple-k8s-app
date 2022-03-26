@@ -40,7 +40,7 @@ releases:
           enabled: true
           image:
             repository: vault
-            tag: 1.9.4
+            tag: 1.10.0
           role: hello-kubernetes
           secret_path: secret/hello-kubernetes
           env:

@@ -14,14 +14,14 @@
       path: /health
       port: {{ .Values.container.port }}
       scheme: HTTP
-    failureThreshold: 30
+    failureThreshold: 25
     periodSeconds: 5
   livenessProbe:
     httpGet:
       path: /health
       port: {{ .Values.container.port }}
       scheme: HTTP
-    failureThreshold: 1
+    failureThreshold: 2
     periodSeconds: 10
   readinessProbe:
     httpGet:

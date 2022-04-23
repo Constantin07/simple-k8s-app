@@ -12,10 +12,10 @@
       command:
         - sh
         - -c
-        - "nc -vz 127.0.0.1 8200"
+        - "nc -z 127.0.0.1 8200"
     initialDelaySeconds: 5
     periodSeconds: 5
-    failureThreshold: 1
+    failureThreshold: 2
   {{- if .Values.vaultAgent.resources }}
   resources:
     {{- toYaml .Values.vaultAgent.resources | nindent 4 }}

@@ -79,6 +79,11 @@ pipeline {
         }
         milestone null
       }
+      post {
+        success {
+          archiveArtifacts artifacts: "${env.DIRECTORY}/release_notes.yaml", fingerprint: true, followSymlinks: false
+        }
+      }
     }
 
     stage('Deploy hello-kubernetes app') {

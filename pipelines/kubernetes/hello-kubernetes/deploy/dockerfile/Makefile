@@ -23,7 +23,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | podman login --username "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
 build:
-	podman build --pull --format docker -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
+	podman build --format docker -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
 
 scan:
 	$(eval TMP_DIR := $(shell mktemp -d))

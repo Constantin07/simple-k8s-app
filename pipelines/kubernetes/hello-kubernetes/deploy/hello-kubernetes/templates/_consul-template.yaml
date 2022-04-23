@@ -14,7 +14,7 @@
         - "pgrep consul-template"
     initialDelaySeconds: 5
     periodSeconds: 5
-    failureThreshold: 1
+    failureThreshold: 2
   {{- if .Values.consulTemplate.resources }}
   resources:
     {{- toYaml .Values.consulTemplate.resources | nindent 4 }}

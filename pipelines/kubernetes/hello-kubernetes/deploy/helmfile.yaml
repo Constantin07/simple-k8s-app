@@ -40,19 +40,12 @@ releases:
           enabled: true
           image:
             repository: vault
-            tag: 1.10.0
+            tag: 1.11.0
           role: hello-kubernetes
           secret_path: secret/hello-kubernetes
           env:
             VAULT_ADDR: "http://vault.internal:8200"
             VAULT_SKIP_VERIFY: "true"
-          resources:
-            requests:
-              cpu: 20m
-              memory: 20Mi
-            limits:
-              cpu: 50m
-              memory: 64Mi
         ingress:
           enabled: true
           ingressClassName: internal

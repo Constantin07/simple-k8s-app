@@ -38,9 +38,6 @@ releases:
           enabled: true
         vaultAgent:
           enabled: true
-          image:
-            repository: vault
-            tag: 1.11.0
           role: hello-kubernetes
           secret_path: secret/hello-kubernetes
           env:

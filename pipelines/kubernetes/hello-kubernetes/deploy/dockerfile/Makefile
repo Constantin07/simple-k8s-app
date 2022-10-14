@@ -4,7 +4,7 @@ DOCKER_REGISTRY ?= centos7.internal:5000
 IMAGE ?= hello-kubernetes
 
 # Check for required binaries
-EXECUTABLES = git podman tar
+EXECUTABLES = git docker
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
@@ -17,28 +17,24 @@ else
 endif
 
 .PHONY: all login build scan tag push clean
-all: |login build tag scan push
+all: |build tag scan push
 
 login:
-	@echo "${DOCKERHUB_TOKEN}" | podman login --username "${DOCKERHUB_USERNAME}" --password-stdin docker.io
+	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin docker.io
 
-build:
-	podman build --format docker -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
+build: login
+	docker build --compress -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
 
 scan:
-	$(eval TMP_DIR := $(shell mktemp -d))
-	podman image save --quiet --format docker-archive ${DOCKER_REGISTRY}/${IMAGE}:${TAG} | tar -x --wildcards -C ${TMP_DIR} --warning=no-timestamp
-	@find ${TMP_DIR} -type f -name '*.tar' -print0 | xargs -r -0 --max-args=1 tar -C ${TMP_DIR} --warning=no-timestamp -xf
-	@trivy fs --exit-code 0 --no-progress --format json --output results.json ${TMP_DIR}
-	@rm -rf ${TMP_DIR}
+	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
 
 tag:
-	podman tag ${DOCKER_REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REGISTRY}/${IMAGE}:latest
+	docker tag ${DOCKER_REGISTRY}/${IMAGE}:${TAG} ${DOCKER_REGISTRY}/${IMAGE}:latest
 
 push:
-	podman push ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
-	podman push ${DOCKER_REGISTRY}/${IMAGE}:latest
+	docker push ${DOCKER_REGISTRY}/${IMAGE}:${TAG}
+	docker push ${DOCKER_REGISTRY}/${IMAGE}:latest
 
 clean:
-	podman rmi ${DOCKER_REGISTRY}/${IMAGE}:${TAG} || true
-	podman rmi ${DOCKER_REGISTRY}/${IMAGE}:latest || true
+	docker rmi ${DOCKER_REGISTRY}/${IMAGE}:${TAG} || true
+	docker rmi ${DOCKER_REGISTRY}/${IMAGE}:latest || true

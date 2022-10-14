@@ -57,7 +57,7 @@ consulTemplate:
       cpu: 20m
       memory: 32Mi
     limits:
-      cpu: 50m
+      cpu: 60m
       memory: 96Mi
 
 proxy:

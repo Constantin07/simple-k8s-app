@@ -12,7 +12,7 @@ if [ -z "${VAULT_ADDR}" ]; then
     exit 1
 fi
 
-max_retries=5
+max_retries=7
 retry=0
 delay=2
 echo "Checking vault-agent is up."

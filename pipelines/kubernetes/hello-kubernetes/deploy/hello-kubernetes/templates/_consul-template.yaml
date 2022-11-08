@@ -12,7 +12,7 @@
         - /bin/sh
         - -c
         - "pgrep consul-template"
-    initialDelaySeconds: 5
+    initialDelaySeconds: 7
     periodSeconds: 5
     failureThreshold: 2
   {{- if .Values.consulTemplate.resources }}

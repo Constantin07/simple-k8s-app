@@ -14,6 +14,7 @@
       path: /health
       port: {{ .Values.container.port }}
       scheme: HTTP
+    initialDelaySeconds: 15
     failureThreshold: 25
     periodSeconds: 5
   livenessProbe:
@@ -21,6 +22,7 @@
       path: /health
       port: {{ .Values.container.port }}
       scheme: HTTP
+    initialDelaySeconds: 15
     failureThreshold: 2
     periodSeconds: 10
   readinessProbe:

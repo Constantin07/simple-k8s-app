@@ -13,7 +13,7 @@
         - sh
         - -c
         - "nc -z 127.0.0.1 8200"
-    initialDelaySeconds: 5
+    initialDelaySeconds: 7
     periodSeconds: 5
     failureThreshold: 2
   {{- if .Values.vaultAgent.resources }}

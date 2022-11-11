@@ -5,7 +5,7 @@ var os = require("os");
 var morgan = require('morgan');
 var router = express.Router();
 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs.engine({extname: '.handlebars', defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(express.static('static'));
 app.use(morgan('combined'));

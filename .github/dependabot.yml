@@ -1,0 +1,11 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
+    schedule:
+      interval: "daily"

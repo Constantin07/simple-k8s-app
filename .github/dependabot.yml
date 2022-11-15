@@ -3,9 +3,9 @@ updates:
   - package-ecosystem: "docker"
     directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "npm"
     directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
     schedule:
-      interval: "daily"
+      interval: "weekly"

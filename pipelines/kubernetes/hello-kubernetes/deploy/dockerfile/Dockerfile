@@ -21,5 +21,7 @@ WORKDIR /home/node
 
 RUN npm install
 
+#checkov:skip=CKV_DOCKER_2:Healtheck not used for the moment
+
 CMD [ "npm", "start" ]
 ENTRYPOINT ["/home/node/entrypoint.sh"]

@@ -18,6 +18,19 @@ pipeline {
 
   stages {
 
+    stage('Static code analysis') {
+      agent {
+        docker {
+          image 'bridgecrew/checkov:2.2.78'
+          args "--entrypoint='' --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly"
+        }
+      }
+      steps {
+        sh "checkov -d ${env.DIRECTORY}"
+        milestone null
+      }
+    }
+
     stage('Build image') {
       agent any
       environment {

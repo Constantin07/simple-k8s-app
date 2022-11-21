@@ -22,6 +22,10 @@
     initialDelaySeconds: 7
     failureThreshold: 1
     periodSeconds: 10
+  {{- if .Values.proxy.resources }}
+  resources:
+    {{- toYaml .Values.proxy.resources | nindent 4 }}
+  {{- end }}
   volumeMounts:
     - name: secrets
       mountPath: /etc/secrets

@@ -5,14 +5,12 @@ replicaCount: 2
 image:
   repository: centos7.internal:5000/hello-kubernetes
   tag: ""
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 container:
   port: 8080
 
 env: {}
-
-resources: {}
 
 psp:
   enabled: false
@@ -27,8 +25,6 @@ securityContext:
       - all
     add:
       - IPC_LOCK   # required for vault binary
-  seccompProfile:
-    type: RuntimeDefault
 
 vaultAgent:
   enabled: false
@@ -67,6 +63,13 @@ proxy:
     tag: 0.0.1
     pullPolicy: Always
   port: 8443
+  resources:
+    requests:
+      cpu: 20m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
 
 service:
   type: ClusterIP

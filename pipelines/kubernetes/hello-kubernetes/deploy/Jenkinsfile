@@ -1,3 +1,5 @@
+@Library('global-shared-library') _
+
 pipeline {
 
   agent none
@@ -18,15 +20,37 @@ pipeline {
 
   stages {
 
-    stage('Static code analysis') {
+    stage('Lint Helm chart') {
       agent {
         docker {
-          image 'bridgecrew/checkov:2.2.78'
-          args "--entrypoint='' --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly"
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
         }
       }
       steps {
-        sh "checkov -d ${env.DIRECTORY}"
+        lock('kubernetes/hello-kubernetes') {
+          dir(env.DIRECTORY) {
+            sh 'make lint'
+          }
+          milestone null
+        }
+      }
+    }
+
+    stage('Static code analysis') {
+      agent {
+        docker {
+          image 'bridgecrew/checkov:2.2.84'
+          args "--entrypoint='' --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly"
+        }
+      }
+      environment {
+        HELM_NAMESPACE = 'hello-kubernetes'
+      }
+      steps {
+        sh "checkov -d ${env.DIRECTORY} --framework helm --skip-check CKV_K8S_43 --var-file ${env.DIRECTORY}/values.yaml"
         milestone null
       }
     }
@@ -111,7 +135,7 @@ pipeline {
       steps {
         lock('kubernetes/hello-kubernetes') {
           dir(env.DIRECTORY) {
-            sh 'make lint sync'
+            sh 'make validate_k8s apply'
           }
           milestone null
         }

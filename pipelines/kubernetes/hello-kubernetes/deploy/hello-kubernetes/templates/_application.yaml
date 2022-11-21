@@ -5,7 +5,7 @@
   lifecycle:
     preStop:
       exec:
-        command: ["/bin/sleep", "20"]
+        command: ["/bin/sleep", "15"]
   ports:
     - containerPort: {{ .Values.container.port }}
       protocol: TCP

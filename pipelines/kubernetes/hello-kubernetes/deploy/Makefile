@@ -1,11 +1,12 @@
 export NAMESPACE ?= default
+export RELEASE ?= hello-kubernetes
 
 # Check for required binaries
-EXECUTABLES = git helmfile kubeconform
+EXECUTABLES = git helm kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-.PHONY: build template validate lint diff release_notes sync status destroy
+.PHONY: build template validate lint diff release_notes apply status destroy
 
 GIT_COMMIT_SHORT ?= $(shell git rev-parse --short HEAD)
 
@@ -19,26 +20,36 @@ build:
 	$(MAKE) -C dockerfile
 
 template:
-	helmfile template
+	helm template ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG}
 
 validate:
 	mkdir -p /tmp/kubeconform
-	helmfile template | kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.24.8
+	helm template ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} | \
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.24.8
+
+validate_k8s:
+	helm template ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} --validate
 
 lint:
-	helmfile lint
+	helm lint ./hello-kubernetes -f values.yaml
 
 diff:
-	helmfile diff
+	helm diff upgrade --allow-unreleased ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} \
+	--namespace ${NAMESPACE}
 
 release_notes:
 	git-chglog | tee -a release_notes.yaml
 
-sync: validate
-	helmfile sync
+namespace:
+	kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+
+apply: validate
+	helm upgrade ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} \
+	--install --namespace ${NAMESPACE} --wait --timeout=300s
 
 status:
-	helmfile status
+	helm status ${RELEASE}
 
 destroy:
-	helmfile destroy
+	helm uninstall ${RELEASE} --namespace ${NAMESPACE}
+	kubectl delete namespace ${NAMESPACE}

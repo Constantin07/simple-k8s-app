@@ -19,12 +19,12 @@ releases:
           VAULT_ADDR: "http://127.0.0.1:8200"
           VAULT_SECRET_PATH: secret/hello-kubernetes
         resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
           requests:
             cpu: 50m
             memory: 100Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
         consulTemplate:
           enabled: true
           pki_backend_role: "pki_int/issue/test"

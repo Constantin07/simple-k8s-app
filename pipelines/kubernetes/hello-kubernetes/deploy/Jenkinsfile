@@ -42,7 +42,7 @@ pipeline {
     stage('Static code analysis') {
       agent {
         docker {
-          image 'bridgecrew/checkov:2.2.86'
+          image 'bridgecrew/checkov:latest'
           args "--entrypoint='' --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly"
         }
       }

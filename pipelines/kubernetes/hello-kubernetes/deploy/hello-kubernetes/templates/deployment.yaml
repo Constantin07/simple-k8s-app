@@ -6,6 +6,7 @@ metadata:
   annotations:
     kubernetes.io/change-cause: {{ .Values.image.tag | quote }}
     checkov.io/skip1: CKV_K8S_9=There is no need for readiness probes for some containers.
+    checkov.io/skip2: CKV_K8S_38=Mounting service account is required for authentication.
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 10
@@ -52,6 +53,9 @@ spec:
               app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
       serviceAccountName: {{ include "hello-kubernetes.fullname" . }}
       terminationGracePeriodSeconds: 60
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
 
       {{- if .Values.consulTemplate.enabled }}
       initContainers:

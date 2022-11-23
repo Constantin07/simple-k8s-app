@@ -51,5 +51,4 @@ status:
 	helm status ${RELEASE}
 
 destroy:
-	helm uninstall ${RELEASE} --namespace ${NAMESPACE}
-	kubectl delete namespace ${NAMESPACE}
+	helm uninstall ${RELEASE} --namespace ${NAMESPACE} || true

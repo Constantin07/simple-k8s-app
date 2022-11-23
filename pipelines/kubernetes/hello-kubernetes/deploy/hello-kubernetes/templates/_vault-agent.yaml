@@ -1,4 +1,4 @@
-{{ define "hello-kubernetes.vault" }}
+{{ define "hello-kubernetes.vault-agent" }}
 - name: vault-agent
   image: "{{ .Values.vaultAgent.image.repository }}:{{ .Values.vaultAgent.image.tag }}"
   imagePullPolicy: {{ .Values.vaultAgent.image.pullPolicy }}
@@ -35,8 +35,12 @@
     runAsUser: 100
     runAsGroup: 1000
     capabilities:
+      drop:
+        - ALL
       add:
         - IPC_LOCK
+    seccompProfile:
+      type: RuntimeDefault
   {{- if .Values.vaultAgent.env }}
   env:
     {{- range $key, $value := .Values.vaultAgent.env }}

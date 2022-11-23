@@ -5,6 +5,7 @@ metadata:
   labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/change-cause: {{ .Values.image.tag | quote }}
+    checkov.io/skip1: CKV_K8S_9=There is no need for readiness probes for some containers.
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 10
@@ -60,10 +61,10 @@ spec:
       containers:
         {{- include "hello-kubernetes.application" . | nindent 8 }}
         {{- if .Values.vaultAgent.enabled }}
-          {{- include "hello-kubernetes.vault" . | nindent 8 }}
+          {{- include "hello-kubernetes.vault-agent" . | nindent 8 }}
         {{- end }}
         {{- if .Values.consulTemplate.enabled }}
-          {{- include "hello-kubernetes.consul" . | nindent 8 }}
+          {{- include "hello-kubernetes.consul-template" . | nindent 8 }}
         {{- end }}
         {{- if .Values.proxy.enabled }}
           {{- include "hello-kubernetes.proxy" . | nindent 8 }}

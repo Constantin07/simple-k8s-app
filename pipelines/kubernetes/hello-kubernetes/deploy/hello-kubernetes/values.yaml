@@ -22,9 +22,11 @@ securityContext:
   runAsNonRoot: true
   capabilities:
     drop:
-      - all
+      - ALL
     add:
       - IPC_LOCK   # required for vault binary
+  seccompProfile:
+    type: RuntimeDefault
 
 vaultAgent:
   enabled: false

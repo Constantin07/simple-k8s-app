@@ -1,4 +1,4 @@
-FROM alpine:3.16 AS builder
+FROM alpine:3.17 AS builder
 
 ARG VAULT_VERSION=1.12.1
 

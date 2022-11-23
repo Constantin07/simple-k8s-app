@@ -3,7 +3,7 @@
 replicaCount: 2
 
 image:
-  repository: centos7.internal:5000/hello-kubernetes
+  repository: constantin07/hello-kubernetes
   tag: ""
   pullPolicy: Always
 

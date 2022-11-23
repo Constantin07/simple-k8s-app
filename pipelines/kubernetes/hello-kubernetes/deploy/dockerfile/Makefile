@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-DOCKER_REGISTRY ?= centos7.internal:5000
+DOCKER_REGISTRY ?= constantin07
 IMAGE ?= hello-kubernetes
 
 # Check for required binaries

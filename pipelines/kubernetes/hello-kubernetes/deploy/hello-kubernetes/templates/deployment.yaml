@@ -6,7 +6,8 @@ metadata:
   annotations:
     kubernetes.io/change-cause: {{ .Values.image.tag | quote }}
     checkov.io/skip1: CKV_K8S_9=There is no need for readiness probes for some containers.
-    checkov.io/skip2: CKV_K8S_38=Mounting service account is required for authentication.
+    checkov.io/skip2: CKV_K8S_22=Cannot use Read-Only filesystem on all containers at the moment.
+    checkov.io/skip3: CKV_K8S_38=Mounting service account is required for authentication.
 spec:
   replicas: {{ .Values.replicaCount }}
   revisionHistoryLimit: 10

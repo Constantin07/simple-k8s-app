@@ -10,7 +10,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
 
 FROM node:19-alpine3.16
 
-RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates && \
+RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates curl && \
     update-ca-certificates
 
 COPY --chown=node:node . /home/node/
@@ -21,7 +21,9 @@ WORKDIR /home/node
 
 RUN npm install
 
-#checkov:skip=CKV_DOCKER_2:Healtheck not used for the moment
+EXPOSE 8080
+
+HEALTHCHECK CMD --interval=10s --timeout=3s curl --fail http://localhost:8080/health || exit 1
 
 CMD [ "npm", "start" ]
 ENTRYPOINT ["/home/node/entrypoint.sh"]

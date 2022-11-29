@@ -28,7 +28,7 @@ validate:
 	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.24.8
 
 validate_k8s:
-	helm template ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} --validate
+	helm template ${RELEASE}-test ./hello-kubernetes -f values.yaml --set image.tag=${TAG} --validate
 
 lint:
 	helm lint ./hello-kubernetes -f values.yaml

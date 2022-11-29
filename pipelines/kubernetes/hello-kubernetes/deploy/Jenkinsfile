@@ -30,24 +30,19 @@ pipeline {
         }
       }
       steps {
-        lock('kubernetes/hello-kubernetes') {
-          dir(env.DIRECTORY) {
-            sh 'make lint'
-          }
-          milestone null
+        dir(env.DIRECTORY) {
+          sh 'make lint'
         }
+        milestone null
       }
     }
 
-    stage('Static code analysis') {
+    stage('Helm chart static code analysis') {
       agent {
         docker {
           image 'bridgecrew/checkov:latest'
           args "--entrypoint='' --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly"
         }
-      }
-      environment {
-        HELM_NAMESPACE = 'hello-kubernetes'
       }
       steps {
         dir(env.DIRECTORY) {
@@ -56,6 +51,23 @@ pipeline {
             -o cli -o junitxml --output-file-path console,results.xml --soft-fail
           """
           junit skipPublishingChecks: true, testResults: 'results.xml'
+        }
+        milestone null
+      }
+    }
+
+    stage('Validate Helm chart') {
+      agent {
+        docker {
+          registryUrl env.REGISTRY
+          image env.DOCKER_IMAGE
+          alwaysPull true
+          args env.ARGS
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          sh 'make validate_k8s'
         }
         milestone null
       }

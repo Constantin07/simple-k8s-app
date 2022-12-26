@@ -1,6 +1,6 @@
 FROM alpine:3.17 AS builder
 
-ARG VAULT_VERSION=1.12.1
+ARG VAULT_VERSION=1.12.2
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
     update-ca-certificates && \
@@ -8,7 +8,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM node:19-alpine3.16
+FROM node:19-alpine3.17
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates curl && \
     update-ca-certificates

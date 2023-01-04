@@ -3,10 +3,17 @@ run-name: Run infra static code analysis
 
 on:
   pull_request:
+    paths-ignore:
+      - "README.md"
+
+  push:
+    paths-ignore:
+      - "README.md"
+
   workflow_dispatch:
 
 jobs:
-  Check:
+  checkov-image-scan:
     runs-on: ubuntu-latest
     defaults:
       run:

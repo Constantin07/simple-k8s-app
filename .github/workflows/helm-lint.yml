@@ -3,6 +3,13 @@ run-name: Helm lint
 
 on:
   pull_request:
+    paths-ignore:
+      - "README.md"
+
+  push:
+    paths-ignore:
+      - "README.md"
+
   workflow_dispatch:
 
 jobs:

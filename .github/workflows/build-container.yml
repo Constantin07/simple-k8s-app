@@ -3,7 +3,17 @@ run-name: Build docker container
 
 on:
   pull_request:
+    paths-ignore:
+      - "README.md"
+
+  push:
+    paths-ignore:
+      - "README.md"
+
   workflow_dispatch:
+
+env:
+  IMAGE_NAME: 'constantin07/hello-kubernetes:latest'
 
 jobs:
   Build:
@@ -26,7 +36,7 @@ jobs:
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'constantin07/hello-kubernetes:latest'
+          image-ref: ${{ env.IMAGE_NAME }}
           format: 'sarif'
           output: 'trivy-results.sarif'
 

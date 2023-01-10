@@ -3,12 +3,14 @@ run-name: Build docker container
 
 on:
   pull_request:
-    paths-ignore:
-      - "README.md"
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
+      - .github/workflows/build-container.yml
 
   push:
-    paths-ignore:
-      - "README.md"
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
+      - .github/workflows/build-container.yml
     branches: [ master ]
 
   workflow_dispatch:

@@ -3,12 +3,14 @@ run-name: Run infra static code analysis
 
 on:
   pull_request:
-    paths-ignore:
-      - "README.md"
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+      - .github/workflows/checkov.yml
 
   push:
-    paths-ignore:
-      - "README.md"
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+      - .github/workflows/checkov.yml
     branches: [ master ]
 
   workflow_dispatch:
@@ -36,6 +38,5 @@ jobs:
 
       - name: Upload Checkov results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
-        if: always()
         with:
           sarif_file: 'checkov-results.sarif'

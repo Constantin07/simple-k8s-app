@@ -3,12 +3,14 @@ run-name: Helm lint
 
 on:
   pull_request:
-    paths-ignore:
-      - "README.md"
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+      - .github/workflows/helm-lint.yml
 
   push:
-    paths-ignore:
-      - "README.md"
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+      - .github/workflows/helm-lint.yml
     branches: [ master ]
 
   workflow_dispatch:

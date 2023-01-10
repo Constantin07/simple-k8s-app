@@ -9,6 +9,7 @@ on:
   push:
     paths-ignore:
       - "README.md"
+    branches: [ master ]
 
   workflow_dispatch:
 
@@ -19,7 +20,8 @@ jobs:
       run:
         working-directory: pipelines/kubernetes/hello-kubernetes/deploy
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
       - name: Run Checkov action
         uses: bridgecrewio/checkov-action@master
@@ -29,11 +31,11 @@ jobs:
           skip_check: CKV_K8S_43,CKV_K8S_21
           var-file: ./values.yaml
           output_format: sarif
-          output_file_path: results.sarif
+          output_file_path: checkov-results.sarif
           soft_fail: true
 
       - name: Upload Checkov results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: 'results.sarif'
+          sarif_file: 'checkov-results.sarif'

@@ -1,10 +1,12 @@
-FROM alpine:3.17 AS builder
+FROM --platform=$BUILDPLATFORM alpine:3.17 AS builder
+
+ARG TARGETOS TARGETARCH
 
 ARG VAULT_VERSION=1.12.2
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
     update-ca-certificates && \
-    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip -o vault.zip && \
+    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_${TARGETOS}_${TARGETARCH}.zip -o vault.zip && \
     unzip vault.zip && chmod +x vault
 
 

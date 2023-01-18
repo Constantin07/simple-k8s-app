@@ -10,6 +10,8 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
 
 FROM node:19-alpine3.17
 
+LABEL maintainer=constantin07
+
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates curl && \
     update-ca-certificates
 

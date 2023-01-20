@@ -49,7 +49,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get short commit SHA
-        id: commit
+        id: var
         run: |
           calculatedSha=$(git rev-parse --short ${{ github.sha }})
           echo "::set-output name=short_sha::$calculatedSha"
@@ -63,18 +63,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ env.IMAGE_REPOSITORY }}:${{ steps.commit.outputs.short_sha }}
+            ${{ env.IMAGE_REPOSITORY }}:${{ steps.var.outputs.short_sha }}
             ${{ env.IMAGE_REPOSITORY }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           load: false
 
       - name: Buildx load (for Trivy scan)
-        run: docker buildx build --load -t ${{ env.IMAGE_REPOSITORY }}:${{ steps.commit.outputs.short_sha }} .
+        run: docker buildx build --load -t ${{ env.IMAGE_REPOSITORY }}:${{ steps.var.outputs.short_sha }} .
 
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ env.IMAGE_REPOSITORY }}:${{ steps.commit.outputs.short_sha }}
+          image-ref: ${{ env.IMAGE_REPOSITORY }}:${{ steps.var.outputs.short_sha }}
           format: 'sarif'
           output: 'trivy-results.sarif'
 
@@ -86,5 +86,5 @@ jobs:
 
       - name: Docker push
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 --push -t ${{ env.IMAGE_REPOSITORY }}:${{ steps.commit.outputs.short_sha }} .
+          docker buildx build --platform linux/amd64,linux/arm64 --push -t ${{ env.IMAGE_REPOSITORY }}:${{ steps.var.outputs.short_sha }} .
           docker buildx build --platform linux/amd64,linux/arm64 --push -t ${{ env.IMAGE_REPOSITORY }}:latest .

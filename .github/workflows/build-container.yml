@@ -49,6 +49,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          ecr: false
 
       - name: Get short commit SHA
         id: var

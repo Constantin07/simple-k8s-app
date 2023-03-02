@@ -24,6 +24,8 @@ env:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     defaults:
       run:
         working-directory: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile

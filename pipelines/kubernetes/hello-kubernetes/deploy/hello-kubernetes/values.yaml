@@ -27,7 +27,7 @@ vaultAgent:
   enabled: false
   image:
     repository: vault
-    tag: "1.12.2"
+    tag: "1.12.3"
     pullPolicy: Always
   role: ""
   env: {}

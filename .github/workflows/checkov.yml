@@ -11,7 +11,6 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/checkov.yml
-    branches: [ master ]
 
   workflow_dispatch:
 

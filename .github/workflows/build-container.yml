@@ -12,7 +12,9 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
       - .github/workflows/build-container.yml
-    branches: [ master ]
+    branches:
+      - master
+      - 'fix_*'
     tags: [ '*' ]
 
   workflow_dispatch:

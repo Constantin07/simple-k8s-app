@@ -1,0 +1,9 @@
+directory:
+- .
+download-external-modules: true
+evaluate-variables: true
+framework:
+- all
+mask: []
+quiet: true
+soft-fail: true

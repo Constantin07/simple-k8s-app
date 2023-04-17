@@ -27,7 +27,7 @@ vaultAgent:
   enabled: false
   image:
     repository: vault
-    tag: "1.13.0"
+    tag: "1.13.1"
     pullPolicy: Always
   role: ""
   env: {}
@@ -43,7 +43,7 @@ consulTemplate:
   enabled: false
   image:
     repository: constantin07/consul-template
-    tag: 0.30.0
+    tag: 0.31.0
     pullPolicy: Always
   resources:
     requests:

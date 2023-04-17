@@ -13,6 +13,8 @@ on:
 
   workflow_dispatch:
 
+permissions: read-all
+
 jobs:
   checkov:
     runs-on: ubuntu-latest

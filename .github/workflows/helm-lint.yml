@@ -1,5 +1,4 @@
 name: helm-lint
-run-name: Helm lint
 
 on:
   pull_request:
@@ -29,7 +28,7 @@ jobs:
       - name: Install helm binary
         uses: azure/setup-helm@v3
         with:
-          version: '3.11.2'
+          version: '3.11.3'
 
       - name: Run helm lint
         run: helm lint ./hello-kubernetes -f values.yaml

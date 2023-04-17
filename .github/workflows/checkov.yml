@@ -1,5 +1,4 @@
 name: checkov
-run-name: Run infra static code analysis
 
 on:
   pull_request:
@@ -15,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  checkov-image-scan:
+  checkov:
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -30,7 +29,7 @@ jobs:
         uses: bridgecrewio/checkov-action@master
         with:
           directory: .
-          framework: helm
+          framework: all
           skip_check: CKV_K8S_43,CKV_K8S_21
           var-file: ./values.yaml
           output_format: sarif

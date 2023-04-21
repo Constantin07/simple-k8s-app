@@ -5,12 +5,14 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/checkov.yml
+      - .checkov.yaml
     branches: [ "master" ]
 
   push:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/checkov.yml
+      - .checkov.yaml
     branches: [ "master" ]
 
   workflow_dispatch:
@@ -31,7 +33,6 @@ jobs:
         uses: bridgecrewio/checkov-action@master
         with:
           config_file: .checkov.yaml
-          skip_check: CKV_K8S_43,CKV_K8S_21
           var-file: pipelines/kubernetes/hello-kubernetes/deploy/values.yaml
           output_format: cli,sarif
           output_file_path: console,results.sarif

@@ -17,10 +17,17 @@ LABEL maintainer=constantin07
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates curl && \
     update-ca-certificates
 
+# Change UID/GID to higher number
+RUN apk --no-cache add --virtual .build-deps shadow && \
+    usermod --uid 10000 node && \
+    groupmod --gid 10000 node && \
+    chown -R 10000:10000 /home/node && \
+    apk del .build-deps
+
 COPY --chown=node:node . /home/node/
 COPY --from=builder /vault /usr/local/bin/
 
-USER node
+USER 10000
 WORKDIR /home/node
 
 RUN npm install

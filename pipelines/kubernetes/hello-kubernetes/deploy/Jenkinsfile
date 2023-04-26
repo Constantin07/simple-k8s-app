@@ -45,13 +45,13 @@ pipeline {
         }
       }
       steps {
-        dir(env.DIRECTORY) {
-          sh """
-            checkov -d . --framework helm --skip-check CKV_K8S_43,CKV_K8S_21 --var-file ./values.yaml \
-            -o cli -o junitxml --output-file-path console,results.xml --soft-fail
-          """
-          junit skipPublishingChecks: true, testResults: 'results.xml'
-        }
+        sh """
+          export HELM_NAMESPACE='not-default'
+          checkov -d \$DIRECTORY --framework helm --skip-framework kubernetes \
+          --config-file .checkov.yaml --var-file \$DIRECTORY/values.yaml \
+          -o cli -o junitxml --output-file-path console,results.xml --soft-fail --quiet
+        """
+        junit skipPublishingChecks: true, testResults: 'results.xml'
         milestone null
       }
     }
@@ -76,7 +76,7 @@ pipeline {
     stage('Build image') {
       agent any
       environment {
-        PATH ="/usr/local/bin:$PATH"
+        PATH = "/usr/local/bin:$PATH"
       }
       steps {
         dir(env.DIRECTORY + '/dockerfile') {

@@ -14,7 +14,7 @@ pipeline {
     KUBECONFIG = '/home/toolbox/.kube/config'
     DIRECTORY = 'pipelines/kubernetes/hello-kubernetes/deploy'
     REGISTRY = 'http://centos7.internal:5000'
-    DOCKER_IMAGE = 'centos7.internal:5000/tool-box:latest'
+    DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
     ARGS = '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
   }
 

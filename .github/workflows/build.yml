@@ -1,4 +1,4 @@
-name: build-container
+name: build
 run-name: Build docker container
 
 on:
@@ -6,12 +6,12 @@ on:
     branches: [ master ]
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
-      - .github/workflows/build-container.yml
+      - .github/workflows/build.yml
 
   push:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
-      - .github/workflows/build-container.yml
+      - .github/workflows/build.yml
     branches:
       - master
       - 'fix_*'
@@ -22,8 +22,10 @@ on:
 env:
   IMAGE_REPOSITORY: 'constantin07/hello-kubernetes'
 
+concurrency: build
+
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     permissions:
       security-events: write

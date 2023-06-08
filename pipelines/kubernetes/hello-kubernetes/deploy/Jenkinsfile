@@ -32,7 +32,7 @@ pipeline {
       steps {
         dir(env.DIRECTORY) {
           //sh '/tools/dotnet-gitversion /output buildserver'
-          sh 'printenv | sort'
+          sh 'ls -la'
         }
       }
     }
@@ -62,7 +62,6 @@ pipeline {
       }
       steps {
         sh """
-          export HELM_NAMESPACE='not-default'
           checkov -d \$DIRECTORY --skip-framework kubernetes \
           --config-file .checkov.yaml --var-file \$DIRECTORY/values.yaml \
           -o cli -o junitxml --output-file-path console,results.xml --soft-fail --quiet

@@ -14,8 +14,8 @@ env: {}
 
 securityContext:
   allowPrivilegeEscalation: false
-  runAsUser: 10000
-  runAsGroup: 10000
+  runAsUser: 10001
+  runAsGroup: 10001
   runAsNonRoot: true
   capabilities:
     drop:

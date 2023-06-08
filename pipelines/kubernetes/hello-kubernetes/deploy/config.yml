@@ -9,5 +9,3 @@ extensions:
     shallow: false
     noTags: false
     honorRefspec: true
-    depth: 0
-

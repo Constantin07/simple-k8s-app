@@ -25,14 +25,19 @@ pipeline {
     stage('Get version') {
       agent {
         docker {
-          image 'gittools/gitversion:6.0.0-alpine.3.17-7.0'
+          image 'gittools/gitversion:5.12.0-alpine.3.14-6.0'
           args "--entrypoint="
         }
       }
       steps {
         dir(env.DIRECTORY) {
-          //sh '/tools/dotnet-gitversion /output buildserver'
-          sh 'ls -la'
+          sh '/tools/dotnet-gitversion /output buildserver'
+          script {
+            def props = readProperties file: 'gitversion.properties'
+            version = props.GitVersion_SemVer
+            println "Version: $version"
+            currentBuild.description = version
+          }
         }
       }
     }

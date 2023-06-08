@@ -1,5 +1,7 @@
 @Library('global-shared-library') _
 
+String version = ''
+
 pipeline {
 
   agent none
@@ -19,6 +21,21 @@ pipeline {
   }
 
   stages {
+
+    stage('Get version') {
+      agent {
+        docker {
+          image 'gittools/gitversion:6.0.0-alpine.3.17-7.0'
+          args "--entrypoint="
+        }
+      }
+      steps {
+        dir(env.DIRECTORY) {
+          //sh '/tools/dotnet-gitversion /output buildserver'
+          sh 'printenv | sort'
+        }
+      }
+    }
 
     stage('Lint Helm chart') {
       agent {

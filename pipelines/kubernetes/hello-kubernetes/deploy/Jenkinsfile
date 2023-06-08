@@ -33,11 +33,10 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'make lint'
         }
-        milestone null
       }
     }
 
-    stage('Helm chart static code analysis') {
+    stage('Checkov scan') {
       agent {
         docker {
           image 'bridgecrew/checkov:latest'
@@ -47,12 +46,11 @@ pipeline {
       steps {
         sh """
           export HELM_NAMESPACE='not-default'
-          checkov -d \$DIRECTORY --framework helm --skip-framework kubernetes \
+          checkov -d \$DIRECTORY --skip-framework kubernetes \
           --config-file .checkov.yaml --var-file \$DIRECTORY/values.yaml \
           -o cli -o junitxml --output-file-path console,results.xml --soft-fail --quiet
         """
         junit skipPublishingChecks: true, testResults: 'results.xml'
-        milestone null
       }
     }
 
@@ -69,7 +67,6 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'make validate_k8s'
         }
-        milestone null
       }
     }
 
@@ -84,7 +81,6 @@ pipeline {
             sh 'make login build tag'
           }
         }
-        milestone null
       }
     }
 
@@ -100,7 +96,6 @@ pipeline {
             tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')]
           )
         }
-        milestone null
       }
     }
 
@@ -115,7 +110,6 @@ pipeline {
             sh 'make login push clean'
           }
         }
-        milestone null
       }
     }
 
@@ -132,7 +126,6 @@ pipeline {
         dir(env.DIRECTORY) {
           sh 'make release_notes'
         }
-        milestone null
       }
       post {
         success {
@@ -155,7 +148,6 @@ pipeline {
           dir(env.DIRECTORY) {
             sh 'make validate_k8s apply'
           }
-          milestone null
         }
       }
     }

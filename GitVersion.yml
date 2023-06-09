@@ -1,5 +1,4 @@
 mode: ContinuousDelivery
-increment: Patch
 continuous-delivery-fallback-tag: ''
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'

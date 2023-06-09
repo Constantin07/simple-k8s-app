@@ -14,7 +14,6 @@ on:
       - .github/workflows/build.yml
     branches:
       - master
-      - 'fix_*'
     tags: [ '*' ]
 
   workflow_dispatch:
@@ -48,7 +47,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.10.2
         with:
           useConfigFile: true
-          configFilePath: pipelines/kubernetes/hello-kubernetes/deploy/GitVersion.yml
+          configFilePath: ./GitVersion.yml
 
       - name: Display version
         run: |

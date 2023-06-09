@@ -7,11 +7,13 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
       - .github/workflows/build.yml
+      - GitVersion.yml
 
   push:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
       - .github/workflows/build.yml
+      - GitVersion.yml
     branches:
       - master
     tags: [ '*' ]

@@ -30,14 +30,12 @@ pipeline {
         }
       }
       steps {
-        dir(env.DIRECTORY) {
-          sh '/tools/dotnet-gitversion /output buildserver'
-          script {
-            def props = readProperties file: 'gitversion.properties'
-            version = props.GitVersion_SemVer
-            println "Version: $version"
-            currentBuild.description = version
-          }
+        sh '/tools/dotnet-gitversion /output buildserver'
+        script {
+          def props = readProperties file: 'gitversion.properties'
+          version = props.GitVersion_SemVer
+          println "Version: $version"
+          currentBuild.description = version
         }
       }
     }

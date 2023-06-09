@@ -6,7 +6,8 @@ minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 no-bump-message: '\+semver:\s?(none|skip)
 branches:
-  develop:
+  main:
+    mode: ContinuousDelivery
     tag: ''
 ignore:
   sha: []

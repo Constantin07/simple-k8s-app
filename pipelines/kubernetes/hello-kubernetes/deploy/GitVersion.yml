@@ -1,4 +1,5 @@
 mode: Mainline
+increment: Patch
 continuous-delivery-fallback-tag: ''
 branches:
   master:

@@ -4,6 +4,7 @@ description: Deploy a simple test hello-kubernetes application.
 
 extensions:
   cleanBeforeCheckout: true
+  localBranch: true
   pruneStaleBranch: true
   cloneOptions:
     shallow: false

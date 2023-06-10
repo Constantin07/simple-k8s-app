@@ -2,20 +2,19 @@ name: build
 run-name: Build docker container
 
 on:
-  pull_request:
-    branches: [ master ]
-    paths:
-      - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
-      - .github/workflows/build.yml
-      - GitVersion.yml
+#  pull_request:
+#    branches: [ master ]
+#    paths:
+#      - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
+#      - .github/workflows/build.yml
 
   push:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
       - .github/workflows/build.yml
-      - GitVersion.yml
     branches:
       - master
+      - develop
     tags: [ '*' ]
 
   workflow_dispatch:
@@ -49,7 +48,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.10.2
         with:
           useConfigFile: true
-          configFilePath: ./GitVersion.yml
+          configFilePath: pipelines/kubernetes/hello-kubernetes/deploy/GitVersion.yml
 
       - name: Display version
         run: |

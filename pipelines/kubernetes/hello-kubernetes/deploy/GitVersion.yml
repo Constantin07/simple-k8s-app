@@ -1,0 +1,11 @@
+mode: Mainline
+continuous-delivery-fallback-tag: ''
+branches:
+  master:
+    tag: ''
+  develop:
+    tag: ''
+ignore:
+  sha: []
+merge-message-formats: {}
+

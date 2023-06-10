@@ -48,7 +48,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.10.2
         with:
           useConfigFile: true
-          configFilePath: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/GitVersion.yml
+          configFilePath: pipelines/kubernetes/hello-kubernetes/deploy/GitVersion.yml
 
       - name: Display version
         run: |

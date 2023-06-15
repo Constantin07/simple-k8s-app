@@ -25,7 +25,7 @@ template:
 validate:
 	mkdir -p /tmp/kubeconform
 	helm template ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} | \
-	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.26.4
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.26.6
 
 validate_k8s:
 	helm template ${RELEASE}-test ./hello-kubernetes -f values.yaml --set image.tag=${TAG} --validate

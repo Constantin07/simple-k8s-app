@@ -13,7 +13,7 @@ pipeline {
     DIRECTORY = 'pipelines/kubernetes/hello-kubernetes/deploy'
     REGISTRY = 'http://registry.internal:5000'
     DOCKER_IMAGE = 'registry.internal:5000/tool-box:latest'
-    ARGS = '-u toolbox --mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
+    ARGS = '--mount type=bind,src=/var/lib/jenkins/.kube,dst=/home/toolbox/.kube,readonly'
   }
 
   stages {

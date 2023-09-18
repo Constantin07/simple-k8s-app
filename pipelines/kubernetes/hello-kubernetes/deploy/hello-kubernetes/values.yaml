@@ -1,7 +1,7 @@
 ---
 # Default values for hello-kubernetes application
 
-# -- Number of replicas
+# -- Number of pods to deploy
 replicaCount: 2
 
 image:

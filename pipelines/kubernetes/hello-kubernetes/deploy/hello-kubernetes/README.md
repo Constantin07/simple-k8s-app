@@ -36,7 +36,7 @@ A Helm chart for a simple Hello Kubernetes application
 | proxy.resources.limits.memory | string | `"64Mi"` |  |
 | proxy.resources.requests.cpu | string | `"20m"` |  |
 | proxy.resources.requests.memory | string | `"32Mi"` |  |
-| replicaCount | int | `2` |  |
+| replicaCount | int | `2` | Number of replicas |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `10001` |  |

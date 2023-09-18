@@ -1,10 +1,12 @@
+---
 # Default values for hello-kubernetes application
 
+# -- Number of replicas
 replicaCount: 2
 
 image:
   repository: constantin07/hello-kubernetes
-  tag: "0.0.1"
+  tag: 0.0.1
   pullPolicy: Always
 
 container:
@@ -27,7 +29,7 @@ vaultAgent:
   enabled: false
   image:
     repository: vault
-    tag: "1.13.3"
+    tag: 1.13.3
     pullPolicy: Always
   role: ""
   env: {}

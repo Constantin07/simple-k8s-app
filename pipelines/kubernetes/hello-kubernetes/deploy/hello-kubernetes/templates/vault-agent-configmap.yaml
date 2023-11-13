@@ -35,7 +35,7 @@ data:
       address = "127.0.0.1:8200"
       tls_disable = true
     }
-    pid_file = "/home/vault/pidfile"
+    pid_file = "/vault/pidfile"
     exit_after_auth = false
 
   secrets.tmpl: |

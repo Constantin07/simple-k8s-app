@@ -28,7 +28,7 @@ securityContext:
 vaultAgent:
   enabled: false
   image:
-    repository: vault
+    repository: hashicorp/vault
     tag: 1.15.2
     pullPolicy: Always
   role: ""

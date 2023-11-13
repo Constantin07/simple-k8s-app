@@ -1,3 +1,4 @@
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -9,23 +10,23 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
   policyTypes:
-  - Egress
+    - Egress
   egress:
-  # Access to Vault server
-  - to:
-    - ipBlock:
-        cidr: 10.0.2.0/24
-    ports:
-    - protocol: TCP
-      port: 8200
-  # Access to CoreDNS to resolve DNS names
-  - to:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: kube-system
-      podSelector:
-        matchLabels:
-          k8s-app: kube-dns
-    ports:
-    - protocol: UDP
-      port: 53
+    # Access to Vault server
+    - to:
+        - ipBlock:
+            cidr: 10.0.2.0/24
+      ports:
+        - protocol: TCP
+          port: 8200
+    # Access to CoreDNS to resolve DNS names
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53

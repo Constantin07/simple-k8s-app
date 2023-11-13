@@ -42,3 +42,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end -}}
+
+{{/*
+Selector labels
+*/}}
+{{- define "hello-kubernetes.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

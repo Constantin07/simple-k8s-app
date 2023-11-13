@@ -15,5 +15,4 @@ spec:
       targetPort: {{ .Values.container.port }}
     {{- end }}
   selector:
-    app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "hello-kubernetes.selectorLabels" . | nindent 4 }}

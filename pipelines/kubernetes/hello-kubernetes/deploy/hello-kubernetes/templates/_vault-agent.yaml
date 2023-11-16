@@ -2,7 +2,7 @@
 - name: vault-agent
   image: "{{ .Values.vaultAgent.image.repository }}:{{ .Values.vaultAgent.image.tag }}"
   imagePullPolicy: {{ .Values.vaultAgent.image.pullPolicy }}
-  command: [ "vault" ]
+  {{/* command: [ "vault" ] */}}
   args:
     - "agent"
     - "-config=/etc/vault/config.hcl"

@@ -1,6 +1,10 @@
 ---
 # https://yamllint.readthedocs.io/en/stable/rules.html
 extends: default
+
+ignore:
+  - "**/templates"
+
 rules:
   indentation:
     spaces: 2

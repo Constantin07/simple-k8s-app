@@ -37,6 +37,8 @@
     capabilities:
       drop:
         - ALL
+      add:
+        - IPC_LOCK
     seccompProfile:
       type: RuntimeDefault
   {{- if .Values.vaultAgent.env }}

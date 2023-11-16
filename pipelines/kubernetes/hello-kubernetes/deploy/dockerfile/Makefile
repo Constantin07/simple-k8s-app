@@ -10,7 +10,9 @@ K := $(foreach exec,$(EXECUTABLES),\
 
 GIT_COMMIT_SHORT ?= $(shell git rev-parse --short HEAD)
 
-ifdef BUILD_NUMBER
+ifdef VERSION
+  TAG=${VERSION}
+else ifdef BUILD_NUMBER
   TAG=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}
 else
   TAG=${GIT_COMMIT_SHORT}

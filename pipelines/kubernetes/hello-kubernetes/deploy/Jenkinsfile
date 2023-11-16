@@ -99,7 +99,7 @@ pipeline {
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make login build tag'
+            sh "VERSION=$version make login build tag"
           }
         }
       }
@@ -112,7 +112,7 @@ pipeline {
       }
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
-          sh 'make scan'
+          sh "VERSION=$version make scan"
           recordIssues(
             tools: [trivy(pattern: 'results.json', reportEncoding: 'UTF-8')]
           )
@@ -128,7 +128,7 @@ pipeline {
       steps {
         dir(env.DIRECTORY + '/dockerfile') {
           withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'DOCKERHUB_TOKEN', usernameVariable: 'DOCKERHUB_USERNAME')]) {
-            sh 'make login push clean'
+            sh "VERSION=$version make login push clean"
           }
         }
       }
@@ -167,7 +167,7 @@ pipeline {
       steps {
         lock('kubernetes/hello-kubernetes') {
           dir(env.DIRECTORY) {
-            sh 'make validate_k8s apply'
+            sh "VERSION=$version make validate_k8s apply"
           }
         }
       }

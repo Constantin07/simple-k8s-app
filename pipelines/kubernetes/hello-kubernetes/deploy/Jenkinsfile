@@ -25,7 +25,7 @@ pipeline {
     stage('Get version') {
       agent {
         docker {
-          image 'gittools/gitversion:6.0.0-alpine.3.17-6.0'
+          image 'gittools/gitversion:5.12.0-alpine.3.14-6.0'
           args "--entrypoint="
         }
       }

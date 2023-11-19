@@ -4,12 +4,11 @@ increment: Patch
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
-continuous-delivery-fallback-tag: ''
 branches:
   master:
-    tag: ''
+    label: ''
   develop:
-    tag: ''
+    label: ''
 ignore:
   sha: []
 merge-message-formats: {}

@@ -7,8 +7,10 @@ patch-version-bump-message: '\+semver:\s?(fix|patch)'
 branches:
   master:
     label: ''
+    regex: ^master$|^main$
   develop:
     label: ''
+    regex: ^dev(elop)?(ment)?$
 ignore:
   sha: []
 merge-message-formats: {}

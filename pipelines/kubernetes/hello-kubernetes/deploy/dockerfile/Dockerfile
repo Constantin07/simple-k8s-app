@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM alpine:3.18 AS builder
+FROM --platform=$BUILDPLATFORM alpine:3.19 AS builder
 
 ARG TARGETOS TARGETARCH
 

@@ -48,7 +48,7 @@ A Helm chart for a simple Hello Kubernetes application
 | vaultAgent.enabled | bool | `false` |  |
 | vaultAgent.env | object | `{}` |  |
 | vaultAgent.image.pullPolicy | string | `"Always"` |  |
-| vaultAgent.image.repository | string | `"hashicorp/vault"` |  |
+| vaultAgent.image.repository | string | `"constantin07/vault-agent"` |  |
 | vaultAgent.image.tag | string | `"1.15.2"` |  |
 | vaultAgent.resources.limits.cpu | string | `"70m"` |  |
 | vaultAgent.resources.limits.memory | string | `"32Mi"` |  |

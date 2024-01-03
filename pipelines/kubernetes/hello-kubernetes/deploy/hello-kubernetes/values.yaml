@@ -45,7 +45,7 @@ consulTemplate:
   enabled: false
   image:
     repository: constantin07/consul-template
-    tag: 0.35.0
+    tag: 0.36.0
     pullPolicy: Always
   resources:
     requests:

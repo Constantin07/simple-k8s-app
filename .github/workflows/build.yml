@@ -44,6 +44,7 @@ jobs:
         with:
           versionSpec: '6.0.x'
           includePrerelease: true
+          preferLatestVersion: true
 
       - name: Determine Version
         uses: gittools/actions/gitversion/execute@v0.11.0

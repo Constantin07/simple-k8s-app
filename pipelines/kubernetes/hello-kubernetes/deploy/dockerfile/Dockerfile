@@ -12,7 +12,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM node:21-alpine3.18
+FROM node:21-alpine3.19
 
 LABEL maintainer=constantin07
 

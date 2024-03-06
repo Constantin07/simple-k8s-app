@@ -75,8 +75,8 @@ jobs:
       - name: Get short commit SHA
         id: var
         run: |
-          calculatedSha=$(git rev-parse --short ${{ github.sha }})
-          echo "::set-output name=short_sha::$calculatedSha"
+          calculatedSha="$(git rev-parse --short ${{ github.sha }})"
+          echo "short_sha=$calculatedSha" >> $GITHUB_OUTPUT
 
       - name: Docker build
         uses: docker/build-push-action@v5

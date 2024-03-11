@@ -40,14 +40,14 @@ jobs:
           fetch-depth: 0
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.13.4
+        uses: gittools/actions/gitversion/setup@v0.13.6
         with:
           versionSpec: '6.0.x'
           includePrerelease: true
           preferLatestVersion: true
 
       - name: Determine Version
-        uses: gittools/actions/gitversion/execute@v0.13.4
+        uses: gittools/actions/gitversion/execute@v0.13.6
         with:
           useConfigFile: true
           configFilePath: pipelines/kubernetes/hello-kubernetes/deploy/GitVersion.yml

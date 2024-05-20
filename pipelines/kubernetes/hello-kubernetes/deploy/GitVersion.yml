@@ -1,16 +1,17 @@
 ---
-mode: Mainline
-increment: Patch
+mode: ContinuousDeployment
+continuous-delivery-fallback-tag: ''
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
 branches:
   master:
     label: ''
-    regex: ^master$|^main$
+    increment: Patch
+    regex: "^master$|^main$"
   develop:
-    label: ''
-    regex: ^dev(elop)?(ment)?$
+    label: useBranchName
+    increment: Patch
 ignore:
   sha: []
 merge-message-formats: {}

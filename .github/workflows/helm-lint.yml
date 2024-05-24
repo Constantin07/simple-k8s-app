@@ -5,6 +5,7 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/helm-lint.yml
+    branches: [ "master" ]
 
   push:
     paths:

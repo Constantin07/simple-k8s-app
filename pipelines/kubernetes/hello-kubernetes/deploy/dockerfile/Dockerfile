@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM alpine:3.20 AS builder
 
 ARG TARGETOS TARGETARCH
 
-ARG VAULT_VERSION=1.15.6
+ARG VAULT_VERSION=1.16.2
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
     update-ca-certificates && \
@@ -12,7 +12,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM node:22-alpine3.19
+FROM node:22-alpine3.20
 
 LABEL maintainer=constantin07
 

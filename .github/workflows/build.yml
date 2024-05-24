@@ -2,6 +2,7 @@ name: build
 run-name: Build docker container
 
 on:
+
 #  pull_request:
 #    branches: [ master ]
 #    paths:
@@ -22,11 +23,13 @@ on:
 env:
   IMAGE_REPOSITORY: 'constantin07/hello-kubernetes'
 
-concurrency: build
+permissions: read-all
+
+concurrency: build-${{ github.head_ref || github.ref_name }}
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       security-events: write
     defaults:

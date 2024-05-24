@@ -7,14 +7,17 @@ on:
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
+    branches: [ "master" ]
 
   push:
 
   workflow_dispatch:
 
+permissions: read-all
+
 jobs:
   CodeQL-Check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       security-events: write
     steps:

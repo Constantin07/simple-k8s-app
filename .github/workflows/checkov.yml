@@ -1,6 +1,7 @@
 name: checkov
 
 on:
+
   pull_request:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'

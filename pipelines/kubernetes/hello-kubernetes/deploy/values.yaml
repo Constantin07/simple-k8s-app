@@ -6,8 +6,9 @@ image:
 env:
   MESSAGE: "Hello world app deployed on Kubernetes!"
   VAULT_ADDR: "http://127.0.0.1:8200"
-  # checkov:skip=CKV_SECRET_6
-  VAULT_SECRET_PATH: secret/hello-kubernetes
+  # checkov:skip=CKV_SECRET_6 before
+  VAULT_SECRET_PATH: secret/hello-kubernetes # checkov:skip=CKV_SECRET_6 next to it
+  # checkov:skip=CKV_SECRET_6 after
 resources:
   requests:
     cpu: 50m

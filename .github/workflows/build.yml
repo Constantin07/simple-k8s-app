@@ -22,6 +22,8 @@ on:
 env:
   IMAGE_REPOSITORY: 'constantin07/hello-kubernetes'
 
+permissions: read-all
+
 concurrency: build
 
 jobs:

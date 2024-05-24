@@ -12,6 +12,8 @@ on:
 
   workflow_dispatch:
 
+permissions: read-all
+
 jobs:
   CodeQL-Check:
     runs-on: ubuntu-latest

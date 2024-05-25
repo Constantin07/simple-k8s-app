@@ -11,7 +11,7 @@ A Helm chart for a simple Hello Kubernetes application
 | consulTemplate.enabled | bool | `false` |  |
 | consulTemplate.image.pullPolicy | string | `"Always"` |  |
 | consulTemplate.image.repository | string | `"constantin07/consul-template"` |  |
-| consulTemplate.image.tag | string | `"0.37.0"` |  |
+| consulTemplate.image.tag | string | `"0.37.6"` |  |
 | consulTemplate.resources.limits.cpu | string | `"60m"` |  |
 | consulTemplate.resources.limits.memory | string | `"96Mi"` |  |
 | consulTemplate.resources.requests.cpu | string | `"20m"` |  |
@@ -49,7 +49,7 @@ A Helm chart for a simple Hello Kubernetes application
 | vaultAgent.env | object | `{}` |  |
 | vaultAgent.image.pullPolicy | string | `"Always"` |  |
 | vaultAgent.image.repository | string | `"constantin07/vault-agent"` |  |
-| vaultAgent.image.tag | string | `"1.15.2"` |  |
+| vaultAgent.image.tag | string | `"1.16.2"` |  |
 | vaultAgent.resources.limits.cpu | string | `"70m"` |  |
 | vaultAgent.resources.limits.memory | string | `"32Mi"` |  |
 | vaultAgent.resources.requests.cpu | string | `"20m"` |  |

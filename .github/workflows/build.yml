@@ -3,11 +3,11 @@ run-name: Build docker container
 
 on:
 
-#  pull_request:
-#    branches: [ master ]
-#    paths:
-#      - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
-#      - .github/workflows/build.yml
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
+      - .github/workflows/build.yml
 
   push:
     paths:

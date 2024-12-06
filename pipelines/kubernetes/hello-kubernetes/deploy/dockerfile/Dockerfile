@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM alpine:3.20 AS builder
+FROM --platform=$BUILDPLATFORM alpine:3.21 AS builder
 
 ARG TARGETOS TARGETARCH
 
-ARG VAULT_VERSION=1.16.3
+ARG VAULT_VERSION=1.18.2
 
-RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip && \
+RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip ca-certificates && \
     update-ca-certificates && \
     curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_${TARGETOS}_${TARGETARCH}.zip -o vault.zip && \
     unzip vault.zip && chmod +x vault

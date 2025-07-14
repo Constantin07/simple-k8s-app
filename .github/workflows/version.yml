@@ -22,15 +22,25 @@ jobs:
 
       - name: Get latest tag
         id: get_latest_tag
-        run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+        run: |
+          TAG="$(git describe --tags --abbrev=0 || echo "0.0.0")"
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
 
       - name: Generate new SemVer string
-        id: semver
+        id: version
         run: |
           LATEST_TAG=${{ steps.get_latest_tag.outputs.TAG }}
           COMMITS_SINCE_TAG=$(git rev-list $LATEST_TAG..HEAD --count)
           SHORT_SHA=$(git rev-parse --short HEAD)
-          echo "VERSION=${LATEST_TAG}-${COMMITS_SINCE_TAG}.g${SHORT_SHA}" >> $GITHUB_OUTPUT
+          VERSION=${LATEST_TAG}-${COMMITS_SINCE_TAG}.g${SHORT_SHA}
+
+          # Append PR if not on master branch
+          if [ "${{ github.ref_name }}" != "master" ] && [ "${{ github.event.pull_request.number }}" != "" ]; then
+            VERSION="$VERSION-pr-${{ github.event.pull_request.number }}"
+          fi
+
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Show version
-        run: echo "Generated version is ${{ steps.semver.outputs.VERSION }}"
+        run: |
+          echo "Generated version: ${{ steps.version.outputs.VERSION }}"

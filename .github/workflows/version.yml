@@ -8,35 +8,71 @@ on:
     branches:
       - master
 
+permissions: read-all
+
+env:
+  BUMP_TYPE: 'patch' # Options: major, minor, patch
+
 jobs:
   version:
     runs-on: ubuntu-24.04
-    permissions:
-      security-events: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
         with:
-            # fetch all history for all tags and branches
-            fetch-depth: 0
+          # fetch all history for all tags and branches
+          fetch-depth: 0
 
       - name: Get latest tag
-        id: get_latest_tag
+        id: get_tag
         run: |
-          TAG="$(git describe --tags --abbrev=0 || echo "0.0.0")"
+          TAG_RAW="$(git describe --tags --abbrev=0 || echo "0.0.0")"
+
+          # Strip the 'v' prefix
+          TAG="${TAG_RAW#v}"
+
+          # Parse components
+          MAJOR=$(echo "$TAG" | cut -d. -f1)
+          MINOR=$(echo "$TAG" | cut -d. -f2)
+          PATCH=$(echo "$TAG" | cut -d. -f3)
+
           echo "TAG=$TAG" >> $GITHUB_OUTPUT
+          echo "MAJOR=$MAJOR" >> $GITHUB_OUTPUT
+          echo "MINOR=$MINOR" >> $GITHUB_OUTPUT
+          echo "PATCH=$PATCH" >> $GITHUB_OUTPUT
 
       - name: Generate new SemVer string
         id: version
         run: |
-          LATEST_TAG=${{ steps.get_latest_tag.outputs.TAG }}
-          COMMITS_SINCE_TAG=$(git rev-list $LATEST_TAG..HEAD --count)
+          # Bump logic
+          case "$BUMP_TYPE" in
+            major)
+                MAJOR=$((${{ steps.get_tag.outputs.MAJOR }} + 1))
+                MINOR=0
+                PATCH=0
+                ;;
+            minor)
+                MAJOR=${{ steps.get_tag.outputs.MAJOR }}
+                MINOR=$((${{ steps.get_tag.outputs.MINOR }} + 1))
+                PATCH=0
+                ;;
+            patch|*)
+                MAJOR=${{ steps.get_tag.outputs.MAJOR }}
+                MINOR=${{ steps.get_tag.outputs.MINOR }}
+                PATCH=$((${{ steps.get_tag.outputs.PATCH }} + 1))
+                ;;
+            esac
+
+          NEW_TAG="${MAJOR}.${MINOR}.${PATCH}"
+          echo $NEW_TAG
+          COMMITS_SINCE_TAG=$(git rev-list ${{ steps.get_tag.outputs.TAG }}..HEAD --count)
           SHORT_SHA=$(git rev-parse --short HEAD)
-          VERSION=${LATEST_TAG}-${COMMITS_SINCE_TAG}.g${SHORT_SHA}
 
           # Append PR if not on master branch
           if [ "${{ github.ref_name }}" != "master" ] && [ "${{ github.event.pull_request.number }}" != "" ]; then
-            VERSION="$VERSION-pr-${{ github.event.pull_request.number }}"
+            VERSION="${NEW_TAG}-${COMMITS_SINCE_TAG}.g${SHORT_SHA}-pr-${{ github.event.pull_request.number }}"
+          else
+            VERSION=${NEW_TAG}.g${SHORT_SHA}
           fi
 
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
@@ -44,3 +80,4 @@ jobs:
       - name: Show version
         run: |
           echo "Generated version: ${{ steps.version.outputs.VERSION }}"
+          echo "::notice title=Version::Version is ${{ steps.version.outputs.VERSION }}"

@@ -10,9 +10,6 @@ on:
 
 permissions: read-all
 
-env:
-  BUMP_TYPE: 'patch' # Options: major, minor, patch
-
 jobs:
   version:
     runs-on: ubuntu-24.04
@@ -41,10 +38,34 @@ jobs:
           echo "MINOR=$MINOR" >> $GITHUB_OUTPUT
           echo "PATCH=$PATCH" >> $GITHUB_OUTPUT
 
+      - name: Get PR labels
+        id: get_labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels.map(label => label.name);
+            console.log("Labels: ", labels);
+            core.setOutput("labels", labels.join(','));
+
       - name: Generate new SemVer string
         id: version
+        env:
+          PR_LABELS: "${{ steps.get_labels.outputs.labels }}"
         run: |
           # Bump logic
+          IFS=',' read -ra LABELS <<< "$PR_LABELS"
+
+          # default fallback
+          BUMP_TYPE="patch"
+
+          for label in "${LABELS[@]}"; do
+            case "$label" in
+              *major*) BUMP_TYPE="major"; break ;;
+              *minor*) BUMP_TYPE="minor"; break ;;
+              *patch*) BUMP_TYPE="patch"; break ;;
+            esac
+          done
+
           case "$BUMP_TYPE" in
             major)
                 MAJOR=$((${{ steps.get_tag.outputs.MAJOR }} + 1))
@@ -64,15 +85,14 @@ jobs:
             esac
 
           NEW_TAG="${MAJOR}.${MINOR}.${PATCH}"
-          echo $NEW_TAG
           COMMITS_SINCE_TAG=$(git rev-list ${{ steps.get_tag.outputs.TAG }}..HEAD --count)
           SHORT_SHA=$(git rev-parse --short HEAD)
 
           # Append PR if not on master branch
-          if [ "${{ github.ref_name }}" != "master" ] && [ "${{ github.event.pull_request.number }}" != "" ]; then
-            VERSION="${NEW_TAG}-${COMMITS_SINCE_TAG}.g${SHORT_SHA}-pr-${{ github.event.pull_request.number }}"
+          if [[ $GITHUB_REF_NAME != "master" && $GITHUB_REF_NAME != "main" && "${{ github.event.pull_request.number }}" != "" ]]; then
+            VERSION="${NEW_TAG}-${COMMITS_SINCE_TAG}.pr-${{ github.event.pull_request.number }}"
           else
-            VERSION=${NEW_TAG}.g${SHORT_SHA}
+            VERSION="${NEW_TAG}"
           fi
 
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT

@@ -1,12 +1,22 @@
-skip-check:
-- CKV_K8S_43
-- CKV_K8S_21
-directory:
-- .
+block-list-secret-scan: []
 download-external-modules: true
 evaluate-variables: true
 framework:
-- all
+- dockerfile
+- helm
+- secrets
+- github_actions
 mask: []
+output:
+  - cli
+  - sarif
+  - github_failed_only
+enable-secret-scan-all-files: true
+secrets-scan-file-type: []
+summary-position: top
 quiet: true
-soft-fail: true
+soft-fail: false
+compact: true
+skip-check:
+- CKV_K8S_43
+- CKV_K8S_21

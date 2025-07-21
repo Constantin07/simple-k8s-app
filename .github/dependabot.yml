@@ -4,12 +4,12 @@ updates:
   - package-ecosystem: "github-actions"
     directory: ".github/workflows/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   - package-ecosystem: "docker"
     directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     labels:
       - "dependencies"
       - "docker"
@@ -17,7 +17,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     labels:
       - "dependencies"
       - "npm"

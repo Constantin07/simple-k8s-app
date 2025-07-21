@@ -6,9 +6,8 @@ image:
 env:
   MESSAGE: "Hello world app deployed on Kubernetes!"
   VAULT_ADDR: "http://127.0.0.1:8200"
-  # checkov:skip=CKV_SECRET_6 before
-  VAULT_SECRET_PATH: secret/hello-kubernetes # checkov:skip=CKV_SECRET_6 next to it
-  # checkov:skip=CKV_SECRET_6 after
+  # checkov:skip=CKV_SECRET_6 Reason: This is a false positive, no hardcoded secret, just a path
+  VAULT_SECRET_PATH: secret/hello-kubernetes
 resources:
   requests:
     cpu: 50m
@@ -34,6 +33,7 @@ proxy:
 vaultAgent:
   enabled: true
   role: hello-kubernetes
+  # checkov:skip=CKV_SECRET_6 Reason: This is a false positive, no hardcoded secret, just a path
   secret_path: secret/hello-kubernetes
   env:
     VAULT_ADDR: "http://vault.internal:8200"

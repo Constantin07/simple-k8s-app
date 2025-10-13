@@ -43,7 +43,7 @@ jobs:
           jq '.runs[0].results |= map(select(.suppressions | map(.kind) | index("inSource") | not))' results.sarif > filtered-results.sarif
 
       - name: Upload Checkov results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: success() || failure()
         with:
           sarif_file: 'filtered-results.sarif'

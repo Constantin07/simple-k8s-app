@@ -47,6 +47,7 @@ jobs:
             const { owner, repo } = context.repo;
 
             let bump = null;
+            let where = 'default';
 
             const extract = (txt) => {
               if (!txt) return null;

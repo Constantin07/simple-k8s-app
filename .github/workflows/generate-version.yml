@@ -9,6 +9,10 @@ on:
     branches:
       - master
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 permissions: read-all
 
 jobs:
@@ -47,7 +51,7 @@ jobs:
             const { owner, repo } = context.repo;
 
             let bump = null;
-            let where = 'default';
+            let where = 'default'; // record source of where the bump info found
 
             const extract = (txt) => {
               if (!txt) return null;

@@ -1,0 +1,142 @@
+name: Generate version
+
+on:
+  pull_request:
+    branches:
+      - master
+
+  push:
+    branches:
+      - master
+
+permissions: read-all
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v5
+        with:
+          # fetch all history for all tags and branches
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          TAG_RAW="$(git describe --tags --abbrev=0 || echo "0.0.0")"
+
+          # Strip the 'v' prefix
+          TAG="${TAG_RAW#v}"
+
+          # Parse components
+          MAJOR=$(echo "$TAG" | cut -d. -f1)
+          MINOR=$(echo "$TAG" | cut -d. -f2)
+          PATCH=$(echo "$TAG" | cut -d. -f3)
+
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+          echo "MAJOR=$MAJOR" >> $GITHUB_OUTPUT
+          echo "MINOR=$MINOR" >> $GITHUB_OUTPUT
+          echo "PATCH=$PATCH" >> $GITHUB_OUTPUT
+
+      - name: Get commit message
+        id: bump_type
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+
+            let bump = null;
+
+            const extract = (txt) => {
+              if (!txt) return null;
+              const m = txt.match(/\b(major|minor|patch)\b/i);
+              return m ? m[1].toLowerCase() : null;
+            };
+
+            if (context.eventName === 'pull_request') {
+              const pr = context.payload.pull_request;
+
+              // 1) Merge commit message (squash/merge both have one)
+              if (pr.merge_commit_sha) {
+                const { data: mc } = await github.rest.repos.getCommit({ owner, repo, ref: pr.merge_commit_sha });
+                bump = extract(mc.commit.message);
+                if (bump) where = 'merge_commit';
+              }
+
+              // 2) Last commit on the PR branch (fallback)
+              if (!bump && pr.head?.sha) {
+                const { data: hc } = await github.rest.repos.getCommit({ owner, repo, ref: pr.head.sha });
+                bump = extract(hc.commit.message);
+                if (bump) where = 'pr_head_commit';
+              }
+            } else if (context.eventName === 'push') {
+              // 1) The pushed HEAD commit message
+              const { data: head } = await github.rest.repos.getCommit({ owner, repo, ref: context.sha });
+              bump = extract(head.commit.message);
+              if (bump) where = 'push_head_commit';
+
+              // 2) If it's a merge push, try to find the associated PR and inspect it
+              if (!bump) {
+                const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  owner, repo, commit_sha: context.sha
+                });
+                const pr = prs?.[0];
+                if (pr) {
+                  bump = extract(pr.title) || extract(pr.body);
+                  if (bump) where = 'associated_pr_text';
+                  if (!bump && pr.head?.sha) {
+                    const { data: hc } = await github.rest.repos.getCommit({ owner, repo, ref: pr.head.sha });
+                    bump = extract(hc.commit.message);
+                    if (bump) where = 'associated_pr_head_commit';
+                  }
+                }
+              }
+            }
+
+            if (!bump) bump = 'patch'; // default
+
+            core.info(`Detected bump: ${bump} (source=${where})`);
+            core.setOutput('bump', bump);
+
+      - name: Generate new SemVer string
+        id: version
+        env:
+          BUMP_TYPE: "${{ steps.bump_type.outputs.bump }}"
+        run: |
+          # Bump logic
+          case "$BUMP_TYPE" in
+            major)
+                MAJOR=$((${{ steps.get_tag.outputs.MAJOR }} + 1))
+                MINOR=0
+                PATCH=0
+                ;;
+            minor)
+                MAJOR=${{ steps.get_tag.outputs.MAJOR }}
+                MINOR=$((${{ steps.get_tag.outputs.MINOR }} + 1))
+                PATCH=0
+                ;;
+            patch|*)
+                MAJOR=${{ steps.get_tag.outputs.MAJOR }}
+                MINOR=${{ steps.get_tag.outputs.MINOR }}
+                PATCH=$((${{ steps.get_tag.outputs.PATCH }} + 1))
+                ;;
+            esac
+
+          NEW_TAG="${MAJOR}.${MINOR}.${PATCH}"
+          COMMITS_SINCE_TAG=$(git rev-list ${{ steps.get_tag.outputs.TAG }}..HEAD --count)
+          SHORT_SHA=$(git rev-parse --short HEAD)
+
+          # Append PR if not on master branch
+          if [[ $GITHUB_REF_NAME != "master" && $GITHUB_REF_NAME != "main" && "${{ github.event.pull_request.number }}" != "" ]]; then
+            VERSION="${NEW_TAG}-${COMMITS_SINCE_TAG}.pr-${{ github.event.pull_request.number }}"
+          else
+            VERSION="${NEW_TAG}"
+          fi
+
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Show version
+        run: |
+          echo "Generated version: ${{ steps.version.outputs.VERSION }}"
+          echo "::notice title=Version::Version is ${{ steps.version.outputs.VERSION }}"

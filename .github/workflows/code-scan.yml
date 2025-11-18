@@ -1,5 +1,4 @@
-name: code-scan
-run-name: Code Scanning - Action
+name: Code Scanning - Action
 
 on:
 
@@ -7,10 +6,12 @@ on:
     paths-ignore:
       - '**/*.md'
       - '**/*.txt'
-    branches: [ "master" ]
+    branches:
+      - master
 
   push:
-    branches: [ "master" ]
+    branches:
+      - master
 
   workflow_dispatch:
 

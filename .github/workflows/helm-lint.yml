@@ -5,7 +5,8 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/helm-lint.yml
-    branches: [ "master" ]
+    branches:
+      - master
 
   push:
     paths:
@@ -17,7 +18,7 @@ on:
 permissions: read-all
 
 env:
-  HELM_VERSION: 3.15.1
+  HELM_VERSION: 4.0.0
 
 jobs:
   lint:

@@ -7,14 +7,16 @@ on:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/checkov.yml
       - .checkov.yaml
-    branches: [ "master" ]
+    branches:
+      - master
 
   push:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/checkov.yml
       - .checkov.yaml
-    branches: [ "master" ]
+    branches:
+      - master
 
   workflow_dispatch:
 

@@ -1,10 +1,10 @@
-name: build
-run-name: Build docker container
+name: Build app container
 
 on:
 
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
       - .github/workflows/build.yml
@@ -15,7 +15,6 @@ on:
       - .github/workflows/build.yml
     branches:
       - master
-    tags: [ '*' ]
 
   workflow_dispatch:
 
@@ -25,7 +24,7 @@ env:
 
 permissions: read-all
 
-concurrency: build-${{ github.head_ref || github.ref_name }}
+concurrency: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
 
 jobs:
   build:

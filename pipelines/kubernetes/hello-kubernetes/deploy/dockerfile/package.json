@@ -17,6 +17,6 @@
   },
   "overrides": {
     "tar": "^7.5.10",
-    "minimatch": "10.2.3"
+    "minimatch": "10.2.4"
   }
 }

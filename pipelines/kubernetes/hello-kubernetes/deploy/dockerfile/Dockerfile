@@ -32,7 +32,7 @@ COPY --from=builder /vault /usr/local/bin/
 USER 10001
 WORKDIR /home/node
 
-RUN npm install
+RUN npm ci --omit=dev
 
 EXPOSE 8080
 

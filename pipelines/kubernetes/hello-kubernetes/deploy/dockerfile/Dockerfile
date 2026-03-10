@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM alpine:3.23 AS builder
+FROM --platform=$BUILDPLATFORM alpine:3.23 AS builder1
 
 ARG TARGETOS TARGETARCH
 
@@ -12,7 +12,16 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM node:25-alpine3.23
+FROM --platform=$BUILDPLATFORM node:25-alpine3.23 AS builder2
+
+WORKDIR /home/node
+
+COPY . .
+
+RUN npm ci --omit=dev
+
+
+FROM --platform=$BUILDPLATFORM node:25-alpine3.23
 
 LABEL maintainer=constantin07
 
@@ -26,20 +35,20 @@ RUN apk --no-cache add --virtual .build-deps shadow && \
     chown -R 10001:10001 /home/node && \
     apk del .build-deps
 
-# patch npm dependency tree
-RUN npm install -g npm@latest
+# remove npm (removes many vulnerabilities)
+RUN rm -rf /usr/local/lib/node_modules/npm \
+           /usr/local/bin/npm \
+           /usr/local/bin/npx
 
-COPY --chown=node:node . /home/node/
-COPY --from=builder /vault /usr/local/bin/
+COPY --from=builder1 /vault /usr/local/bin/
+COPY --from=builder2 --chown=node:node /home/node /home/node
 
 USER 10001
 WORKDIR /home/node
-
-RUN npm ci --omit=dev 
 
 EXPOSE 8080
 
 HEALTHCHECK CMD --interval=10s --timeout=3s curl --fail http://localhost:8080/health || exit 1
 
-CMD [ "npm", "start" ]
+CMD [ "node", "server.js" ]
 ENTRYPOINT ["/home/node/entrypoint.sh"]

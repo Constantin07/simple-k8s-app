@@ -26,13 +26,16 @@ RUN apk --no-cache add --virtual .build-deps shadow && \
     chown -R 10001:10001 /home/node && \
     apk del .build-deps
 
+# patch npm dependency tree
+RUN npm install -g npm@latest
+
 COPY --chown=node:node . /home/node/
 COPY --from=builder /vault /usr/local/bin/
 
 USER 10001
 WORKDIR /home/node
 
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev 
 
 EXPOSE 8080
 

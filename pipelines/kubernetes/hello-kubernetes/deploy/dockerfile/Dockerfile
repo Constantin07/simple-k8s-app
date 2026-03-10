@@ -41,7 +41,7 @@ RUN rm -rf /usr/local/lib/node_modules/npm \
            /usr/local/bin/npx
 
 COPY --from=builder1 /vault /usr/local/bin/
-COPY --from=builder2 --chown=node:node /home/node /home/node/
+COPY --from=builder2 --chown=node:node /home/node /home/node
 
 USER 10001
 WORKDIR /home/node

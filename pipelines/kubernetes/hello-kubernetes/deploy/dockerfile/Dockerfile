@@ -12,11 +12,11 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM --platform=$BUILDPLATFORM alpine:3.23 AS builder2
+FROM --platform=$BUILDPLATFORM node:25-alpine3.23 AS builder2
 
 WORKDIR /home/node
 
-COPY . ./
+COPY . .
 
 RUN npm ci --omit=dev
 

@@ -4,7 +4,7 @@ FROM --platform=$BUILDPLATFORM alpine:3.23 AS builder1
 
 ARG TARGETOS TARGETARCH
 
-ARG VAULT_VERSION=1.21.4
+ARG VAULT_VERSION=2.0.0
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip ca-certificates && \
     update-ca-certificates && \

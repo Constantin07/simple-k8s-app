@@ -12,7 +12,7 @@ RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl u
     unzip vault.zip && chmod +x vault
 
 
-FROM --platform=$BUILDPLATFORM node:25-alpine3.23 AS builder2
+FROM --platform=$BUILDPLATFORM node:26-alpine3.23 AS builder2
 
 WORKDIR /home/node
 
@@ -21,7 +21,7 @@ COPY . .
 RUN npm ci --omit=dev
 
 
-FROM --platform=$BUILDPLATFORM node:25-alpine3.23
+FROM --platform=$BUILDPLATFORM node:26-alpine3.23
 
 LABEL maintainer=constantin07
 

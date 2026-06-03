@@ -13,7 +13,7 @@
     "express-handlebars": "^9.0.1",
     "handlebars": "^4.7.9",
     "minimist": ">=1.2.5",
-    "morgan": "^1.10.0"
+    "morgan": "^1.11.0"
   },
   "overrides": {
     "tar": "^7.5.10",

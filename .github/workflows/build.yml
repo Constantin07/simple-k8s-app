@@ -1,7 +1,6 @@
 name: Build app container
 
 on:
-
   pull_request:
     branches:
       - master

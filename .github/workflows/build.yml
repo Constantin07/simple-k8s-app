@@ -40,6 +40,9 @@ jobs:
         with:
           # fetch all history for all tags and branches required by GitVersion
           fetch-depth: 0
+          # On pull_request, use the source branch ref (e.g. feature/my-branch)
+          # instead of refs/pull/*/merge so GitVersion can include branch name.
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v4.5.0

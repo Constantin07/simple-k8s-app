@@ -11,6 +11,9 @@ branches:
   develop:
     label: useBranchName
     increment: Patch
+  pull-request:
+    label: useBranchName
+    increment: Patch
 ignore:
   sha: []
 merge-message-formats: {}

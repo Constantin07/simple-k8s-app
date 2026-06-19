@@ -9,10 +9,10 @@ branches:
     increment: Patch
     regex: "^master$|^main$"
   develop:
-    label: useBranchName
+    label: '{BranchName}'
     increment: Patch
   pull-request:
-    label: useBranchName
+    label: '{BranchName}'
     increment: Patch
 ignore:
   sha: []

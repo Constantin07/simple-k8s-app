@@ -1,0 +1,63 @@
+name: Helm checks
+
+on:
+  pull_request:
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+      - .github/workflows/helm-checks.yml
+    branches:
+      - master
+
+  push:
+    paths:
+      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+      - .github/workflows/helm-checks.yml
+
+  workflow_dispatch:
+
+permissions: read-all
+
+env:
+  HELM_VERSION: 4.0.5
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: pipelines/kubernetes/hello-kubernetes/deploy
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Install helm binary
+        uses: azure/setup-helm@v5
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Run helm lint
+        run: helm lint ./hello-kubernetes -f values.yaml
+
+  unittest:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: pipelines/kubernetes/hello-kubernetes/deploy
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Install helm binary
+        uses: azure/setup-helm@v5
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Install helm unittest plugin
+        run: helm plugin install https://github.com/quintush/helm-unittest --verify=false
+
+      # - name: Run helm unittest
+      #   run: helm unittest ./hello-kubernetes -f values.yaml

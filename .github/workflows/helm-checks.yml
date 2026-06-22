@@ -57,7 +57,7 @@ jobs:
           version: ${{ env.HELM_VERSION }}
 
       - name: Install helm unittest plugin
-        run: helm plugin install https://github.com/quintush/helm-unittest --verify=false
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
 
       # - name: Run helm unittest
       #   run: helm unittest ./hello-kubernetes -f values.yaml

@@ -11,6 +11,10 @@ branches:
   develop:
     label: '{useBranchName}'
     increment: Patch
+  feature:
+    label: '{useBranchName}'
+    increment: Minor
+    regex: "^feature/.*|^feat/.*"
 ignore:
   sha: []
 merge-message-formats: {}

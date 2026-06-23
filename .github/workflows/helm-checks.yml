@@ -27,6 +27,8 @@ env:
 jobs:
   determine-version:
     uses: ./.github/workflows/determine-version.yml
+    with:
+      targetPath: ${{ env.WORK_DIR }}
 
   lint:
     runs-on: ubuntu-24.04

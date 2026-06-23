@@ -13,6 +13,9 @@ templates:
 
 tests:
   - it: all resources have standard labels
+    set:
+      ingress:
+        enabled: true
     asserts:
       - equal:
           path: metadata.labels["app.kubernetes.io/name"]

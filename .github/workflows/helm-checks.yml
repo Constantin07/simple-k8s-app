@@ -56,7 +56,15 @@ jobs:
         with:
           version: ${{ env.HELM_VERSION }}
 
+      - name: Cache helm plugins
+        id: helm-plugin-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/helm/plugins
+          key: ${{ runner.os }}-helm-${{ env.HELM_VERSION }}-plugins-unittest
+
       - name: Install helm unittest plugin
+        if: steps.helm-plugin-cache.outputs.cache-hit != 'true'
         run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
 
       - name: Run helm unittest

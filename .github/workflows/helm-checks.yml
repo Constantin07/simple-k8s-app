@@ -99,3 +99,8 @@ jobs:
         uses: azure/setup-helm@v5
         with:
           version: ${{ env.HELM_VERSION }}
+
+      - name: Log in to Docker Hub (OCI registry)
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | helm registry login registry-1.docker.io \
+            --username "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin

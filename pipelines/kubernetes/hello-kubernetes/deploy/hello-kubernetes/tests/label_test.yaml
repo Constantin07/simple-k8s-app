@@ -18,8 +18,9 @@ tests:
   - it: Deployment has expected labels
     template: templates/deployment.yaml
     asserts:
-      - contains:
-          path: metadata.labels
-          content:
-            app.kubernetes.io/name: hello-kubernetes
-            app.kubernetes.io/instance: RELEASE-NAME
+      - matchRegex:
+          path: metadata.labels["app.kubernetes.io/name"]
+          pattern: hello-kubernetes
+      - matchRegex:
+          path: metadata.labels["app.kubernetes.io/instance"]
+          pattern: RELEASE-NAME

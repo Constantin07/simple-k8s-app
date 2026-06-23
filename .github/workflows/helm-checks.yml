@@ -58,7 +58,7 @@ jobs:
 
       - name: Cache helm plugins
         id: helm-plugin-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.local/share/helm/plugins
           key: ${{ runner.os }}-helm-${{ env.HELM_VERSION }}-plugins-unittest

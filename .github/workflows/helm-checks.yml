@@ -22,6 +22,7 @@ permissions: read-all
 env:
   HELM_VERSION: 4.0.5
   WORK_DIR: pipelines/kubernetes/hello-kubernetes/deploy
+  CHART_REPOSITORY: 'constantin07/hello-kubernetes-helm'
 
 jobs:
   lint:

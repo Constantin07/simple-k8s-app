@@ -6,7 +6,7 @@ EXECUTABLES = git helm kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-.PHONY: build template validate lint diff release_notes apply status destroy
+.PHONY: build template validate lint unittest diff release_notes apply status destroy
 
 GIT_COMMIT_SHORT ?= $(shell git rev-parse --short HEAD)
 
@@ -34,6 +34,9 @@ validate_k8s:
 
 lint:
 	helm lint ./hello-kubernetes -f values.yaml
+
+unittest:
+	helm unittest ./hello-kubernetes
 
 diff:
 	helm diff upgrade --allow-unreleased ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} \

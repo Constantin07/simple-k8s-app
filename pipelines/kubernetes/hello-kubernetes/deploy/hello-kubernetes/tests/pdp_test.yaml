@@ -1,0 +1,15 @@
+suite: Test pod disruption budget
+
+templates:
+  - templates/pdb.yaml
+
+tests:
+  - it: should pass all kinds of assertion
+    set:
+      replicaCount: 1
+    asserts:
+      - exists:
+          path: spec.minAvailable
+      - greaterOrEqual:
+          path: spec.minAvailable
+          value: 1

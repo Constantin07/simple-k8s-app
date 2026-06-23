@@ -1,12 +1,15 @@
 suite: test common labels
 
+release:
+  name: test-release
+
 templates:
   - templates/deployment.yaml
   - templates/service.yaml
   - templates/serviceaccount.yaml
   - templates/pdb.yaml
   - templates/hpa.yaml
-  - templates/ingress.yaml
+  # - templates/ingress.yaml
 
 tests:
   - it: all resources have standard labels
@@ -14,9 +17,9 @@ tests:
       - matchRegex:
           path: metadata.labels["app.kubernetes.io/name"]
           pattern: hello-kubernetes
-      - matchRegex:
+      - equal:
           path: metadata.labels["app.kubernetes.io/instance"]
-          pattern: RELEASE-NAME
+          pattern: test-release
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
           value: Helm

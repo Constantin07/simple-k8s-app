@@ -17,12 +17,10 @@ tests:
       - matchRegex:
           path: metadata.labels["app.kubernetes.io/instance"]
           pattern: RELEASE-NAME
-      - hasKey:
-          path: metadata.labels
-          key: app.kubernetes.io/managed-by
-      - hasKey:
-          path: metadata.labels
-          key: app.kubernetes.io/version
-      - hasKey:
-          path: metadata.labels
-          key: helm.sh/chart
+      - equal:
+          path: metadata.labels["app.kubernetes.io/managed-by"]
+          value: Helm
+      - isNotNull:
+          path: metadata.labels["app.kubernetes.io/version"]
+      - isNotNull:
+          path: metadata.labels["helm.sh/chart"]

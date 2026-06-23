@@ -1,0 +1,18 @@
+suite: Test deployment
+
+templates:
+  - templates/deployment.yaml
+
+release:
+  name: test-release
+  namespace: default
+
+tests:
+  - it: should use at least one replica
+    template: templates/deployment.yaml
+    asserts:
+      - isKind:
+          of: Deployment
+      - notEqual:
+          path: spec.replicas
+          value: 0

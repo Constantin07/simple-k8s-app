@@ -1,8 +1,8 @@
 name: Build app container
 
 on:
-
   pull_request:
+    types: [opened, synchronize, reopened] # Don't trigger on PR close/merge
     branches:
       - master
     paths:
@@ -20,7 +20,7 @@ on:
 
 env:
   IMAGE_REPOSITORY: 'constantin07/hello-kubernetes'
-  PLATFORMS: 'linux/amd64' # 'linux/amd64,linux/arm64'
+  PLATFORMS: 'linux/amd64,linux/arm64'
 
 permissions: read-all
 

@@ -1,24 +1,24 @@
-name: helm-lint
+name: Helm checks
 
 on:
   pull_request:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
-      - .github/workflows/helm-lint.yml
+      - .github/workflows/helm-checks.yml
     branches:
       - master
 
   push:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
-      - .github/workflows/helm-lint.yml
+      - .github/workflows/helm-checks.yml
 
   workflow_dispatch:
 
 permissions: read-all
 
 env:
-  HELM_VERSION: 4.0.0
+  HELM_VERSION: 4.0.5
 
 jobs:
   lint:
@@ -39,3 +39,33 @@ jobs:
 
       - name: Run helm lint
         run: helm lint ./hello-kubernetes -f values.yaml
+
+  unittest:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: pipelines/kubernetes/hello-kubernetes/deploy
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Install helm binary
+        uses: azure/setup-helm@v5
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Cache helm plugins
+        id: helm-plugin-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.local/share/helm/plugins
+          key: ${{ runner.os }}-helm-${{ env.HELM_VERSION }}-plugins-unittest
+
+      - name: Install helm unittest plugin
+        if: steps.helm-plugin-cache.outputs.cache-hit != 'true'
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
+
+      - name: Run helm unittest
+        run: helm unittest ./hello-kubernetes

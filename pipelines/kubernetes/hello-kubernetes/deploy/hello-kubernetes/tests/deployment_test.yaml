@@ -8,11 +8,15 @@ release:
   namespace: default
 
 tests:
-  - it: should use at least one replica
-    template: templates/deployment.yaml
+  - it: should provide expected defaults
     asserts:
       - isKind:
           of: Deployment
+      - hasDocuments:
+          count: 1
       - notEqual:
           path: spec.replicas
           value: 0
+      - equal:
+          path: metadata.namespace
+          value: default

@@ -9,7 +9,7 @@ templates:
   - templates/serviceaccount.yaml
   - templates/pdb.yaml
   - templates/hpa.yaml
-  - templates/ingress.yaml
+  # - templates/ingress.yaml
 
 tests:
   - it: all resources have standard labels

@@ -3,6 +3,10 @@ suite: Test common labels
 release:
   name: test-release
 
+chart:
+  version: "1.1.2"
+  appVersion: "0.15.0"
+
 templates:
   - templates/deployment.yaml
   - templates/service.yaml
@@ -17,6 +21,10 @@ tests:
       ingress:
         enabled: true
     asserts:
+      - exists:
+          path: metadata.labels
+      - isNotEmpty:
+          path: metadata.labels
       - equal:
           path: metadata.labels["app.kubernetes.io/name"]
           value: hello-kubernetes

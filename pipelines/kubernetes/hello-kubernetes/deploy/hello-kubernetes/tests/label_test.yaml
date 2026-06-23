@@ -23,8 +23,9 @@ tests:
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
           value: Helm
-      - isNotNullOrEmpty:
+      - matchRegex:
           path: metadata.labels["app.kubernetes.io/version"]
+          pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$'
       - matchRegex:
           path: metadata.labels["helm.sh/chart"]
-          pattern: -my-chart$
+          pattern: hello-kubernetes-.*$

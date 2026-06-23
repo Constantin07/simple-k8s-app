@@ -82,3 +82,14 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           cat test-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+  helm-package:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ${{ env.WORK_DIR }}
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1

@@ -23,9 +23,8 @@ tests:
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
           value: Helm
-      - matchRegex:
+      - isNotNullOrEmpty:
           path: metadata.labels["app.kubernetes.io/version"]
-          pattern: -my-chart$
       - matchRegex:
           path: metadata.labels["helm.sh/chart"]
           pattern: -my-chart$

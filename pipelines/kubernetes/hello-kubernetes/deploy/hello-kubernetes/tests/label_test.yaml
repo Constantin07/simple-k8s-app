@@ -1,0 +1,25 @@
+suite: test common labels
+
+templates:
+  - templates/deployment.yaml
+  # - templates/service.yaml
+
+#   - "templates/*.yaml"
+# excludeTemplates:
+#   - crd_*
+#   - empty_deployment.yaml
+#   - ingress.yaml
+#   - rbac.yaml
+#   - secret.yaml
+#   - servicemonitor.yaml
+#   - plugin_version.yaml
+
+tests:
+  - it: Deployment has expected labels
+    template: templates/deployment.yaml
+    asserts:
+      - contains:
+          path: metadata.labels
+          content:
+            app.kubernetes.io/name: hello-kubernetes
+            app.kubernetes.io/instance: RELEASE-NAME

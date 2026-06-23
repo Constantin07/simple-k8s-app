@@ -25,6 +25,9 @@ env:
   CHART_REPOSITORY: 'constantin07/hello-kubernetes-helm'
 
 jobs:
+  determine-version:
+    uses: ./.github/workflows/determine-version.yml
+
   lint:
     runs-on: ubuntu-24.04
     defaults:

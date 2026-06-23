@@ -70,12 +70,12 @@ jobs:
         run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
 
       - name: Run helm unittest
-        run: helm unittest --color ./hello-kubernetes | tee test-output.txt
+        run: helm unittest ./hello-kubernetes | tee test-output.txt
 
       - name: Publish unittest results to job summary
         if: always()
         run: |
           echo "## Helm Unit Test Results" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          sed 's/\x1B\[[0-9;]*[mK]//g' test-output.txt >> "$GITHUB_STEP_SUMMARY"
+          cat test-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"

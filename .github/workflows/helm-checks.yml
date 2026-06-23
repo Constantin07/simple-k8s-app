@@ -68,7 +68,7 @@ jobs:
         run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
 
       - name: Run helm unittest
-        run: helm unittest --color=always ./hello-kubernetes | tee test-output.txt
+        run: helm unittest --color ./hello-kubernetes | tee test-output.txt
 
       - name: Publish unittest results to job summary
         if: always()

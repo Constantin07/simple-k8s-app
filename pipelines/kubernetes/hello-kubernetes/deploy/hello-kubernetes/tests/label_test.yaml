@@ -1,4 +1,4 @@
-suite: test common labels
+suite: Test common labels
 
 release:
   name: test-release
@@ -23,7 +23,9 @@ tests:
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
           value: Helm
-      - isNotNull:
+      - matchRegex:
           path: metadata.labels["app.kubernetes.io/version"]
-      - isNotNull:
+          pattern: -my-chart$
+      - matchRegex:
           path: metadata.labels["helm.sh/chart"]
+          pattern: -my-chart$

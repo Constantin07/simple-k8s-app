@@ -21,13 +21,14 @@ permissions: read-all
 
 env:
   HELM_VERSION: 4.0.5
+  WORK_DIR: pipelines/kubernetes/hello-kubernetes/deploy
 
 jobs:
   lint:
     runs-on: ubuntu-24.04
     defaults:
       run:
-        working-directory: pipelines/kubernetes/hello-kubernetes/deploy
+        working-directory: ${{ env.WORK_DIR }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v7
@@ -46,7 +47,7 @@ jobs:
     runs-on: ubuntu-24.04
     defaults:
       run:
-        working-directory: pipelines/kubernetes/hello-kubernetes/deploy
+        working-directory: ${{ env.WORK_DIR }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v7

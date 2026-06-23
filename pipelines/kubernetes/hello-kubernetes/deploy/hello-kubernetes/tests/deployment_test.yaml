@@ -16,3 +16,6 @@ tests:
       - notEqual:
           path: spec.replicas
           value: 0
+      - equal:
+          path: spec.strategy.type
+          value: RollingUpdate

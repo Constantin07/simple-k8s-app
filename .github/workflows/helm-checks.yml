@@ -12,6 +12,8 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/helm-checks.yml
+    branches:
+      - master
 
   workflow_dispatch:
 
@@ -68,4 +70,12 @@ jobs:
         run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
 
       - name: Run helm unittest
-        run: helm unittest ./hello-kubernetes
+        run: helm unittest ./hello-kubernetes | tee test-output.txt
+
+      - name: Publish unittest results to job summary
+        if: always()
+        run: |
+          echo "## Helm Unit Test Results" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat test-output.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"

@@ -88,6 +88,7 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
   package-push:
+    needs: [determine-version]
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -108,7 +109,7 @@ jobs:
 
       - name: Package Helm chart
         run: |
-          helm package ./hello-kubernetes
+          helm package ./hello-kubernetes --version ${{ needs.determine-version.outputs.next_version }}
           ls -la
 
       - name: Log in to GHCR

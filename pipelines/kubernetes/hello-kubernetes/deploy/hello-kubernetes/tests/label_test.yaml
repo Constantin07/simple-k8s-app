@@ -3,7 +3,7 @@ suite: test common labels
 templates:
   - templates/deployment.yaml
   - templates/service.yaml
-  - templates/sericeaccount.yaml
+  - templates/serviceaccount.yaml
   - templates/pdb.yaml
   - templates/hpa.yaml
   - templates/ingress.yaml

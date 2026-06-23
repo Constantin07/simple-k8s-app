@@ -24,7 +24,7 @@ env:
   WORK_DIR: pipelines/kubernetes/hello-kubernetes/deploy
 
 jobs:
-  lint:
+  helm-lint:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -43,7 +43,7 @@ jobs:
       - name: Run helm lint
         run: helm lint ./hello-kubernetes -f values.yaml
 
-  unittest:
+  helm-unittest:
     runs-on: ubuntu-24.04
     defaults:
       run:

@@ -28,7 +28,7 @@ jobs:
   determine-version:
     uses: ./.github/workflows/determine-version.yml
     with:
-      targetPath: ${{ env.WORK_DIR }}
+      targetPath: pipelines/kubernetes/hello-kubernetes/deploy
 
   lint:
     runs-on: ubuntu-24.04

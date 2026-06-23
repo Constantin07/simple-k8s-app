@@ -109,4 +109,8 @@ jobs:
         run: |
           helm package ./hello-kubernetes
           ls -la
-        
+
+      - name: Push Helm chart to OCI registry
+        run: |
+          CHART_FILE="$(ls *.tgz)"
+          helm push $CHART_FILE oci://registry-1.docker.io/constantin07/hello-kubernetes-helm

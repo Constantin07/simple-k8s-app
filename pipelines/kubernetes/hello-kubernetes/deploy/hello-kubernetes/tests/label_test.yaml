@@ -9,14 +9,14 @@ templates:
   - templates/serviceaccount.yaml
   - templates/pdb.yaml
   - templates/hpa.yaml
-  # - templates/ingress.yaml
+  - templates/ingress.yaml
 
 tests:
   - it: all resources have standard labels
     asserts:
-      - matchRegex:
+      - equal:
           path: metadata.labels["app.kubernetes.io/name"]
-          pattern: hello-kubernetes
+          value: hello-kubernetes
       - equal:
           path: metadata.labels["app.kubernetes.io/instance"]
           value: test-release

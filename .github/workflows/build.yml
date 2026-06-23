@@ -2,7 +2,7 @@ name: Build app container
 
 on:
   pull_request:
-    # types: [opened, synchronize, reopened] # Don't trigger on PR close/merge
+    types: [opened, synchronize, reopened] # Don't trigger on PR close/merge
     branches:
       - master
     paths:

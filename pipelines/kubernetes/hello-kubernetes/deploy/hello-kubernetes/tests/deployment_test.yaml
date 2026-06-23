@@ -5,6 +5,7 @@ templates:
 
 release:
   name: test-release
+  namespace: default
 
 tests:
   - it: should provide expected defaults

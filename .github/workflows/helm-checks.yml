@@ -24,7 +24,7 @@ env:
   WORK_DIR: pipelines/kubernetes/hello-kubernetes/deploy
 
 jobs:
-  helm-lint:
+  lint:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -43,7 +43,7 @@ jobs:
       - name: Run helm lint
         run: helm lint ./hello-kubernetes -f values.yaml
 
-  helm-unittest:
+  unittest:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -83,7 +83,7 @@ jobs:
           cat test-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-  helm-package:
+  package:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -93,3 +93,8 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 1
+
+      - name: Install helm binary
+        uses: azure/setup-helm@v5
+        with:
+          version: ${{ env.HELM_VERSION }}

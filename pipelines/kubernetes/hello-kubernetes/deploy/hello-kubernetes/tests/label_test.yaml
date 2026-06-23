@@ -2,21 +2,14 @@ suite: test common labels
 
 templates:
   - templates/deployment.yaml
-  # - templates/service.yaml
-
-#   - "templates/*.yaml"
-# excludeTemplates:
-#   - crd_*
-#   - empty_deployment.yaml
-#   - ingress.yaml
-#   - rbac.yaml
-#   - secret.yaml
-#   - servicemonitor.yaml
-#   - plugin_version.yaml
+  - templates/service.yaml
+  - templates/sericeaccount.yaml
+  - templates/pdb.yaml
+  - templates/hpa.yaml
+  - templates/ingress.yaml
 
 tests:
-  - it: Deployment has expected labels
-    template: templates/deployment.yaml
+  - it: all resources have standard labels
     asserts:
       - matchRegex:
           path: metadata.labels["app.kubernetes.io/name"]
@@ -24,3 +17,12 @@ tests:
       - matchRegex:
           path: metadata.labels["app.kubernetes.io/instance"]
           pattern: RELEASE-NAME
+      - hasKey:
+          path: metadata.labels
+          key: app.kubernetes.io/managed-by
+      - hasKey:
+          path: metadata.labels
+          key: app.kubernetes.io/version
+      - hasKey:
+          path: metadata.labels
+          key: helm.sh/chart

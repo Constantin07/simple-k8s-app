@@ -19,7 +19,7 @@ tests:
           pattern: hello-kubernetes
       - equal:
           path: metadata.labels["app.kubernetes.io/instance"]
-          pattern: test-release
+          value: test-release
       - equal:
           path: metadata.labels["app.kubernetes.io/managed-by"]
           value: Helm

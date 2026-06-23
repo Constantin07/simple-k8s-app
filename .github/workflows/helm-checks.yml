@@ -84,8 +84,11 @@ jobs:
           cat test-output.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-  package:
+  package-push:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write   # important for GHCR
     defaults:
       run:
         working-directory: ${{ env.WORK_DIR }}
@@ -100,17 +103,17 @@ jobs:
         with:
           version: ${{ env.HELM_VERSION }}
 
-      - name: Log in to Docker Hub (OCI registry)
-        run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | helm registry login registry-1.docker.io \
-            --username "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-
       - name: Package Helm chart
         run: |
           helm package ./hello-kubernetes
           ls -la
 
+      - name: Log in to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io \
+            --username ${{ github.actor }} --password-stdin
+
       - name: Push Helm chart to OCI registry
         run: |
           CHART_FILE="$(ls *.tgz)"
-          helm push $CHART_FILE oci://registry-1.docker.io/constantin07/hello-kubernetes-helm
+          helm push "$CHART_FILE" oci://ghcr.io/constantin07/hello-kubernetes-helm

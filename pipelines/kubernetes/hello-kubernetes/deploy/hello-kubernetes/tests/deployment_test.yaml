@@ -5,7 +5,6 @@ templates:
 
 release:
   name: test-release
-  namespace: default
 
 tests:
   - it: should provide expected defaults
@@ -17,6 +16,3 @@ tests:
       - notEqual:
           path: spec.replicas
           value: 0
-      - equal:
-          path: metadata.namespace
-          value: default

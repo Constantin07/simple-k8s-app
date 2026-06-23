@@ -12,6 +12,8 @@ on:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
       - .github/workflows/helm-checks.yml
+    branches:
+      - master
 
   workflow_dispatch:
 

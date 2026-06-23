@@ -1,0 +1,33 @@
+suite: Test service
+
+templates:
+  - templates/service.yaml
+
+tests:
+  - it: should pass
+    set:
+      service:
+        type: ClusterIP
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - contains:
+          path: spec.ports
+          content:
+            port: 8080
+            targetPort: 8080
+            protocol: TCP
+      - matchRegex:
+          path: spec.selector["app.kubernetes.io/name"]
+          pattern: hello-kubernetes
+
+  - it: should contain document
+    release:
+      name: my-release
+      namespace: default
+    asserts:
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+        documentIndex: 0

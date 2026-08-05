@@ -29,6 +29,8 @@ concurrency: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
 jobs:
   determine-version:
     uses: ./.github/workflows/determine-version.yml
+    with:
+      targetPath: pipelines/kubernetes/hello-kubernetes/deploy/GitVersion.yml
 
   build:
     needs: [determine-version]
@@ -42,37 +44,20 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v7
-        with:
-          # fetch all history for all tags and branches required by GitVersion
-          fetch-depth: 0
-
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v4.5.0
-        with:
-          versionSpec: '6.5.1'
-          includePrerelease: true
-          preferLatestVersion: true
-
-      - name: Determine Version
-        uses: gittools/actions/gitversion/execute@v4.5.0
-        with:
-          configFilePath: pipelines/kubernetes/hello-kubernetes/deploy/GitVersion.yml
-
-      - name: Display version
-        run: |
-          echo "SemVer: ${{ env.GitVersion_SemVer }}"
-          echo "::notice title=Version::Version is ${{ env.GitVersion_SemVer }}"
 
       - name: Check if tag already exists
         id: check
         run: |
-          TAG_EXISTS=$(git ls-remote --tags origin "refs/tags/${{ env.GitVersion_SemVer }}" | wc -l)
+          NEXT_VERSION="${{ needs.determine-version.outputs.next_version }}"
+          echo "NEXT_VERSION=$NEXT_VERSION" >> "$GITHUB_ENV"
+
+          TAG_EXISTS=$(git ls-remote --tags origin "refs/tags/$NEXT_VERSION" | wc -l)
           echo "exists=$TAG_EXISTS" >> "$GITHUB_OUTPUT"
           if [[ $TAG_EXISTS -gt 0 ]]; then
-            echo "❌ Tag $GitVersion_SemVer already exists. Failing."
+            echo "❌ Tag $NEXT_VERSION already exists. Failing."
             exit 1
           else
-            echo "✅ Tag $GitVersion_SemVer does not exist. Proceeding."
+            echo "✅ Tag $NEXT_VERSION does not exist. Proceeding."
           fi
 
       - name: Set up Docker Buildx

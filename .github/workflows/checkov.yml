@@ -11,10 +11,6 @@ on:
       - master
 
   push:
-    paths:
-      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
-      - .github/workflows/checkov.yml
-      - .checkov.yaml
     branches:
       - master
 

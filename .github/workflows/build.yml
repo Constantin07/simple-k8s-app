@@ -85,7 +85,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ${{ env.IMAGE_REPOSITORY }}:$NEXT_VERSION
+            ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
           load: false
 

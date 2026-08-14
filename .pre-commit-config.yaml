@@ -18,7 +18,7 @@ repos:
       - id: helm-docs
 
   - repo: https://github.com/bridgecrewio/checkov
-    rev: 3.3.9
+    rev: 3.3.10
     hooks:
       - id: checkov
 

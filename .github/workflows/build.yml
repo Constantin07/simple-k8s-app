@@ -124,7 +124,7 @@ jobs:
           private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           scope: 'Constantin07' # Specify the organization/account to scope the token to
 
-      - name: Checkout repo
+      - name: Checkout ArgoCD env repo
         uses: actions/checkout@v7
         with:
           repository: Constantin07/argocd-dev

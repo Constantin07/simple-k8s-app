@@ -135,3 +135,8 @@ jobs:
         with:
           repository: Constantin07/argocd-dev
           token: ${{ steps.gh-app-auth.outputs.token }}
+
+      - name: Print version
+        run: |
+          NEXT_VERSION="${{ needs.determine-version.outputs.next_version }}"
+          echo "$NEXT_VERSION"

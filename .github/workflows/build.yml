@@ -126,5 +126,5 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v7
         with:
-          repository: https://github.com/Constantin07/argocd-dev
+          repository: Constantin07/argocd-dev
           token: ${{ steps.gh-app-auth.outputs.token }}

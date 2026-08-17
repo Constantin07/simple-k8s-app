@@ -182,3 +182,36 @@ jobs:
         with:
           fetch-depth: 0    # Fetch full history
           fetch-tags: true  # Fetch tags too
+
+      - name: Get version
+        env:
+          VERSION: "${{ needs.determine-version.outputs.next_version }}"
+        run: |
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "$VERSION"
+
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --verbose --current
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Set up git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$VERSION" \
+            --title="Release $VERSION" \
+            --repo="$GITHUB_REPOSITORY" \
+            --notes-file=CHANGELOG.md \
+            --latest \
+            --verify-tag

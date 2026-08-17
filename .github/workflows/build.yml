@@ -115,3 +115,9 @@ jobs:
           git config user.email "github-actions@github.com"
           git tag $NEXT_VERSION
           git push origin ${{ env.NEXT_VERSION }}
+
+      - name: Get GitHub App token
+        id: gh_app_auth
+        uses: getsentry/action-github-app-token@v4.0.0
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}

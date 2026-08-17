@@ -115,3 +115,17 @@ jobs:
           git config user.email "github-actions@github.com"
           git tag $NEXT_VERSION
           git push origin ${{ env.NEXT_VERSION }}
+
+      - name: Get GitHub App token
+        id: gh-app-auth
+        uses: getsentry/action-github-app-token@v4.0.0
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          scope: 'Constantin07' # Specify the organization/account to scope the token to
+
+      - name: Checkout ArgoCD env repo
+        uses: actions/checkout@v7
+        with:
+          repository: Constantin07/argocd-dev
+          token: ${{ steps.gh-app-auth.outputs.token }}

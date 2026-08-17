@@ -168,3 +168,17 @@ jobs:
 
           git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"
           git push
+
+  release:
+    needs: [determine-version, deploy-dev]
+    if: ${{ github.ref_name == 'main' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0    # Fetch full history
+          fetch-tags: true  # Fetch tags too

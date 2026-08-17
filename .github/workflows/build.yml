@@ -122,6 +122,7 @@ jobs:
         with:
           app_id: ${{ secrets.GH_APP_ID }}
           private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          scope: 'Constantin07' # Specify the organization/account to scope the token to
 
       - name: Checkout repo
         uses: actions/checkout@v7

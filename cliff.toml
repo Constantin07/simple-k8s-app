@@ -3,7 +3,7 @@
 
 [remote.github]
 owner = "Constantin07"
-repo = "test-cdk"
+repo = "simple-k8s-app"
 
 [changelog]
 # A Tera template to be rendered for each release in the changelog.

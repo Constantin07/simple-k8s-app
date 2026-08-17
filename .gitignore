@@ -1,9 +1,10 @@
 # MacOS
 .DS_Store
-.vscode
 
 # Node.js
-**/node_modules/
+node_modules
+build/*.js
+test/*.js
 
 # Optional npm cache directory
 .npm
@@ -11,3 +12,10 @@
 # Checkov
 results.sarif
 filtered-results.sarif
+
+# Ignore Changelog
+CHANGELOG.md
+
+# VSCode
+.vscode
+.idea/

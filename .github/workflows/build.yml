@@ -108,24 +108,107 @@ jobs:
         run: |
           docker buildx build --platform "${{ env.PLATFORMS }}" --push -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
 
-      - name: Push tag
-        if: github.ref_name == 'master' && steps.check.outputs.exists == '0'
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git tag $NEXT_VERSION
-          git push origin ${{ env.NEXT_VERSION }}
-
+  deploy-dev:
+    needs: [determine-version, build]
+    runs-on: ubuntu-24.04
+    environment:
+      name: dev
+    permissions:
+      contents: write  # Allow write version in ArcoCD dev repo
+    steps:
       - name: Get GitHub App token
         id: gh-app-auth
-        uses: getsentry/action-github-app-token@v4.0.0
+        uses: actions/create-github-app-token@v3
         with:
-          app_id: ${{ secrets.GH_APP_ID }}
-          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          scope: 'Constantin07' # Specify the organization/account to scope the token to
+          client-id: ${{ secrets.GH_APP_CLIENT_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: 'Constantin07'
+          repositories: argocd-dev
+          permission-contents: write
 
       - name: Checkout ArgoCD env repo
         uses: actions/checkout@v7
         with:
           repository: Constantin07/argocd-dev
           token: ${{ steps.gh-app-auth.outputs.token }}
+
+      - name: Get version
+        env:
+          VERSION: "${{ needs.determine-version.outputs.next_version }}"
+        run: |
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "$VERSION"
+          
+      - name: Update Helm dependency version
+        run: |
+          yq -i '(.dependencies[] | select(.name == "simple-k8s-app").version) = strenv(VERSION)' simple-k8s-app/Chart.yaml
+
+      - name: Show change
+        run: git diff -- simple-k8s-app/Chart.yaml
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add simple-k8s-app/Chart.yaml
+
+          git diff --cached --quiet && {
+            echo "No changes to commit"
+            exit 0
+          }
+
+          git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"
+          git push
+
+  release:
+    needs: [determine-version, deploy-dev]
+    if: ${{ github.ref_name == 'main' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0    # Fetch full history
+          fetch-tags: true  # Fetch tags too
+
+      - name: Get version
+        env:
+          VERSION: "${{ needs.determine-version.outputs.next_version }}"
+        run: |
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "$VERSION"
+
+      - name: Set up git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push tag
+        run: |
+          git tag "$VERSION"
+          git push origin "$VERSION"
+
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --verbose --current --tag "$VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUTPUT: CHANGELOG.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$VERSION" \
+            --title="Release $VERSION" \
+            --repo="$GITHUB_REPOSITORY" \
+            --notes-file=CHANGELOG.md \
+            --latest \
+            --verify-tag

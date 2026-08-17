@@ -138,21 +138,20 @@ jobs:
           repository: Constantin07/argocd-dev
           token: ${{ steps.gh-app-auth.outputs.token }}
 
-      - name: Update Helm dependency version
-        working-directory: argocd-dev
-        env:
-          VERSION: ${{ needs.determine-version.outputs.next_version }}
-        run: |
-          yq -i '
-            (.dependencies[] | select(.name == "simple-k8s-app").version) = strenv(VERSION)
-          ' simple-k8s-app/Chart.yaml
-
-      - name: Show change
-        working-directory: argocd-dev
-        run: git diff -- simple-k8s-app/Chart.yaml
-
       - name: Print version
         run: |
           NEXT_VERSION="${{ needs.determine-version.outputs.next_version }}"
           echo "$NEXT_VERSION"
           ls -la
+
+      - name: Update Helm dependency version
+        working-directory: argocd-dev
+        env:
+          VERSION: ${{ needs.determine-version.outputs.next_version }}
+        run: |
+          yq -i '(.dependencies[] | select(.name == "simple-k8s-app").version) = strenv(VERSION)' simple-k8s-app/Chart.yaml
+
+      - name: Show change
+        working-directory: argocd-dev
+        run: git diff -- simple-k8s-app/Chart.yaml
+

@@ -108,14 +108,6 @@ jobs:
         run: |
           docker buildx build --platform "${{ env.PLATFORMS }}" --push -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
 
-      - name: Push tag
-        if: github.ref_name == 'master' && steps.check.outputs.exists == '0'
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git tag $NEXT_VERSION
-          git push origin ${{ env.NEXT_VERSION }}
-
   deploy-dev:
     needs: [determine-version, build]
     runs-on: ubuntu-24.04
@@ -190,6 +182,16 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "$VERSION"
 
+      - name: Set up git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push tag
+        run: |
+          git tag $VERSION
+          git push origin $VERSION
+
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v4
         with:
@@ -199,11 +201,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
-
-      - name: Set up git user
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create GitHub Release
         env:

@@ -116,9 +116,11 @@ jobs:
           git tag $NEXT_VERSION
           git push origin ${{ env.NEXT_VERSION }}
 
-  deploy:
+  deploy-dev:
     needs: [determine-version, build]
     runs-on: ubuntu-24.04
+    environment:
+      name: dev
     permissions:
       contents: write  # Allow write version in ArcoCD dev repo
     steps:

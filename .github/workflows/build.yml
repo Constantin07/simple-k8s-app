@@ -122,3 +122,9 @@ jobs:
         with:
           app_id: ${{ secrets.GH_APP_ID }}
           private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
+      - name: Checkout repo
+        uses: actions/checkout@v7
+        with:
+          repository: https://github.com/Constantin07/argocd-dev
+          token: ${{ steps.gh-app-auth.outputs.token }}

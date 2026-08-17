@@ -140,3 +140,4 @@ jobs:
         run: |
           NEXT_VERSION="${{ needs.determine-version.outputs.next_version }}"
           echo "$NEXT_VERSION"
+          ls -la

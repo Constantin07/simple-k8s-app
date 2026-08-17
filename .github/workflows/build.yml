@@ -124,11 +124,13 @@ jobs:
     steps:
       - name: Get GitHub App token
         id: gh-app-auth
-        uses: getsentry/action-github-app-token@v4.0.0
+        uses: actions/create-github-app-token@v3
         with:
-          app_id: ${{ secrets.GH_APP_ID }}
-          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          scope: 'Constantin07' # Specify the organization/account to scope the token to
+          client-id: ${{ secrets.GH_APP_CLIENT_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: 'Constantin07'
+          repositories: argocd-dev
+          permission-contents: write
 
       - name: Checkout ArgoCD env repo
         uses: actions/checkout@v7

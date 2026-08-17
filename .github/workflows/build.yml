@@ -138,18 +138,30 @@ jobs:
           repository: Constantin07/argocd-dev
           token: ${{ steps.gh-app-auth.outputs.token }}
 
-      - name: Print version
+      - name: Get version
         run: |
-          NEXT_VERSION="${{ needs.determine-version.outputs.next_version }}"
-          echo "$NEXT_VERSION"
-          ls -la
-
+          VERSION="${{ needs.determine-version.outputs.next_version }}"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "$VERSION"
+          
       - name: Update Helm dependency version
-        env:
-          VERSION: ${{ needs.determine-version.outputs.next_version }}
         run: |
-          yq -i '(.dependencies[] | select(.name == "simple-k8s-app").version) = strenv(VERSION)' simple-k8s-app/Chart.yaml
+          yq -i '(.dependencies[] | select(.name == "simple-k8s-app").version) = strenv(${{ env.VERSION }})' simple-k8s-app/Chart.yaml
 
       - name: Show change
         run: git diff -- simple-k8s-app/Chart.yaml
 
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add simple-k8s-app/Chart.yaml
+
+          git diff --cached --quiet && {
+            echo "No changes to commit"
+            exit 0
+          }
+
+          git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"
+          git push

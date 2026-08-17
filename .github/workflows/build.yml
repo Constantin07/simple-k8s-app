@@ -194,7 +194,7 @@ jobs:
         uses: orhun/git-cliff-action@v4
         with:
           config: cliff.toml
-          args: --verbose --current
+          args: --verbose --current --tag "$VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OUTPUT: CHANGELOG.md
@@ -213,4 +213,5 @@ jobs:
             --title="Release $VERSION" \
             --repo="$GITHUB_REPOSITORY" \
             --notes-file=CHANGELOG.md \
-            --latest
+            --latest \
+            --verify-tag

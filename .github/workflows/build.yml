@@ -116,6 +116,12 @@ jobs:
           git tag $NEXT_VERSION
           git push origin ${{ env.NEXT_VERSION }}
 
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write  # Allow write version in ArcoCD dev repo
+    steps:
       - name: Get GitHub App token
         id: gh-app-auth
         uses: getsentry/action-github-app-token@v4.0.0

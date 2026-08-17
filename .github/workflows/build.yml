@@ -163,7 +163,7 @@ jobs:
 
   release:
     needs: [determine-version, deploy-dev]
-    # if: ${{ github.ref_name == 'main' }}
+    if: ${{ github.ref_name == 'main' }}
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -189,8 +189,8 @@ jobs:
 
       - name: Push tag
         run: |
-          git tag $VERSION
-          git push origin $VERSION
+          git tag "$VERSION"
+          git push origin "$VERSION"
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v4

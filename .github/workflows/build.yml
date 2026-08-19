@@ -19,6 +19,8 @@ on:
   workflow_dispatch:
 
 env:
+  HELM_VERSION: 4.2.4
+  CHART_REPOSITORY: 'constantin07/hello-kubernetes-helm'
   IMAGE_REPOSITORY: 'constantin07/hello-kubernetes'
   PLATFORMS: 'linux/amd64,linux/arm64'
 
@@ -108,8 +110,72 @@ jobs:
         run: |
           docker buildx build --platform "${{ env.PLATFORMS }}" --push -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
 
+  helm-package-push:
+    needs: [determine-version]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write   # important for GHCR
+    defaults:
+      run:
+        working-directory: pipelines/kubernetes/hello-kubernetes/deploy
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Install helm binary
+        uses: azure/setup-helm@v5
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Run helm lint
+        run: helm lint ./hello-kubernetes -f values.yaml
+
+      - name: Cache helm plugins
+        id: helm-plugin-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.local/share/helm/plugins
+          key: ${{ runner.os }}-helm-${{ env.HELM_VERSION }}-plugins-unittest
+
+      - name: Install helm unittest plugin
+        if: steps.helm-plugin-cache.outputs.cache-hit != 'true'
+        run: helm plugin install https://github.com/helm-unittest/helm-unittest.git --verify=false
+
+      - name: Run helm unittest
+        run: |
+          set -euo pipefail
+          helm unittest ./hello-kubernetes | tee test-output.txt
+
+      - name: Publish unittest results to job summary
+        if: always()
+        run: |
+          echo "## Helm Unit Test Results" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat test-output.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Package Helm chart
+        env:
+          VERSION: "${{ needs.determine-version.outputs.next_version }}"
+        run: |
+          yq -i '.image.tag = strenv(VERSION)' ./hello-kubernetes/values.yaml
+          helm package ./hello-kubernetes --version "$VERSION" --app-version "$VERSION"
+
+      - name: Log in to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io \
+            --username ${{ github.actor }} --password-stdin
+
+      - name: Push Helm chart to OCI registry
+        run: |
+          CHART_FILE="$(ls *.tgz)"
+          helm push "$CHART_FILE" "oci://ghcr.io/${CHART_REPOSITORY}"
+
   deploy-dev:
-    needs: [determine-version, build]
+    needs: [determine-version, build, helm-package-push]
     runs-on: ubuntu-24.04
     environment:
       name: dev

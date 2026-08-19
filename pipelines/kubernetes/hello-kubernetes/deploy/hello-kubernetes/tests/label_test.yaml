@@ -20,6 +20,8 @@ tests:
     set:
       ingress:
         enabled: true
+      hpa:
+        enabled: true
     asserts:
       - exists:
           path: metadata.labels

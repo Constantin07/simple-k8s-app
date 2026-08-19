@@ -20,12 +20,6 @@ on:
 
   workflow_dispatch:
 
-env:
-  HELM_VERSION: 4.2.4
-  CHART_REPOSITORY: 'constantin07/hello-kubernetes-helm'
-  IMAGE_REPOSITORY: 'constantin07/hello-kubernetes'
-  PLATFORMS: 'linux/amd64,linux/arm64'
-
 permissions: read-all
 
 concurrency: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
@@ -45,6 +39,9 @@ jobs:
     defaults:
       run:
         working-directory: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile
+    env:
+      IMAGE_REPOSITORY: 'constantin07/hello-kubernetes'
+      PLATFORMS: 'linux/amd64,linux/arm64'
     steps:
       - name: Checkout source code
         uses: actions/checkout@v7
@@ -121,6 +118,9 @@ jobs:
     defaults:
       run:
         working-directory: pipelines/kubernetes/hello-kubernetes/deploy
+    env:
+      HELM_VERSION: 4.2.4
+      CHART_REPOSITORY: 'constantin07/hello-kubernetes-helm'
     steps:
       - name: Checkout source code
         uses: actions/checkout@v7
@@ -176,61 +176,8 @@ jobs:
           CHART_FILE="$(ls *.tgz)"
           helm push "$CHART_FILE" "oci://ghcr.io/${CHART_REPOSITORY}"
 
-  deploy-dev:
-    needs: [determine-version, build, helm-package-push]
-    runs-on: ubuntu-24.04
-    environment:
-      name: dev
-    permissions:
-      contents: write  # Allow write version in ArcoCD dev repo
-    steps:
-      - name: Get GitHub App token
-        id: gh-app-auth
-        uses: actions/create-github-app-token@v3
-        with:
-          client-id: ${{ secrets.GH_APP_CLIENT_ID }}
-          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          owner: 'Constantin07'
-          repositories: argocd-dev
-          permission-contents: write
-
-      - name: Checkout ArgoCD env repo
-        uses: actions/checkout@v7
-        with:
-          repository: Constantin07/argocd-dev
-          token: ${{ steps.gh-app-auth.outputs.token }}
-
-      - name: Get version
-        env:
-          VERSION: "${{ needs.determine-version.outputs.next_version }}"
-        run: |
-          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          echo "$VERSION"
-          
-      - name: Update Helm dependency version
-        run: |
-          yq -i '(.dependencies[] | select(.name == "hello-kubernetes").version) = strenv(VERSION)' simple-k8s-app/Chart.yaml
-
-      - name: Show change
-        run: git diff -- simple-k8s-app/Chart.yaml
-
-      - name: Commit and push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add simple-k8s-app/Chart.yaml
-
-          git diff --cached --quiet && {
-            echo "No changes to commit"
-            exit 0
-          }
-
-          git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"
-          git push
-
   release:
-    needs: [determine-version, deploy-dev]
+    needs: [determine-version, build, helm-package-push]
     if: ${{ github.ref_name == 'master' }}
     runs-on: ubuntu-24.04
     permissions:
@@ -280,3 +227,56 @@ jobs:
             --notes-file=CHANGELOG.md \
             --latest \
             --verify-tag
+
+  deploy-dev:
+    needs: [determine-version, build, helm-package-push]
+    runs-on: ubuntu-24.04
+    environment:
+      name: dev
+    permissions:
+      contents: write  # Allow write version in ArgoCD dev repo
+    steps:
+      - name: Get GitHub App token
+        id: gh-app-auth
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.GH_APP_CLIENT_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: 'Constantin07'
+          repositories: argocd-dev
+          permission-contents: write
+
+      - name: Checkout ArgoCD env repo
+        uses: actions/checkout@v7
+        with:
+          repository: Constantin07/argocd-dev
+          token: ${{ steps.gh-app-auth.outputs.token }}
+
+      - name: Get version
+        env:
+          VERSION: "${{ needs.determine-version.outputs.next_version }}"
+        run: |
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "$VERSION"
+          
+      - name: Update Helm dependency version
+        run: |
+          yq -i '(.dependencies[] | select(.name == "hello-kubernetes").version) = strenv(VERSION)' simple-k8s-app/Chart.yaml
+
+      - name: Show change
+        run: git diff -- simple-k8s-app/Chart.yaml
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add simple-k8s-app/Chart.yaml
+
+          git diff --cached --quiet && {
+            echo "No changes to commit"
+            exit 0
+          }
+
+          git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"
+          git push

@@ -1,26 +1,24 @@
 name: Helm checks
 
-on:
-  pull_request:
-    paths:
-      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
-      - .github/workflows/helm-checks.yml
-    branches:
-      - master
+# on:
+#   pull_request:
+#     paths:
+#       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+#       - .github/workflows/helm-checks.yml
+#     branches:
+#       - master
 
-  push:
-    paths:
-      - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
-      - .github/workflows/helm-checks.yml
-    branches:
-      - master
-
-  workflow_dispatch:
+#   push:
+#     paths:
+#       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
+#       - .github/workflows/helm-checks.yml
+#     branches:
+#       - master
 
 permissions: read-all
 
 env:
-  HELM_VERSION: 4.2.3
+  HELM_VERSION: 4.2.4
   WORK_DIR: pipelines/kubernetes/hello-kubernetes/deploy
   CHART_REPOSITORY: 'constantin07/hello-kubernetes-helm'
 

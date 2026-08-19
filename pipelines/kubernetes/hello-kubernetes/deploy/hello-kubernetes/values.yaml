@@ -81,5 +81,5 @@ ingress:
   path: /
 
 hpa:
-  enabled: true
+  enabled: false
   maxReplicas: 4

@@ -234,7 +234,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: read
-      workflows: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v7

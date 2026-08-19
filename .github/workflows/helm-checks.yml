@@ -1,6 +1,6 @@
 name: Helm checks
 
-# on:
+on:
 #   pull_request:
 #     paths:
 #       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'

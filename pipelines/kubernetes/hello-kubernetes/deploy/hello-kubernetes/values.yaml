@@ -2,7 +2,7 @@
 # Default values for hello-kubernetes application
 
 # -- Number of pods to deploy
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: constantin07/hello-kubernetes

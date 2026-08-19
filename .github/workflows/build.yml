@@ -111,6 +111,7 @@ jobs:
           docker buildx build --platform "${{ env.PLATFORMS }}" --push -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
 
   helm-package-push:
+    needs: [determine-version]
     runs-on: ubuntu-24.04
     permissions:
       contents: read

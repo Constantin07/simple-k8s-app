@@ -229,7 +229,7 @@ jobs:
             --verify-tag
 
   deploy-dev:
-    needs: [determine-version, build, helm-package-push]
+    needs: [determine-version, build, helm-package-push, release]
     runs-on: ubuntu-24.04
     environment:
       name: dev

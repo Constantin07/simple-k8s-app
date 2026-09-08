@@ -270,13 +270,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
           git add simple-k8s-app/Chart.yaml
-
-          git diff --cached --quiet && {
-            echo "No changes to commit"
-            exit 0
-          }
-
-          git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"
+          git diff --cached --quiet || git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"          
+          git pull --rebase --autostash origin main
           git push

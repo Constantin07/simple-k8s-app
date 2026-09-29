@@ -50,7 +50,7 @@ jobs:
         run: npm ci
 
       - name: Run unit tests
-        run: npm test
+        run: APP_VERSION=1.1.1 npm test
 
   build:
     needs: [determine-version, run-unit-test]

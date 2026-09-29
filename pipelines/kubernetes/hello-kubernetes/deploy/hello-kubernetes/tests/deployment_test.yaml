@@ -9,6 +9,9 @@ release:
 
 tests:
   - it: should provide expected defaults
+    set:
+      deployment:
+        enabled: true
     asserts:
       - isKind:
           of: Deployment

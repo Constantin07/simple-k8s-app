@@ -11,7 +11,7 @@ on:
         default: 6.8.x
 
       targetPath:
-        description:  Optionally supply the path to the working directory
+        description: Optionally supply the path to the working directory
         required: false
         type: string
         default: ''

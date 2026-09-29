@@ -15,3 +15,15 @@ test('GET /health returns UP and application version', async () => {
         process.env.APP_VERSION || 'unknown'
     );
 });
+
+test('GET /health returns JSON', async () => {
+    const response = await request(app)
+        .get('/health')
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+    assert.deepEqual(response.body, {
+        status: 'UP',
+        app_version: process.env.APP_VERSION || 'unknown'
+    });
+});

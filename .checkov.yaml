@@ -1,11 +1,12 @@
+---
 block-list-secret-scan: []
 download-external-modules: true
 evaluate-variables: true
 framework:
-- dockerfile
-- helm
-- secrets
-- github_actions
+  - dockerfile
+  - helm
+  - secrets
+  - github_actions
 mask: []
 output:
   - cli
@@ -18,5 +19,5 @@ quiet: true
 soft-fail: false
 compact: true
 skip-check:
-- CKV_K8S_43
-- CKV_K8S_21
+  - CKV_K8S_43
+  - CKV_K8S_21

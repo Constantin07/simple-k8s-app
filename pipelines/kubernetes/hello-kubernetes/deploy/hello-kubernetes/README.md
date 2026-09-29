@@ -1,6 +1,6 @@
 # hello-kubernetes
 
-![Version: 1.0.42](https://img.shields.io/badge/Version-1.0.42-informational?style=flat-square) ![AppVersion: 1.5](https://img.shields.io/badge/AppVersion-1.5-informational?style=flat-square)
+![Version: 1.0.42](https://img.shields.io/badge/Version-1.0.42-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 A Helm chart for a simple Hello Kubernetes application
 
@@ -17,8 +17,9 @@ A Helm chart for a simple Hello Kubernetes application
 | consulTemplate.resources.requests.cpu | string | `"20m"` |  |
 | consulTemplate.resources.requests.memory | string | `"32Mi"` |  |
 | container.port | int | `8080` |  |
+| deployment | object | `{"enabled":true}` | Whether to enable K8s deployment |
 | env | object | `{}` |  |
-| hpa.enabled | bool | `true` |  |
+| hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `4` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"constantin07/hello-kubernetes"` |  |
@@ -36,7 +37,10 @@ A Helm chart for a simple Hello Kubernetes application
 | proxy.resources.limits.memory | string | `"64Mi"` |  |
 | proxy.resources.requests.cpu | string | `"20m"` |  |
 | proxy.resources.requests.memory | string | `"32Mi"` |  |
-| replicaCount | int | `2` | Number of pods to deploy |
+| replicaCount | int | `1` | Number of pods to deploy |
+| resources.limits.memory | string | `"128Mi"` |  |
+| resources.requests.cpu | string | `"50m"` |  |
+| resources.requests.memory | string | `"100Mi"` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `10001` |  |

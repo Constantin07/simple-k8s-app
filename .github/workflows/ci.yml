@@ -3,22 +3,22 @@ name: ci
 on:
   pull_request:
     types: [opened, synchronize, reopened] # Don't trigger on PR close/merge
-    branches:
-      - master
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
-      - .github/workflows/build.yml
+      - .github/workflows/ci.yml
+      - .github/workflows/determine-version.yml
+    branches:
+      - master
 
   push:
     paths:
       - 'pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/**'
       - 'pipelines/kubernetes/hello-kubernetes/deploy/**'
-      - .github/workflows/build.yml
+      - .github/workflows/ci.yml
+      - .github/workflows/determine-version.yml
     branches:
       - master
-
-  workflow_dispatch:
 
 permissions: read-all
 

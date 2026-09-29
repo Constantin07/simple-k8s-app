@@ -14,8 +14,10 @@ app.set('view engine', 'handlebars');
 app.use(express.static('static'));
 app.use(morgan('combined'));
 
-console.log('Reading Vault secrets');
-const creds = process.env.SECRET_DATA;
+if (process.env.SECRET_DATA) {
+    console.log('Reading Vault secrets');
+}
+const creds = process.env.SECRET_DATA || '';
 
 const port = process.env.PORT || 8080;
 const message = process.env.MESSAGE || "Hello world!";

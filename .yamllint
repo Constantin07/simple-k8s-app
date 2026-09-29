@@ -6,7 +6,6 @@ ignore:
   - "**/templates"
 
 rules:
-  document-start: disable
   indentation:
     spaces: 2
   braces:
@@ -18,7 +17,7 @@ rules:
   comments:
     min-spaces-from-content: 1
   document-start:
-    present: true
+    present: false
   document-end:
     present: false
   line-length: disable

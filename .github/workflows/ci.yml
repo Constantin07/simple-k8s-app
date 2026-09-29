@@ -66,7 +66,7 @@ jobs:
       PLATFORMS: 'linux/amd64,linux/arm64'
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v7      
+        uses: actions/checkout@v7
 
       - name: Check if tag already exists
         id: check
@@ -282,7 +282,7 @@ jobs:
         run: |
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "$VERSION"
-          
+
       - name: Update Helm dependency version
         run: |
           yq -i '(.dependencies[] | select(.name == "hello-kubernetes").version) = strenv(VERSION)' simple-k8s-app/Chart.yaml
@@ -295,6 +295,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add simple-k8s-app/Chart.yaml
-          git diff --cached --quiet || git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"          
+          git diff --cached --quiet || git commit -m "chore: Bump simple-k8s-app to ${{ env.VERSION }}"
           git pull --rebase --autostash origin main
           git push

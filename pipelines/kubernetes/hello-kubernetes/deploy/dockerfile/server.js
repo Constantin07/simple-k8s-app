@@ -16,6 +16,7 @@ var creds = process.env.SECRET_DATA;
 var port = process.env.PORT || 8080;
 var message = process.env.MESSAGE || "Hello world!";
 var namespace = process.env.NAMESPACE || "None";
+var app_version = process.env.APP_VERSION || "unknown";
 
 app.get('/', function (req, res) {
     // Get client IP

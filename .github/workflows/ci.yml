@@ -30,8 +30,30 @@ jobs:
     with:
       targetPath: pipelines/kubernetes/hello-kubernetes/deploy/
 
+  run-unit-test:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v7
+
+      - name: Install NodeS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'npm'       # Automatically caches npm dependencies
+          cache-dependency-path: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+
   build:
-    needs: [determine-version]
+    needs: [determine-version, run-unit-test]
     runs-on: ubuntu-24.04
     permissions:
       security-events: write
@@ -44,22 +66,7 @@ jobs:
       PLATFORMS: 'linux/amd64,linux/arm64'
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v7
-
-      # - name: Install NodeS
-      #   uses: actions/setup-node@v7
-      #   with:
-      #     node-version: 26
-    
-      # - name: Temporary
-      #   run: | 
-      #     npm install --save-dev supertest
-
-      # - name: Archive package-lock.json
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: package-lock-file
-      #     path: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/package-lock.json        
+        uses: actions/checkout@v7      
 
       - name: Check if tag already exists
         id: check

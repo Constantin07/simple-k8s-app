@@ -6,6 +6,11 @@ ignore:
   - "**/templates"
 
 rules:
+  document-start:
+    present: true
+    ignore: |
+      .github/workflows/*.yml
+      .github/workflows/*.yaml
   indentation:
     spaces: 2
   braces:

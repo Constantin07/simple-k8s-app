@@ -11,7 +11,7 @@ app.use(express.static('static'));
 app.use(morgan('combined'));
 
 console.log('Reading Vault secrets');
-var creds = process.env.SECRET_DATA;
+const creds = process.env.SECRET_DATA;
 
 const port = process.env.PORT || 8080;
 const message = process.env.MESSAGE || "Hello world!";

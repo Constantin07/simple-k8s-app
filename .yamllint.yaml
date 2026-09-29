@@ -11,6 +11,7 @@ rules:
     ignore: |
       .github/workflows/*.yml
       .github/workflows/*.yaml
+      .github/dependabot.yml
   indentation:
     spaces: 2
   braces:

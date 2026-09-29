@@ -10,5 +10,8 @@ test('GET /health returns UP and application version', async () => {
         .expect(200);
 
     assert.equal(response.body.status, 'UP');
-    assert.equal(response.body.app_version, 'unknown');
+    assert.equal(
+        response.body.app_version,
+        process.env.APP_VERSION || 'unknown'
+    );
 });

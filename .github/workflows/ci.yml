@@ -52,7 +52,10 @@ jobs:
           node-version: 26
     
       - name: Temporary
-        run: npm install --save-dev supertest
+        run: | 
+          npm install --save-dev supertest
+          cat package.json
+        
 
       - name: Check if tag already exists
         id: check

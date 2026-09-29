@@ -1,4 +1,4 @@
-name: Build app container
+name: ci
 
 on:
   pull_request:

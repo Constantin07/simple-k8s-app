@@ -50,7 +50,7 @@ repos:
     rev: v0.49.1
     hooks:
       - id: markdownlint
-        exclude: (^|/)\.chglog/CHANGELOG\.tpl\.md$
+        exclude: (^|/)\.chglog/CHANGELOG\.tpl\.md$|(^|/)deploy/[^/]+/README\.md$
 
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
     rev: 3.0.0

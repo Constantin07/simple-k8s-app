@@ -1,32 +1,32 @@
 version: 2
 updates:
   # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: ".github/workflows/"
-    schedule:
-      interval: "weekly"
-      day: monday
-
-  - package-ecosystem: pre-commit
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: .github/workflows/
     schedule:
       interval: weekly
       day: monday
 
-  - package-ecosystem: "docker"
-    directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
+  - package-ecosystem: pre-commit
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: weekly
       day: monday
-    labels:
-      - "dependencies"
-      - "docker"
 
-  - package-ecosystem: "npm"
-    directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
+  - package-ecosystem: docker
+    directory: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/
     schedule:
-      interval: "weekly"
+      interval: weekly
       day: monday
     labels:
-      - "dependencies"
-      - "npm"
+      - dependencies
+      - docker
+
+  - package-ecosystem: npm
+    directory: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - npm

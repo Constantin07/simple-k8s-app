@@ -26,5 +26,18 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Install helm-docs
+        env:
+          HELM_DOCS_VERSION: '1.14.2'
+        run: |
+          curl -fsSL \
+            "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz" \
+            -o helm-docs.tar.gz
+    
+          tar -xzf helm-docs.tar.gz helm-docs
+          sudo install -m 0755 helm-docs /usr/local/bin/helm-docs
+    
+          helm-docs --version
+
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1

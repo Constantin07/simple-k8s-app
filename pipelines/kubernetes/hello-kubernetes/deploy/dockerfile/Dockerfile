@@ -23,6 +23,8 @@ RUN npm ci --omit=dev
 
 FROM --platform=$BUILDPLATFORM node:26-alpine3.23
 
+ARG APP_VERSION
+
 LABEL maintainer=constantin07
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates curl && \

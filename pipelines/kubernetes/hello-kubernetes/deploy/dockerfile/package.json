@@ -19,5 +19,8 @@
   "overrides": {
     "tar": "^7.5.10",
     "minimatch": "10.2.4"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.0"
   }
 }

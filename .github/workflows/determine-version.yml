@@ -1,5 +1,4 @@
 name: Determine Version
-description: This action generates next version based on tags and git commit history.
 
 on:
   workflow_call:

@@ -46,20 +46,20 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v7
 
-      - name: Install NodeS
-        uses: actions/setup-node@v7
-        with:
-          node-version: 26
+      # - name: Install NodeS
+      #   uses: actions/setup-node@v7
+      #   with:
+      #     node-version: 26
     
-      - name: Temporary
-        run: | 
-          npm install --save-dev supertest
+      # - name: Temporary
+      #   run: | 
+      #     npm install --save-dev supertest
 
-      - name: Archive package-lock.json
-        uses: actions/upload-artifact@v4
-        with:
-          name: package-lock-file
-          path: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/package-lock.json        
+      # - name: Archive package-lock.json
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: package-lock-file
+      #     path: pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/package-lock.json        
 
       - name: Check if tag already exists
         id: check

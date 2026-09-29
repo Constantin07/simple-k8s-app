@@ -6,12 +6,7 @@ ignore:
   - "**/templates"
 
 rules:
-  document-start:
-    present: true
-    ignore: |
-      .github/workflows/*.yml
-      .github/workflows/*.yaml
-      .github/dependabot.yml
+  document-start: disable
   indentation:
     spaces: 2
   braces:

@@ -32,7 +32,7 @@ if [ -z "${VAULT_SKIP}" ]; then
   echo "Reading vault secret from path ${VAULT_SECRET_PATH} ..."
   SECRET_DATA="$(vault read -format=json "${VAULT_SECRET_PATH}" | jq -rc '.data')"
   RC=$?
-  if [[ $RC -ne 0 ]]; then
+  if [ "$RC" -ne 0 ]; then
     echo "Failed to read secret at path ${VAULT_SECRET_PATH}, exit code $RC"
     exit 3
   else

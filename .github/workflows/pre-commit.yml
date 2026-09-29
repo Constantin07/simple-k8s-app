@@ -41,8 +41,3 @@ jobs:
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
-
-      - name: Temporary
-        if: always()
-        run: cat pipelines/kubernetes/hello-kubernetes/deploy/hello-kubernetes/README.md
-

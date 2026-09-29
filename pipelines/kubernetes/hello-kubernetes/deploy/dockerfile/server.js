@@ -5,17 +5,24 @@ var os = require("os");
 var morgan = require('morgan');
 var router = express.Router();
 
-app.engine('handlebars', exphbs.engine({extname: '.handlebars', defaultLayout: 'main'}));
+app.engine('handlebars', exphbs.engine({
+	extname: '.handlebars',
+	defaultLayout: 'main'
+}));
+
 app.set('view engine', 'handlebars');
 app.use(express.static('static'));
 app.use(morgan('combined'));
 
-console.log('Reading Vault secrets');
-var creds = process.env.SECRET_DATA;
+if (process.env.SECRET_DATA) {
+    console.log('Reading Vault secrets');
+}
+const creds = process.env.SECRET_DATA || '';
 
-var port = process.env.PORT || 8080;
-var message = process.env.MESSAGE || "Hello world!";
-var namespace = process.env.NAMESPACE || "None";
+const port = process.env.PORT || 8080;
+const message = process.env.MESSAGE || "Hello world!";
+const namespace = process.env.NAMESPACE || "None";
+const app_version = process.env.APP_VERSION || "unknown";
 
 app.get('/', function (req, res) {
     // Get client IP
@@ -34,12 +41,19 @@ app.get('/', function (req, res) {
 
 // Health check
 router.get('/', function (req, res, next) {
-    res.json({status: 'UP'});
+    res.json({
+		status: 'UP',
+		app_version: app_version
+	});
 });
 
 app.use("/health", router);
 
 // Set up listener
-app.listen(port, function () {
-    console.log("Listening on: http://%s:%s", os.hostname(), port);
-});
+if (require.main === module) {
+    app.listen(port, function () {
+        console.log("Listening on: http://%s:%s", os.hostname(), port);
+    });
+}
+
+module.exports = app;

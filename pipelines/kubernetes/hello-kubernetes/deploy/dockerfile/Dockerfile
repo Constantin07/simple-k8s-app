@@ -23,7 +23,12 @@ RUN npm ci --omit=dev
 
 FROM --platform=$BUILDPLATFORM node:26-alpine3.23
 
-LABEL maintainer=constantin07
+ARG APP_VERSION
+
+LABEL maintainer=constantin07 \
+      org.opencontainers.image.version="${APP_VERSION}"
+
+ENV APP_VERSION="${APP_VERSION}"
 
 RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache jq ca-certificates curl && \
     update-ca-certificates

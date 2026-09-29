@@ -1,7 +1,7 @@
 # simple-k8s-app
 
 [![Release](https://img.shields.io/github/v/release/Constantin07/simple-k8s-app)](https://github.com/Constantin07/simple-k8s-app/releases)
-![Build](https://github.com/Constantin07/simple-k8s-app/actions/workflows/build.yml/badge.svg?branch=master)
+![Build](https://github.com/Constantin07/simple-k8s-app/actions/workflows/ci.yml/badge.svg?branch=master)
 ![Code-scan](https://github.com/Constantin07/simple-k8s-app/actions/workflows/code-scan.yml/badge.svg?branch=master)
 
 Simple Kubernetes application

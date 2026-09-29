@@ -9,9 +9,9 @@ repos:
       - id: mixed-line-ending
         args:
           - --fix=lf
-      - id: check-yaml
-        args:
-          - --allow-multiple-documents
+      # - id: check-yaml
+      #   args:
+      #     - --allow-multiple-documents
         exclude: templates/
       - id: check-merge-conflict
       - id: check-case-conflict

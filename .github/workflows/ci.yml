@@ -54,7 +54,6 @@ jobs:
       - name: Temporary
         run: | 
           npm install --save-dev supertest
-          cat package.json
           cat package-lock.json
         
 

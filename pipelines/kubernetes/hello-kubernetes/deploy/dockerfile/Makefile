@@ -25,7 +25,7 @@ login:
 	@echo "${DOCKERHUB_TOKEN}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
 
 build: login
-	docker build -e APP_VERSION="${TAG}" -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
+	docker build --build-arg APP_VERSION="${TAG}" -t ${DOCKER_REGISTRY}/${IMAGE}:${TAG} .
 
 scan:
 	trivy image --vuln-type="os,library" --exit-code 0 --no-progress --format json --output results.json ${DOCKER_REGISTRY}/${IMAGE}:${TAG}

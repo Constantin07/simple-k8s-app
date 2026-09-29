@@ -5,7 +5,11 @@ var os = require("os");
 var morgan = require('morgan');
 var router = express.Router();
 
-app.engine('handlebars', exphbs.engine({extname: '.handlebars', defaultLayout: 'main'}));
+app.engine('handlebars', exphbs.engine({
+	extname: '.handlebars',
+	defaultLayout: 'main'
+}));
+
 app.set('view engine', 'handlebars');
 app.use(express.static('static'));
 app.use(morgan('combined'));
@@ -35,12 +39,19 @@ app.get('/', function (req, res) {
 
 // Health check
 router.get('/', function (req, res, next) {
-    res.json({status: 'UP', app_version: app_version});
+    res.json({
+		status: 'UP',
+		app_version: app_version
+	});
 });
 
 app.use("/health", router);
 
 // Set up listener
-app.listen(port, function () {
-    console.log("Listening on: http://%s:%s", os.hostname(), port);
-});
+if (require.main === module) {
+    app.listen(port, function () {
+        console.log("Listening on: http://%s:%s", os.hostname(), port);
+    });
+}
+
+module.exports = app;

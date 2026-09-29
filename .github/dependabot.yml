@@ -5,16 +5,19 @@ updates:
     directory: ".github/workflows/"
     schedule:
       interval: "weekly"
+      day: monday
 
   - package-ecosystem: pre-commit
     directory: "/"
     schedule:
       interval: weekly
+      day: monday
 
   - package-ecosystem: "docker"
     directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
     schedule:
       interval: "weekly"
+      day: monday
     labels:
       - "dependencies"
       - "docker"
@@ -23,6 +26,7 @@ updates:
     directory: "pipelines/kubernetes/hello-kubernetes/deploy/dockerfile/"
     schedule:
       interval: "weekly"
+      day: monday
     labels:
       - "dependencies"
       - "npm"

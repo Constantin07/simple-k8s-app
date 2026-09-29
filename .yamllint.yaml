@@ -17,7 +17,6 @@ rules:
   comments:
     min-spaces-from-content: 1
   document-start: disable
-  # present: true
   document-end:
     present: false
   line-length: disable

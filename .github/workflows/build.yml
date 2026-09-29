@@ -85,6 +85,8 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            APP_VERSION=${{ env.NEXT_VERSION }}
           tags: |
             ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}

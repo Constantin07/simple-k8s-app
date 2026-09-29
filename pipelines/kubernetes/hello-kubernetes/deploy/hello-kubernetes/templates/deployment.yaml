@@ -1,3 +1,4 @@
+{{- if .Values.deployment.enabled -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -99,3 +100,4 @@ spec:
           configMap:
             name: {{ include "hello-kubernetes.fullname" . }}-proxy-config
         {{- end }}
+{{- end }}

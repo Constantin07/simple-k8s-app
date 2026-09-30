@@ -6,8 +6,8 @@ var morgan = require('morgan');
 var router = express.Router();
 
 app.engine('handlebars', exphbs.engine({
-	extname: '.handlebars',
-	defaultLayout: 'main'
+    extname: '.handlebars',
+    defaultLayout: 'main'
 }));
 
 app.set('view engine', 'handlebars');
@@ -41,11 +41,11 @@ app.get('/', function (req, res) {
 });
 
 // Health check
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     res.json({
-		status: 'UP',
-		app_version: app_version
-	});
+        status: 'UP',
+        app_version: app_version
+    });
 });
 
 app.use("/health", router);

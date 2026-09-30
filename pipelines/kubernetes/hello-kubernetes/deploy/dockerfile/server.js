@@ -29,13 +29,14 @@ app.get('/', function (req, res) {
     var x_forwarded_for = req.get('X-Forwarded-For') || 'Header not set';
 
     res.render('home', {
-	message: message,
-	platform: os.type(),
-	release: os.release(),
-	hostName: os.hostname(),
-	namespace: namespace,
-	xForwardedFor: x_forwarded_for,
-	creds: JSON.stringify(creds)
+		app_version: app_version,
+		message: message,
+		platform: os.type(),
+		release: os.release(),
+		hostName: os.hostname(),
+		namespace: namespace,
+		xForwardedFor: x_forwarded_for,
+		creds: JSON.stringify(creds)
     });
 });
 

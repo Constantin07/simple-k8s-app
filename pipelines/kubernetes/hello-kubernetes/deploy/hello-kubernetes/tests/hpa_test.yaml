@@ -1,0 +1,33 @@
+suite: Test HPA
+
+templates:
+  - templates/hpa.yaml
+
+tests:
+  - it: should create HPA for Deployment
+    set:
+      hpa:
+        enabled: true
+        maxReplicas: 2
+    asserts:
+      - isKind:
+          of: HorizontalPodAutoscaler
+      - equal:
+          path: spec.scaleTargetRef.kind
+          value: Deployment
+      - equal:
+          path: spec.maxReplicas
+          value: 2
+
+  - it: should create HPA for Argo Rollout
+    set:
+      hpa.enabled: true
+      deployment.enabled: false
+      rollout.enabled: true
+    asserts:
+      - equal:
+          path: spec.scaleTargetRef.apiVersion
+          value: argoproj.io/v1alpha1
+      - equal:
+          path: spec.scaleTargetRef.kind
+          value: Rollout

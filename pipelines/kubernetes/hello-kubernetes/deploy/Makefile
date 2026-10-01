@@ -6,7 +6,7 @@ EXECUTABLES = git helm kubeconform
 K := $(foreach exec,$(EXECUTABLES),\
   $(if $(shell command -v $(exec) 2> /dev/null),some string,$(error "No $(exec) in PATH")))
 
-.PHONY: build template validate lint unittest diff release_notes apply status destroy
+.PHONY: build template validate lint diff release_notes apply status destroy
 
 GIT_COMMIT_SHORT ?= $(shell git rev-parse --short HEAD)
 
@@ -27,7 +27,7 @@ template:
 validate:
 	mkdir -p /tmp/kubeconform
 	helm template ${RELEASE} ./hello-kubernetes -f values.yaml --set image.tag=${TAG} | \
-	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.30.1
+	kubeconform -strict -summary -cache /tmp/kubeconform -ignore-missing-schemas -kubernetes-version 1.36.4
 
 validate_k8s:
 	@helm template ${RELEASE}-test ./hello-kubernetes -f values.yaml --set image.tag=${TAG} --validate
@@ -35,6 +35,7 @@ validate_k8s:
 lint:
 	helm lint ./hello-kubernetes -f values.yaml
 
+.PHONY: unittest
 unittest:
 	helm unittest ./hello-kubernetes
 

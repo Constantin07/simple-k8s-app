@@ -1,15 +1,16 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM alpine:3.24 AS builder1
+# Disabled as not used
+#FROM --platform=$BUILDPLATFORM alpine:3.24 AS builder1
 
-ARG TARGETOS TARGETARCH
+#ARG TARGETOS TARGETARCH
 
-ARG VAULT_VERSION=2.1.0
+#ARG VAULT_VERSION=2.1.0
 
-RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip ca-certificates && \
-    update-ca-certificates && \
-    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_${TARGETOS}_${TARGETARCH}.zip -o vault.zip && \
-    unzip vault.zip && chmod +x vault
+#RUN apk --no-cache update && apk --no-cache upgrade && apk add --no-cache curl unzip ca-certificates && \
+#    update-ca-certificates && \
+#    curl -fsSL --retry 3 https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_${TARGETOS}_${TARGETARCH}.zip -o vault.zip && \
+#    unzip vault.zip && chmod +x vault
 
 
 FROM --platform=$BUILDPLATFORM node:26-alpine3.23 AS builder2
@@ -45,7 +46,7 @@ RUN rm -rf /usr/local/lib/node_modules/npm \
            /usr/local/bin/npm \
            /usr/local/bin/npx
 
-COPY --from=builder1 /vault /usr/local/bin/
+#COPY --from=builder1 /vault /usr/local/bin/
 COPY --from=builder2 --chown=node:node /home/node /home/node
 
 USER 10001

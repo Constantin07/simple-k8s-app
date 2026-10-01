@@ -17,6 +17,29 @@ env: {}
 # -- Whether to enable K8s deployment
 deployment:
   enabled: true
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+
+# -- Whether to enable Argo Rollout
+rollout:
+  enabled: false
+  strategy:
+    blueGreen:
+      autoPromotionEnabled: true
+      autoPromotionSeconds: 60
+      scaleDownDelaySeconds: 30
+
+  # canary:
+  #   maxSurge: 25%
+  #   maxUnavailable: 0
+  #   steps:
+  #     - setWeight: 20
+  #     - pause:
+  #         duration: 60s
+  #     - setWeight: 50
 
 resources:
   requests:

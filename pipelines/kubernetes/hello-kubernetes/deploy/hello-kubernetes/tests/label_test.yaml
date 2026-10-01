@@ -9,7 +9,9 @@ chart:
 
 templates:
   - templates/deployment.yaml
+  - templates/rollout.yaml
   - templates/service.yaml
+  - templates/service-preview.yaml
   - templates/serviceaccount.yaml
   - templates/pdb.yaml
   - templates/hpa.yaml
@@ -18,6 +20,8 @@ templates:
 tests:
   - it: all resources have standard labels
     set:
+      rollout:
+        enabled: true
       ingress:
         enabled: true
       hpa:

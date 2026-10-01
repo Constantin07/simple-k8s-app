@@ -1,6 +1,6 @@
 # hello-kubernetes
 
-![Version: 1.0.42](https://img.shields.io/badge/Version-1.0.42-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.43](https://img.shields.io/badge/Version-1.0.43-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 A Helm chart for a simple Hello Kubernetes application
 
@@ -17,7 +17,7 @@ A Helm chart for a simple Hello Kubernetes application
 | consulTemplate.resources.requests.cpu | string | `"20m"` |  |
 | consulTemplate.resources.requests.memory | string | `"32Mi"` |  |
 | container.port | int | `8080` |  |
-| deployment | object | `{"enabled":true}` | Whether to enable K8s deployment |
+| deployment | object | `{"enabled":true,"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}}` | Whether to enable K8s deployment |
 | env | object | `{}` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `4` |  |
@@ -41,6 +41,7 @@ A Helm chart for a simple Hello Kubernetes application
 | resources.limits.memory | string | `"128Mi"` |  |
 | resources.requests.cpu | string | `"50m"` |  |
 | resources.requests.memory | string | `"100Mi"` |  |
+| rollout | object | `{"enabled":false,"strategy":{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":60,"scaleDownDelaySeconds":30}}}` | Whether to enable Argo Rollout |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `10001` |  |

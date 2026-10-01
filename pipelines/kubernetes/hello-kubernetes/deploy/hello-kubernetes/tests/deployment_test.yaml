@@ -12,6 +12,8 @@ tests:
     set:
       deployment:
         enabled: true
+      rollout:
+        enabled: false
     asserts:
       - isKind:
           of: Deployment

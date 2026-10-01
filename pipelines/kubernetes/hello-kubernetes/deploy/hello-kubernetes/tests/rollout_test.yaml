@@ -1,0 +1,32 @@
+suite: Test rollout
+
+templates:
+  - templates/rollout.yaml
+
+release:
+  name: test-release
+  namespace: default
+
+tests:
+  - it: should provide expected defaults
+    set:
+      deployment.enabled: false
+      rollout.enabled: true
+    asserts:
+      - isKind:
+          of: Rollout
+      - hasDocuments:
+          count: 1
+      - notEqual:
+          path: spec.replicas
+          value: 0
+      - notExists:
+          path: spec.strategy.canary
+      - equal:
+          path: spec.strategy.blueGreen.activeService
+          value: test-release-hello-kubernetes
+      - equal:
+          path: spec.strategy.blueGreen.previewService
+          value: test-release-hello-kubernetes-preview
+      - exists:
+          path: spec.strategy.blueGreen

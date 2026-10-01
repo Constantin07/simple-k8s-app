@@ -1,13 +1,15 @@
 suite: Test service
 
 templates:
-  - templates/service.yaml
+  - templates/service-preview.yaml
 
 release:
   name: test-release
 
 tests:
   - it: should pass
+    set:
+      rollout.enabled: true
     asserts:
       - equal:
           path: spec.type
@@ -23,6 +25,8 @@ tests:
           pattern: hello-kubernetes
 
   - it: should contain document
+    set:
+      rollout.enabled: true
     release:
       name: test-release
     asserts:

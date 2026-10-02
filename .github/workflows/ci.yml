@@ -139,7 +139,10 @@ jobs:
 
       - name: Docker push
         run: |
-          docker buildx build --platform "${{ env.PLATFORMS }}" --push -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
+          docker buildx build \
+            --platform "${{ env.PLATFORMS }}" \
+            --build-arg APP_VERSION="${NEXT_VERSION}" \
+            --push -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
 
       - name: Verify APP_VERSION
         run: |

@@ -1,4 +1,4 @@
-suite: Test service
+suite: Test service preview
 
 templates:
   - templates/service-preview.yaml

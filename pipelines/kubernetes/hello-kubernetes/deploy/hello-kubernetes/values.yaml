@@ -114,6 +114,10 @@ ingress:
   host: chart-example.local
   path: /
 
+# -- Whether to enable Gateway API HTTPRoute
+httpRoute:
+  enabled: false
+
 hpa:
   enabled: false
   maxReplicas: 4

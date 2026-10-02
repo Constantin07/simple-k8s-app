@@ -16,6 +16,9 @@ tests:
           path: spec.scaleTargetRef.kind
           value: Deployment
       - equal:
+          path: spec.scaleTargetRef.apiVersion
+          value: apps/v1
+      - equal:
           path: spec.maxReplicas
           value: 2
 

@@ -123,7 +123,10 @@ jobs:
           load: false
 
       - name: Buildx load (for Trivy scan)
-        run: docker buildx build --load -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
+        run: |
+          docker buildx build \
+            --build-arg APP_VERSION="${NEXT_VERSION}" \
+            --load -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
 
       - name: Run trivy scan
         uses: aquasecurity/trivy-action@master

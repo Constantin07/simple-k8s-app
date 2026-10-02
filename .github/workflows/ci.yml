@@ -147,12 +147,6 @@ jobs:
             --build-arg APP_VERSION="${NEXT_VERSION}" \
             --push -t ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }} .
 
-      - name: Verify APP_VERSION
-        run: |
-          docker inspect "${IMAGE_REPOSITORY}:${NEXT_VERSION}" \
-            --format '{{range .Config.Env}}{{println .}}{{end}}' \
-            | grep APP_VERSION
-
   helm-package-push:
     needs: [build, determine-version]
     runs-on: ubuntu-24.04

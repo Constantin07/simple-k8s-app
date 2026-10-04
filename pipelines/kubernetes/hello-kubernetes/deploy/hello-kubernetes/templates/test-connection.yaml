@@ -8,7 +8,7 @@ metadata:
   labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/hook: PostSync
-    {{/* argocd.argoproj.io/hook-delete-policy: HookSucceeded */}}
+    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   ttlSecondsAfterFinished: 300
   backoffLimit: 3

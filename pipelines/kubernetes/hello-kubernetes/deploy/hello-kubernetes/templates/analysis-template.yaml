@@ -1,0 +1,38 @@
+{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen -}}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ include "hello-kubernetes.fullname" . }}-preview-test
+  labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
+spec:
+  metrics:
+  - name: preview-test
+    # How often to check and how many successes are required
+    interval: 5s
+    count: 2
+    provider:
+      job:
+        spec:
+          backoffLimit: 0
+          template:
+            spec:
+              restartPolicy: Never
+              containers:
+              - name: connectivity-test
+                image: curlimages/curl:8.16.0
+                command:
+                  - /bin/sh
+                  - -c
+                  - |
+                    set -e
+                    echo "Testing preview service..."
+                    curl \
+                      -fsS \
+                      --max-time 10 \
+                      --connect-timeout 5 \
+                      --retry 3 \
+                      --retry-connrefused \
+                      http://{{ include "hello-kubernetes.previewServiceName" . }}:{{ .Values.service.port }}/
+                    echo "Preview connectivity test succeeded"
+{{- end }}

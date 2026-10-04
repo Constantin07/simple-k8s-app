@@ -33,6 +33,9 @@ spec:
       activeService: {{ include "hello-kubernetes.serviceName" . }}
       previewService: {{ include "hello-kubernetes.previewServiceName" . }}
       {{- toYaml .Values.rollouts.strategy.blueGreen | nindent 6 }}
+      prePromotionAnalysis:
+        templates:
+          - templateName: {{ include "hello-kubernetes.fullname" . }}-preview-test
   {{- else if $canary }}
     canary:
       stableService: {{ include "hello-kubernetes.serviceName" . }}

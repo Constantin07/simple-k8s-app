@@ -1,4 +1,4 @@
-
+{{- if .Values.connectivityTest.enabled }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -25,5 +25,10 @@ spec:
           command:
             - 'wget'
           args:
-            - "http://{{ index .Values.httpRoute.hostnames 0 }}:30000"
+            {{- if and .Values.rollouts.enabled (hasKey .Values.rollouts "strategy") (hasKey .Values.rollouts.strategy "blueGreen") }}
+            - "http://{{ include "hello-kubernetes.previewServiceName" . }}:{{ .Values.service.port }}"
+            {{- else }}
+            - "http://{{ include "hello-kubernetes.serviceName" . }}:{{ .Values.service.port }}"
+            {{- end }}
       restartPolicy: Never
+{{- end }}

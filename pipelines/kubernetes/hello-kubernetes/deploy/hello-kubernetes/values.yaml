@@ -130,6 +130,9 @@ httpRoute:
             type: PathPrefix
             value: /
 
+connectivityTest:
+  enabled: false
+
 hpa:
   enabled: false
   maxReplicas: 4

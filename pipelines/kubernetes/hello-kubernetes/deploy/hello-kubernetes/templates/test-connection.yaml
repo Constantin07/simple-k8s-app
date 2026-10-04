@@ -13,6 +13,8 @@ spec:
   ttlSecondsAfterFinished: 300
   # Try the test up to 3 times before declaring a definitive failure
   backoffLimit: 3
+  completions: 1
+  activeDeadlineSeconds: 15
   template:
     metadata:
       labels:

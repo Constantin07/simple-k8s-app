@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "hello-kubernetes.fullname" . }}-test-connection
+  labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
+  annotations:
+    # Map to Argo CD Hooks instead of Helm hooks
+    argocd.argoproj.io/hook: PostSync
+    # Define what happens to the test pod after completion
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['http://{{ .Values.httpRoute.hostnames[0] }}:30000']
+  restartPolicy: Never

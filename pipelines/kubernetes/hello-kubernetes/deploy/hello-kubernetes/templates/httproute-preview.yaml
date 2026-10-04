@@ -1,0 +1,31 @@
+{{- if and .Values.httpRoute.enabled .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "hello-kubernetes.previewServiceName" . }}
+  labels:
+    {{- include "hello-kubernetes.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
+  hostnames:
+    {{- range .Values.httpRoute.hostnames }}
+      {{- $parts := splitList "." . }}
+    - {{ printf "%s-preview.%s" (index $parts 0) (join "." (slice $parts 1)) }}
+    {{- end }}
+  rules:
+    {{- range .Values.httpRoute.rules }}
+      {{- if .matches }}
+    - matches:
+        {{- toYaml .matches | nindent 8 }}
+      {{- end }}
+      {{- if .filters }}
+      filters:
+        {{- toYaml .filters | nindent 8 }}
+      {{- end }}
+      backendRefs:
+        - name: {{ include "hello-kubernetes.previewServiceName" $ }}
+          port: {{ $.Values.service.port }}
+    {{- end }}
+{{- end }}

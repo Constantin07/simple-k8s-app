@@ -1,6 +1,6 @@
 # hello-kubernetes
 
-![Version: 1.0.50](https://img.shields.io/badge/Version-1.0.50-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.51](https://img.shields.io/badge/Version-1.0.51-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 A Helm chart for a simple Hello Kubernetes application
 

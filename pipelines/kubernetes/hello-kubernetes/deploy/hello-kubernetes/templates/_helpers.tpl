@@ -55,8 +55,8 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Service name
 */}}
 {{- define "hello-kubernetes.serviceName" -}}
-{{- if and .Values.rollout.enabled .Values.rollout.strategy .Values.rollout.strategy.blueGreen .Values.rollout.strategy.blueGreen.activeService -}}
-{{- .Values.rollout.strategy.blueGreen.activeService -}}
+{{- if and .Values.rollouts.enabled .Values.rollouts.strategy .Values.rollouts.strategy.blueGreen .Values.rollouts.strategy.blueGreen.activeService -}}
+{{- .Values.rollouts.strategy.blueGreen.activeService -}}
 {{- else -}}
 {{ include "hello-kubernetes.fullname" . }}
 {{- end -}}
@@ -66,8 +66,8 @@ Service name
 Preview service name
 */}}
 {{- define "hello-kubernetes.previewServiceName" -}}
-{{- if and .Values.rollout.enabled .Values.rollout.strategy .Values.rollout.strategy.blueGreen .Values.rollout.strategy.blueGreen.previewService -}}
-{{- .Values.rollout.strategy.blueGreen.previewService -}}
+{{- if and .Values.rollouts.enabled .Values.rollouts.strategy .Values.rollouts.strategy.blueGreen .Values.rollouts.strategy.blueGreen.previewService -}}
+{{- .Values.rollouts.strategy.blueGreen.previewService -}}
 {{- else -}}
 {{- printf "%s-preview" (include "hello-kubernetes.fullname" .) -}}
 {{- end -}}

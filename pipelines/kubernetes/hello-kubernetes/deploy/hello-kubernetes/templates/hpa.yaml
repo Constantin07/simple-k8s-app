@@ -7,7 +7,7 @@ metadata:
   labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
-    {{- if .Values.rollout.enabled }}
+    {{- if .Values.rollouts.enabled }}
     apiVersion: argoproj.io/v1alpha1
     kind: Rollout
     {{- else }}

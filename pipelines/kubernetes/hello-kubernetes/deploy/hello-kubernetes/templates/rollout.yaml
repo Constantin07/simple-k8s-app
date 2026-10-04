@@ -1,4 +1,4 @@
-{{- if .Values.rollout.enabled -}}
+{{- if .Values.rollouts.enabled -}}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
@@ -22,24 +22,24 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-{{- $blueGreen := hasKey .Values.rollout.strategy "blueGreen" }}
-{{- $canary := hasKey .Values.rollout.strategy "canary" }}
+{{- $blueGreen := hasKey .Values.rollouts.strategy "blueGreen" }}
+{{- $canary := hasKey .Values.rollouts.strategy "canary" }}
 {{- if and $blueGreen $canary }}
-{{- fail "rollout.strategy cannot contain both blueGreen and canary" }}
+{{- fail "rollouts.strategy cannot contain both blueGreen and canary" }}
 {{- end }}
   strategy:
     {{- if $blueGreen }}
     blueGreen:
       activeService: {{ include "hello-kubernetes.serviceName" . }}
       previewService: {{ include "hello-kubernetes.previewServiceName" . }}
-      {{- toYaml .Values.rollout.strategy.blueGreen | nindent 6 }}
+      {{- toYaml .Values.rollouts.strategy.blueGreen | nindent 6 }}
   {{- else if $canary }}
     canary:
       stableService: {{ include "hello-kubernetes.serviceName" . }}
       canaryService: {{ include "hello-kubernetes.fullname" . }}-canary
-      {{- toYaml .Values.rollout.strategy.canary | nindent 6 }}
+      {{- toYaml .Values.rollouts.strategy.canary | nindent 6 }}
   {{- else }}
-  {{- fail "rollout.strategy must contain either 'blueGreen' or 'canary'" }}
+  {{- fail "rollouts.strategy must contain either 'blueGreen' or 'canary'" }}
   {{- end }}
   template:
     metadata:

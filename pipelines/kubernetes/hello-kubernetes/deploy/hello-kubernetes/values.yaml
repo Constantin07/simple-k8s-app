@@ -23,8 +23,8 @@ deployment:
       maxSurge: 1
       maxUnavailable: 1
 
-# -- Whether to enable Argo Rollout
-rollout:
+# -- Whether to enable Argo Rollouts
+rollouts:
   enabled: false
   strategy:
     blueGreen:

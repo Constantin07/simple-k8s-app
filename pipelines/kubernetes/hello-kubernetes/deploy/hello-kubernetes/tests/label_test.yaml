@@ -20,7 +20,7 @@ templates:
 tests:
   - it: all resources have standard labels
     set:
-      rollout:
+      rollouts:
         enabled: true
       ingress:
         enabled: true

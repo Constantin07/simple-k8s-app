@@ -9,7 +9,7 @@ release:
 tests:
   - it: should pass
     set:
-      rollout.enabled: true
+      rollouts.enabled: true
     asserts:
       - equal:
           path: spec.type
@@ -26,7 +26,7 @@ tests:
 
   - it: should contain document
     set:
-      rollout.enabled: true
+      rollouts.enabled: true
     release:
       name: test-release
     asserts:

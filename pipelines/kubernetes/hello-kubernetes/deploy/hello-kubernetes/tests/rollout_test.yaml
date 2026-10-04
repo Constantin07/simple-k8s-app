@@ -11,7 +11,7 @@ tests:
   - it: should provide expected defaults
     set:
       deployment.enabled: false
-      rollout.enabled: true
+      rollouts.enabled: true
     asserts:
       - isKind:
           of: Rollout

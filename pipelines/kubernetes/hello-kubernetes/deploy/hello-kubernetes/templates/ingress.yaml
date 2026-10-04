@@ -22,7 +22,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "hello-kubernetes.fullname" . }}
+                name: {{ include "hello-kubernetes.serviceName" . }}
                 port:
                   number: {{ .Values.container.port }}
 {{- end }}

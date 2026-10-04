@@ -30,12 +30,12 @@ spec:
   strategy:
     {{- if $blueGreen }}
     blueGreen:
-      activeService: {{ include "hello-kubernetes.fullname" . }}
-      previewService: {{ include "hello-kubernetes.fullname" . }}-preview
+      activeService: {{ include "hello-kubernetes.serviceName" . }}
+      previewService: {{ include "hello-kubernetes.previewServiceName" . }}
       {{- toYaml .Values.rollout.strategy.blueGreen | nindent 6 }}
   {{- else if $canary }}
     canary:
-      stableService: {{ include "hello-kubernetes.fullname" . }}
+      stableService: {{ include "hello-kubernetes.serviceName" . }}
       canaryService: {{ include "hello-kubernetes.fullname" . }}-canary
       {{- toYaml .Values.rollout.strategy.canary | nindent 6 }}
   {{- else }}

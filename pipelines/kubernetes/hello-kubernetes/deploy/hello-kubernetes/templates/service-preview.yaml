@@ -1,20 +1,8 @@
-{{- if .Values.rollout.enabled }}
+{{- $serviceName := include "hello-kubernetes.previewServiceName" . -}}
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ include "hello-kubernetes.fullname" . }}-preview
-  labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
-spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - protocol: TCP
-      port: {{ .Values.service.port }}
-    {{- if .Values.proxy.enabled }}
-      targetPort: {{ .Values.proxy.port }}
-    {{- else }}
-      targetPort: {{ .Values.container.port }}
-    {{- end }}
-  selector:
-    {{- include "hello-kubernetes.selectorLabels" . | nindent 4 }}
-{{- end }}
+{{- include "hello-kubernetes.service" (dict
+  "serviceName" $serviceName
+  "Values" .Values
+  "Release" .Release
+  "Chart" .Chart)
+-}}

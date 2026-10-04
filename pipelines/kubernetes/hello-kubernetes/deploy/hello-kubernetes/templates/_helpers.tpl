@@ -50,3 +50,25 @@ Selector labels
 app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Service name
+*/}}
+{{- define "hello-kubernetes.serviceName" -}}
+{{- if and .Values.rollout.enabled .Values.rollout.strategy .Values.rollout.strategy.blueGreen .Values.rollout.strategy.blueGreen.activeService -}}
+{{- .Values.rollout.strategy.blueGreen.activeService -}}
+{{- else -}}
+{{ include "hello-kubernetes.fullname" . }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Preview service name
+*/}}
+{{- define "hello-kubernetes.previewServiceName" -}}
+{{- if and .Values.rollout.enabled .Values.rollout.strategy .Values.rollout.strategy.blueGreen .Values.rollout.strategy.blueGreen.previewService -}}
+{{- .Values.rollout.strategy.blueGreen.previewService -}}
+{{- else -}}
+{{- printf "%s-preview" (include "hello-kubernetes.fullname" .) -}}
+{{- end -}}
+{{- end -}}

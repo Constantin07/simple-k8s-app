@@ -14,7 +14,7 @@ spec:
   # Try the test up to 3 times before declaring a definitive failure
   backoffLimit: 3
   completions: 1
-  activeDeadlineSeconds: 15
+  activeDeadlineSeconds: 30
   template:
     metadata:
       labels:

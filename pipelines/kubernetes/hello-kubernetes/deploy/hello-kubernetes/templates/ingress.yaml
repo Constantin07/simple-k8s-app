@@ -15,7 +15,7 @@ spec:
   tls:
     - hosts:
         - {{ .Values.ingress.host | quote }}
-        {{- if and .Values.rollouts.enabled .Values.rollouts.strategy .Values.rollouts.strategy.blueGreen }}
+        {{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen }}
         - {{ $previewHost | quote }}
         {{- end }}
   rules:
@@ -29,7 +29,7 @@ spec:
                 name: {{ include "hello-kubernetes.serviceName" . }}
                 port:
                   number: {{ .Values.container.port }}
-    {{- if and .Values.rollouts.enabled .Values.rollouts.strategy .Values.rollouts.strategy.blueGreen }}
+    {{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen }}
     - host: {{ $previewHost | quote }}
       http:
         paths:

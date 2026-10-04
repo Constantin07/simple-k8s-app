@@ -17,7 +17,7 @@ metadata:
     checkov.io/skip8: CKV_K8S_38=Mounting service account is required for authentication.
 spec:
   replicas: {{ .Values.replicaCount }}
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 4
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}
@@ -33,7 +33,7 @@ spec:
       activeService: {{ include "hello-kubernetes.serviceName" . }}
       previewService: {{ include "hello-kubernetes.previewServiceName" . }}
       {{- toYaml .Values.rollouts.strategy.blueGreen | nindent 6 }}
-      {{- if and (hasKey .Values.rollouts.strategy.blueGreen.connectivityTest "enabled") .Values.rollouts.strategy.blueGreen.connectivityTest.enabled }}
+      {{- if and (hasKey .Values.rollouts.strategy.connectivityTest "enabled") .Values.rollouts.strategy.connectivityTest.enabled }}
       prePromotionAnalysis:
         templates:
           - templateName: {{ include "hello-kubernetes.fullname" . }}-preview-test

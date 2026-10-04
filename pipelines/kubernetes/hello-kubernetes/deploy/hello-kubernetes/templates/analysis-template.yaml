@@ -1,4 +1,4 @@
-{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen.connectivityTest.enabled }}
+{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.connectivityTest.enabled }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate

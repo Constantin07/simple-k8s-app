@@ -33,8 +33,8 @@ rollouts:
       scaleDownDelaySeconds: 30
       previewReplicaCount: 1
 
-      connectivityTest:
-        enabled: false
+    connectivityTest:
+      enabled: false
 
   # canary:
   #   maxSurge: 25%

@@ -1,6 +1,6 @@
 # hello-kubernetes
 
-![Version: 1.0.48](https://img.shields.io/badge/Version-1.0.48-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.49](https://img.shields.io/badge/Version-1.0.49-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 A Helm chart for a simple Hello Kubernetes application
 
@@ -42,7 +42,7 @@ A Helm chart for a simple Hello Kubernetes application
 | resources.limits.memory | string | `"128Mi"` |  |
 | resources.requests.cpu | string | `"50m"` |  |
 | resources.requests.memory | string | `"100Mi"` |  |
-| rollouts | object | `{"enabled":false,"strategy":{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":30,"previewReplicaCount":1,"scaleDownDelaySeconds":30}}}` | Whether to enable Argo Rollouts |
+| rollouts | object | `{"enabled":false,"strategy":{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":60,"previewReplicaCount":1,"scaleDownDelaySeconds":30}}}` | Whether to enable Argo Rollouts |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `10001` |  |

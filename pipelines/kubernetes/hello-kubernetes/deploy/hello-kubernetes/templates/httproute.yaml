@@ -13,8 +13,8 @@ spec:
     {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
   rules:
     {{- range .Values.httpRoute.rules }}
-    - {{- if .matches }}
-      matches:
+      {{- if .matches }}
+    - matches:
         {{- toYaml .matches | nindent 8 }}
       {{- end }}
       {{- if .filters }}
@@ -22,7 +22,7 @@ spec:
         {{- toYaml .filters | nindent 8 }}
       {{- end }}
       backendRefs:
-        - name: {{ include "hello-kubernetes.fullname" $ }}
+        - name: {{ include "hello-kubernetes.serviceName" $ }}
           port: {{ $.Values.service.port }}
     {{- end }}
 {{- end }}

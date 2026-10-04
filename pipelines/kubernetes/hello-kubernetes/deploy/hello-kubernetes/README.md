@@ -1,6 +1,6 @@
 # hello-kubernetes
 
-![Version: 1.0.49](https://img.shields.io/badge/Version-1.0.49-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.50](https://img.shields.io/badge/Version-1.0.50-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 A Helm chart for a simple Hello Kubernetes application
 
@@ -21,7 +21,7 @@ A Helm chart for a simple Hello Kubernetes application
 | env | object | `{}` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `4` |  |
-| httpRoute | object | `{"enabled":false}` | Whether to enable Gateway API HTTPRoute |
+| httpRoute | object | `{"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"test","namespace":"test"}],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Whether to enable Gateway API HTTPRoute |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"constantin07/hello-kubernetes"` |  |
 | image.tag | string | `"0.0.1"` |  |

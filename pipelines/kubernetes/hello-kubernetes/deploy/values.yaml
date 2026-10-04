@@ -41,7 +41,7 @@ vaultAgent:
     VAULT_SKIP_VERIFY: "true"
 
 ingress:
-  enabled: true
+  enabled: false
   ingressClassName: internal
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
@@ -49,6 +49,19 @@ ingress:
     external-dns.alpha.kubernetes.io/hostname: hello-kubernetes.internal.
     external-dns.alpha.kubernetes.io/ttl: "60"
   host: hello-kubernetes.internal
+
+httpRoute:
+  enabled: false
+  parentRefs:
+    - name: kong
+      namespace: kong
+  hostnames:
+    - hello-kubernetes.internal
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
 
 hpa:
   enabled: true

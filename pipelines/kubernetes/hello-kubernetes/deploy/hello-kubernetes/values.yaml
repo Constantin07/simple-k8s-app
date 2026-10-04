@@ -119,6 +119,16 @@ ingress:
 # -- Whether to enable Gateway API HTTPRoute
 httpRoute:
   enabled: false
+  parentRefs:
+    - name: test
+      namespace: test
+  hostnames:
+    - chart-example.local
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
 
 hpa:
   enabled: false

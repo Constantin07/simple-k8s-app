@@ -8,7 +8,7 @@ metadata:
     # Map to Argo CD Hooks instead of Helm hooks
     argocd.argoproj.io/hook: PostSync
     # Define what happens to the test pod after completion
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    # argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
   # Automatically remove the job object from K8s 5 minutes after it finishes
   ttlSecondsAfterFinished: 300

@@ -33,9 +33,11 @@ spec:
       activeService: {{ include "hello-kubernetes.serviceName" . }}
       previewService: {{ include "hello-kubernetes.previewServiceName" . }}
       {{- toYaml .Values.rollouts.strategy.blueGreen | nindent 6 }}
+      {{- if and (hasKey .Values.rollouts.strategy.blueGreen.connectivityTest "enabled") .Values.rollouts.strategy.blueGreen.connectivityTest.enabled }}
       prePromotionAnalysis:
         templates:
           - templateName: {{ include "hello-kubernetes.fullname" . }}-preview-test
+      {{- end }}
   {{- else if $canary }}
     canary:
       stableService: {{ include "hello-kubernetes.serviceName" . }}

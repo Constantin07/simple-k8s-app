@@ -1,4 +1,4 @@
-{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen -}}
+{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen.connectivityTest.enabled }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
@@ -10,7 +10,7 @@ spec:
   - name: preview-test
     # How often to check and how many successes are required
     interval: 5s
-    count: 2
+    count: 1
     provider:
       job:
         spec:

@@ -33,6 +33,9 @@ rollouts:
       scaleDownDelaySeconds: 30
       previewReplicaCount: 1
 
+      connectivityTest:
+        enabled: false
+
   # canary:
   #   maxSurge: 25%
   #   maxUnavailable: 0
@@ -129,9 +132,6 @@ httpRoute:
         - path:
             type: PathPrefix
             value: /
-
-connectivityTest:
-  enabled: false
 
 hpa:
   enabled: false

@@ -1,4 +1,5 @@
-{{- if .Values.ingress.enabled -}}
+{{- if .Values.ingress.enabled }}
+{{- $previewHost := regexReplaceAll "^(.+)\\.(.+)$" .Values.ingress.host "$1-preview.$2" }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -14,6 +15,9 @@ spec:
   tls:
     - hosts:
         - {{ .Values.ingress.host | quote }}
+        {{- if and .Values.rollout.enabled .Values.rollout.strategy .Values.rollout.strategy.blueGreen }}
+        - {{ $previewHost | quote }}
+        {{- end }}
   rules:
     - host: {{ .Values.ingress.host | quote }}
       http:
@@ -25,8 +29,8 @@ spec:
                 name: {{ include "hello-kubernetes.serviceName" . }}
                 port:
                   number: {{ .Values.container.port }}
-{{- if and .Values.rollout.enabled .Values.rollout.strategy .Values.rollout.strategy.blueGreen }}
-    - host: {{ regexReplaceAll "^(.+)\\.(.+)$" .Values.ingress.host "${1}-preview.${2}" | quote }}
+    {{- if and .Values.rollout.enabled .Values.rollout.strategy .Values.rollout.strategy.blueGreen }}
+    - host: {{ $previewHost | quote }}
       http:
         paths:
           - path: {{ .Values.ingress.path }}
@@ -36,5 +40,5 @@ spec:
                 name: {{ include "hello-kubernetes.previewServiceName" . }}
                 port:
                   number: {{ .Values.container.port }}
-{{- end }}
+     {{- end }}
 {{- end }}

@@ -11,6 +11,7 @@ spec:
     # How often to check and how many successes are required
     interval: 5s
     count: 1
+    failureLimit: 0
     provider:
       job:
         spec:
@@ -27,6 +28,7 @@ spec:
                   - |
                     set -e
                     echo "Testing preview service..."
+
                     curl \
                       -fsS \
                       --max-time 10 \
@@ -34,5 +36,6 @@ spec:
                       --retry 3 \
                       --retry-connrefused \
                       http://{{ include "hello-kubernetes.previewServiceName" . }}:{{ .Values.service.port }}/
+
                     echo "Preview connectivity test succeeded"
 {{- end }}

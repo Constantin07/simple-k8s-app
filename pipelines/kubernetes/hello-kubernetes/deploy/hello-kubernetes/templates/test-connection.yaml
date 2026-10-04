@@ -1,3 +1,4 @@
+{{/*
 {{- if .Values.connectivityTest.enabled }}
 ---
 apiVersion: batch/v1
@@ -37,3 +38,4 @@ spec:
             {{- end }}
       restartPolicy: Never
 {{- end }}
+*/}}

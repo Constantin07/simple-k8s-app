@@ -9,12 +9,10 @@ metadata:
     argocd.argoproj.io/hook: PostSync
     {{/* argocd.argoproj.io/hook-delete-policy: HookSucceeded */}}
 spec:
-  # Automatically remove the job object from K8s 5 minutes after it finishes
   ttlSecondsAfterFinished: 300
-  # Try the test up to 3 times before declaring a definitive failure
   backoffLimit: 3
   completions: 1
-  activeDeadlineSeconds: 30
+  activeDeadlineSeconds: 60
   template:
     metadata:
       labels:
@@ -22,11 +20,16 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
-        - name: wget
-          image: busybox
+        - name: curl-test
+          image: "curlimages/curl:8.7.1"
           command:
-            - 'wget'
+            - curl
           args:
+            - "-fsS"
+            - "--connect-timeout"
+            - "5"
+            - "--retry"
+            - "3"
             {{- if and .Values.rollouts.enabled (hasKey .Values.rollouts "strategy") (hasKey .Values.rollouts.strategy "blueGreen") }}
             - "http://{{ include "hello-kubernetes.previewServiceName" . }}:{{ .Values.service.port }}"
             {{- else }}

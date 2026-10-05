@@ -21,7 +21,7 @@ A Helm chart for a simple Hello Kubernetes application
 | env | object | `{}` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `4` |  |
-| httpRoute | object | `{"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"test","namespace":"test"}],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Whether to enable Gateway API HTTPRoute |
+| httpRoute | object | `{"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"kong","namespace":"kong"}],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Whether to enable Gateway API HTTPRoute |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"constantin07/hello-kubernetes"` |  |
 | image.tag | string | `"0.0.1"` |  |
@@ -42,7 +42,7 @@ A Helm chart for a simple Hello Kubernetes application
 | resources.limits.memory | string | `"128Mi"` |  |
 | resources.requests.cpu | string | `"50m"` |  |
 | resources.requests.memory | string | `"100Mi"` |  |
-| rollouts | object | `{"enabled":false,"strategy":{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":60,"previewReplicaCount":1,"scaleDownDelaySeconds":30},"connectivityTest":{"enabled":false,"url":"http://localhost:8080"}}}` | Whether to enable Argo Rollouts |
+| rollouts | object | `{"enabled":false,"strategy":{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":60,"previewReplicaCount":1,"scaleDownDelaySeconds":30},"connectivityTest":{"enabled":false}}}` | Whether to enable Argo Rollouts |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `10001` |  |

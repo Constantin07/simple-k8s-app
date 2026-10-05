@@ -3,5 +3,6 @@
 [![Release](https://img.shields.io/github/v/release/Constantin07/simple-k8s-app)](https://github.com/Constantin07/simple-k8s-app/releases)
 ![Build](https://github.com/Constantin07/simple-k8s-app/actions/workflows/ci.yml/badge.svg?branch=master)
 ![Code-scan](https://github.com/Constantin07/simple-k8s-app/actions/workflows/code-scan.yml/badge.svg?branch=master)
+![checkov](https://github.com/Constantin07/simple-k8s-app/actions/workflows/checkov.yml/badge.svg)
 
 Simple Kubernetes application

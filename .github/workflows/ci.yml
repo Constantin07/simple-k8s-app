@@ -24,6 +24,9 @@ permissions: read-all
 
 concurrency: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
 
+env:
+  IMAGE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+
 jobs:
   determine-version:
     uses: ./.github/workflows/determine-version.yml
@@ -141,7 +144,7 @@ jobs:
             APP_VERSION=${{ env.NEXT_VERSION }}
           tags: |
             ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }}
-            ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }}
+            ${{ env.IMAGE_REPOSITORY }}:${{ env.IMAGE_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
 
   helm-package-push:

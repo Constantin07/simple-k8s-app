@@ -1,4 +1,6 @@
 {{- if and .Values.rollouts.enabled .Values.rollouts.strategy.connectivityTest.enabled }}
+{{- $previewURL := printf "http://%s:%v/" (include "hello-kubernetes.previewServiceName" .) .Values.service.port }}
+{{- $connectivityURL := default $previewURL .Values.rollouts.strategy.connectivityTest.url }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
@@ -35,7 +37,7 @@ spec:
                       --connect-timeout 5 \
                       --retry 3 \
                       --retry-connrefused \
-                      http://{{ include "hello-kubernetes.previewServiceName" . }}:{{ .Values.service.port }}/
+                      "{{ $connectivityURL }}"
 
                     echo "Preview connectivity test succeeded"
 {{- end }}

@@ -1,0 +1,44 @@
+suite: Test AnalysisRollout
+
+templates:
+  - templates/analysis-template.yaml
+
+release:
+  name: test-release
+  namespace: default
+
+tests:
+  - it: should render AnalysisTemplate when connectivity test is enabled
+    set:
+      rollouts.enabled: true
+      rollouts.strategy.connectivityTest.enabled: true
+      service.port: 8080
+    asserts:
+      - isKind:
+          of: AnalysisTemplate
+
+  - it: should use preview service when connectivity URL is not configured
+    set:
+      rollouts.enabled: true
+      rollouts.strategy.connectivityTest.enabled: true
+      service.port: 8080
+    asserts:
+      - matchRegex:
+          path: spec.metrics[0].provider.job.spec.template.spec.containers[0].command[2]
+          pattern: 'http://.*:8080'
+
+  - it: should not render AnalysisTemplate when connectivity test is disabled
+    set:
+      rollouts.enabled: true
+      rollouts.strategy.connectivityTest.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should not render AnalysisTemplate when rollouts are disabled
+    set:
+      rollouts.enabled: false
+      rollouts.strategy.connectivityTest.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0

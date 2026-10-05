@@ -141,6 +141,7 @@ jobs:
             APP_VERSION=${{ env.NEXT_VERSION }}
           tags: |
             ${{ env.IMAGE_REPOSITORY }}:${{ env.NEXT_VERSION }}
+            ${{ env.IMAGE_REPOSITORY }}:${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
 
   helm-package-push:

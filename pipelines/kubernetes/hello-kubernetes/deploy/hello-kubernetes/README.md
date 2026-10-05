@@ -21,7 +21,7 @@ A Helm chart for a simple Hello Kubernetes application
 | env | object | `{}` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `4` |  |
-| httpRoute | object | `{"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"test","namespace":"test"}],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Whether to enable Gateway API HTTPRoute |
+| httpRoute | object | `{"enabled":false,"hostnames":["chart-example.local"],"parentRefs":[{"name":"kong","namespace":"kong"}],"rules":[{"matches":[{"path":{"type":"PathPrefix","value":"/"}}]}]}` | Whether to enable Gateway API HTTPRoute |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"constantin07/hello-kubernetes"` |  |
 | image.tag | string | `"0.0.1"` |  |

@@ -24,5 +24,9 @@ spec:
       backendRefs:
         - name: {{ include "hello-kubernetes.serviceName" $ }}
           port: {{ $.Values.service.port }}
+      {{- if and $.Values.rollouts.enabled (eq $.Values.rollouts.strategy "canary") }}
+        - name: {{ include "hello-kubernetes.canaryServiceName" $ }}
+          port: {{ $.Values.service.port }}
+      {{- end }}
     {{- end }}
 {{- end }}

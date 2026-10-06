@@ -1,14 +1,14 @@
-suite: Test service preview
+suite: Test service canary
 
 templates:
-  - templates/service-preview.yaml
+  - templates/service-canary.yaml
 
 release:
   name: test-release
 
 set:
   rollouts.enabled: true
-  rollouts.strategy: blueGreen
+  rollouts.strategy: canary
 
 tests:
   - it: should pass

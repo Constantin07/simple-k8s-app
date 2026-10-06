@@ -47,6 +47,11 @@ spec:
       stableService: {{ include "hello-kubernetes.serviceName" . }}
       canaryService: {{ include "hello-kubernetes.canaryServiceName" . }}
       {{- toYaml .Values.rollouts.canary | nindent 6 }}
+      trafficRouting:
+        plugins:
+          argoproj-labs/gatewayAPI:
+            httpRoute: {{ include "hello-kubernetes.fullname" . }}
+            namespace: {{ .Release.Namespace }}
   {{- else }}
   {{- fail "rollouts.strategy must contain either 'blueGreen' or 'canary'" }}
   {{- end }}

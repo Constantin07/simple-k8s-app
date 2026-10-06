@@ -17,7 +17,7 @@ A Helm chart for a simple Hello Kubernetes application
 | consulTemplate.resources.requests.cpu | string | `"20m"` |  |
 | consulTemplate.resources.requests.memory | string | `"32Mi"` |  |
 | container.port | int | `8080` |  |
-| deployment | object | `{"enabled":true,"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"}}` | Whether to enable K8s deployment |
+| deployment | object | `{"enabled":true,"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"}}` | Whether to enable K8s deployment |
 | env | object | `{}` |  |
 | hpa.enabled | bool | `false` |  |
 | hpa.maxReplicas | int | `4` |  |
@@ -42,7 +42,7 @@ A Helm chart for a simple Hello Kubernetes application
 | resources.limits.memory | string | `"128Mi"` |  |
 | resources.requests.cpu | string | `"50m"` |  |
 | resources.requests.memory | string | `"100Mi"` |  |
-| rollouts | object | `{"enabled":false,"strategy":{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":60,"previewReplicaCount":1,"scaleDownDelaySeconds":30},"connectivityTest":{"enabled":false}}}` | Whether to enable Argo Rollouts |
+| rollouts | object | `{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":60,"previewReplicaCount":1,"scaleDownDelaySeconds":30},"canary":{"maxSurge":"25%","maxUnavailable":0},"connectivityTest":{"enabled":false,"url":"http://localhost:8080"},"enabled":false,"strategy":"blueGreen"}` | Whether to enable Argo Rollouts |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `10001` |  |

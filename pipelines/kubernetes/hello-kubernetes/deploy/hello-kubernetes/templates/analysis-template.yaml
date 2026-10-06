@@ -1,11 +1,11 @@
-{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.connectivityTest.enabled }}
+{{- if and .Values.rollouts.enabled .Values.rollouts.connectivityTest.enabled }}
 {{- $previewURL := printf "http://%s:%v/" (include "hello-kubernetes.previewServiceName" .) .Values.service.port }}
-{{- $connectivityURL := default $previewURL .Values.rollouts.strategy.connectivityTest.url }}
+{{- $connectivityURL := default $previewURL .Values.rollouts.connectivityTest.url }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: {{ include "hello-kubernetes.fullname" . }}-preview-test
+  name: {{ include "hello-kubernetes.fullname" . }}-test
   labels: {{- include "hello-kubernetes.labels" . | nindent 4 }}
 spec:
   metrics:

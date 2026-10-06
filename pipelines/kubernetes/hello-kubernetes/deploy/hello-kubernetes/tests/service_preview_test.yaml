@@ -10,6 +10,7 @@ tests:
   - it: should pass
     set:
       rollouts.enabled: true
+      rollouts.strategy: blueGreen
     asserts:
       - equal:
           path: spec.type
@@ -27,6 +28,7 @@ tests:
   - it: should contain document
     set:
       rollouts.enabled: true
+      rollouts.strategy: blueGreen
     release:
       name: test-release
     asserts:

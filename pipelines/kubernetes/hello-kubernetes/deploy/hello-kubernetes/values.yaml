@@ -26,25 +26,25 @@ deployment:
 # -- Whether to enable Argo Rollouts
 rollouts:
   enabled: false
-  strategy:
-    blueGreen:
-      autoPromotionEnabled: true
-      autoPromotionSeconds: 60
-      scaleDownDelaySeconds: 30
-      previewReplicaCount: 1
+  strategy: blueGreen
+  blueGreen:
+    autoPromotionEnabled: true
+    autoPromotionSeconds: 60
+    scaleDownDelaySeconds: 30
+    previewReplicaCount: 1
 
-    connectivityTest:
-      enabled: false
-      # url: "http://localhost:8080"
+  canary:
+    maxUnavailable: 0
+    maxSurge: 25%
+  #  steps:
+  #    - setWeight: 20
+  #    - pause:
+  #        duration: 60s
+  #    - setWeight: 50
 
-  # canary:
-  #   maxSurge: 25%
-  #   maxUnavailable: 0
-  #   steps:
-  #     - setWeight: 20
-  #     - pause:
-  #         duration: 60s
-  #     - setWeight: 50
+  connectivityTest:
+    enabled: false
+    url: "http://localhost:8080"
 
 resources:
   requests:

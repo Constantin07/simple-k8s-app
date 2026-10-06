@@ -52,22 +52,22 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Service name
+Rollout stable service name
 */}}
 {{- define "hello-kubernetes.serviceName" -}}
-{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen.activeService -}}
-{{- .Values.rollouts.strategy.blueGreen.activeService -}}
+{{- if and .Values.rollouts.enabled .Values.rollouts.blueGreen.activeService -}}
+{{- .Values.rollouts.blueGreen.activeService -}}
 {{- else -}}
 {{ include "hello-kubernetes.fullname" . }}
 {{- end -}}
 {{- end -}}
 
 {{/*
-Preview service name
+Rollout preview service name
 */}}
 {{- define "hello-kubernetes.previewServiceName" -}}
-{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.blueGreen.previewService -}}
-{{- .Values.rollouts.strategy.blueGreen.previewService -}}
+{{- if and .Values.rollouts.enabled .Values.rollouts.blueGreen.previewService -}}
+{{- .Values.rollouts.blueGreen.previewService -}}
 {{- else -}}
 {{- printf "%s-preview" (include "hello-kubernetes.fullname" .) -}}
 {{- end -}}
@@ -77,8 +77,8 @@ Preview service name
 Canary service name
 */}}
 {{- define "hello-kubernetes.canaryServiceName" -}}
-{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.canary.canaryService -}}
-{{- .Values.rollouts.strategy.canary.canaryService -}}
+{{- if and .Values.rollouts.enabled .Values.rollouts.canary.canaryService -}}
+{{- .Values.rollouts.canary.canaryService -}}
 {{- else -}}
 {{- printf "%s-canary" (include "hello-kubernetes.fullname" .) -}}
 {{- end -}}

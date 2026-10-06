@@ -20,7 +20,11 @@ templates:
 tests:
   - it: all resources have standard labels
     set:
-      rollouts.enabled: true
+      rollouts:
+        enabled: true
+        strategy: blueGreen
+        blueGreen:
+          autoPromotionEnabled: true
       ingress.enabled: true
       hpa.enabled: true
     asserts:

@@ -8,10 +8,14 @@ release:
   namespace: default
 
 tests:
-  - it: should provide expected defaults
+  - it: should provide expected defaults for blueGreen
     set:
       deployment.enabled: false
-      rollouts.enabled: true
+      rollouts:
+        enabled: true
+        strategy: blueGreen
+        blueGreen:
+          autoPromotionEnabled: true
     asserts:
       - isKind:
           of: Rollout
@@ -30,3 +34,30 @@ tests:
           value: test-release-hello-kubernetes-preview
       - exists:
           path: spec.strategy.blueGreen
+
+  - it: should provide expected defaults for canary
+    set:
+      deployment.enabled: false
+      rollouts:
+        enabled: true
+        strategy: canary
+        canary:
+          maxUnavailable: 0
+    asserts:
+      - isKind:
+          of: Rollout
+      - hasDocuments:
+          count: 1
+      - notEqual:
+          path: spec.replicas
+          value: 0
+      - notExists:
+          path: spec.strategy.blueGreen
+      - equal:
+          path: spec.strategy.canary.stableService
+          value: test-release-hello-kubernetes
+      - equal:
+          path: spec.strategy.canary.canaryService
+          value: test-release-hello-kubernetes-canary
+      - exists:
+          path: spec.strategy.canary

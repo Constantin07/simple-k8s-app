@@ -1,0 +1,134 @@
+suite: Test httpRoute resource
+
+templates:
+  - templates/httproute-preview.yaml
+
+release:
+  name: test-release
+  namespace: default
+
+set:
+  rollouts:
+    enabled: true
+    strategy: blueGreen
+    blueGreen:
+      autoPromotionEnabled: true
+
+tests:
+  - it: should create httproute-preview when enabled
+    set:
+      httpRoute:
+        enabled: true
+        parentRefs:
+          - name: kong
+            namespace: kong
+        hostnames:
+          - hello.example.com
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            filters: []
+
+    asserts:
+      - isKind:
+          of: HTTPRoute
+
+      - equal:
+          path: apiVersion
+          value: gateway.networking.k8s.io/v1
+
+  - it: should not create HTTPRoute when disabled
+    set:
+      httpRoute.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should configure the parent Gateway
+    set:
+      httpRoute.enabled: true
+      httpRoute.parentRefs:
+        - name: test-gateway
+    asserts:
+      - equal:
+          path: spec.parentRefs[0].name
+          value: test-gateway
+
+  - it: should configure a cross-namespace Gateway
+    set:
+      httpRoute.enabled: true
+      httpRoute.parentRefs:
+        - name: test-gateway
+          namespace: gateway-system
+    asserts:
+      - equal:
+          path: spec.parentRefs[0].name
+          value: test-gateway
+
+      - equal:
+          path: spec.parentRefs[0].namespace
+          value: gateway-system
+
+  - it: should configure path match
+    set:
+      httpRoute.enabled: true
+      httpRoute.rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /api
+    asserts:
+      - equal:
+          path: spec.rules[0].matches[0].path.type
+          value: PathPrefix
+
+      - equal:
+          path: spec.rules[0].matches[0].path.value
+          value: /api
+
+  - it: should configure filters
+    set:
+      httpRoute.enabled: true
+      httpRoute.rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+          filters:
+            - type: RequestHeaderModifier
+              requestHeaderModifier:
+                add:
+                  - name: X-Test
+                    value: "true"
+    asserts:
+      - equal:
+          path: spec.rules[0].filters[0].type
+          value: RequestHeaderModifier
+
+      - equal:
+          path: spec.rules[0].filters[0].requestHeaderModifier.add[0].name
+          value: X-Test
+
+      - equal:
+          path: spec.rules[0].filters[0].requestHeaderModifier.add[0].value
+          value: "true"
+
+  - it: should configure backend service
+    set:
+      httpRoute.enabled: true
+      service.port: 80
+      httpRoute.rules:
+        - matches:
+            - path:
+                type: PathPrefix
+                value: /
+    asserts:
+      - equal:
+          path: spec.rules[0].backendRefs[0].name
+          value: test-release-hello-kubernetes-preview
+
+      - equal:
+          path: spec.rules[0].backendRefs[0].port
+          value: 80

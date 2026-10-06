@@ -1,7 +1,7 @@
 suite: Test AnalysisRollout
 
 templates:
-  - templates/analysis-template.yaml
+  - templates/analysis-template-test.yaml
 
 release:
   name: test-release

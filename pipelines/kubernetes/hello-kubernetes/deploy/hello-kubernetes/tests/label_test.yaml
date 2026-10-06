@@ -20,12 +20,9 @@ templates:
 tests:
   - it: all resources have standard labels
     set:
-      rollouts:
-        enabled: true
-      ingress:
-        enabled: true
-      hpa:
-        enabled: true
+      rollouts.enabled: true
+      ingress.enabled: true
+      hpa.enabled: true
     asserts:
       - exists:
           path: metadata.labels

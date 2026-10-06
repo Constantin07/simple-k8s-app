@@ -1,3 +1,4 @@
+{{- if and .Values.rollouts.enabled (hasKey  .Values.rollouts.strategy "blueGreen") }}
 {{- $serviceName := include "hello-kubernetes.previewServiceName" . -}}
 ---
 {{- include "hello-kubernetes.service" (dict
@@ -6,3 +7,4 @@
   "Release" .Release
   "Chart" .Chart)
 -}}
+{{- end }}

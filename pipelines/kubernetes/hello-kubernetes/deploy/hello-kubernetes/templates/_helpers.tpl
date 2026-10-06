@@ -72,3 +72,14 @@ Preview service name
 {{- printf "%s-preview" (include "hello-kubernetes.fullname" .) -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Canary service name
+*/}}
+{{- define "hello-kubernetes.canaryServiceName" -}}
+{{- if and .Values.rollouts.enabled .Values.rollouts.strategy.canary.canaryService -}}
+{{- .Values.rollouts.strategy.canary.canaryService -}}
+{{- else -}}
+{{- printf "%s-canary" (include "hello-kubernetes.fullname" .) -}}
+{{- end -}}
+{{- end -}}

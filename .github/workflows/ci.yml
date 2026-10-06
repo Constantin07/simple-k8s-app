@@ -148,7 +148,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   helm-package-push:
-    needs: [build, determine-version]
+    needs: [determine-version]
     runs-on: ubuntu-24.04
     permissions:
       contents: read

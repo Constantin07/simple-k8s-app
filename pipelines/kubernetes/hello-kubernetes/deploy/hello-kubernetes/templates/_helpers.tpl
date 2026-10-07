@@ -63,23 +63,26 @@ Rollout stable service name
 {{- end -}}
 
 {{/*
-Rollout preview service name
+Rollout secondary service name.
+BlueGreen -> preview service
+Canary    -> canary service
 */}}
-{{- define "hello-kubernetes.previewServiceName" -}}
-{{- if and .Values.rollouts.enabled .Values.rollouts.blueGreen.previewService -}}
+{{- define "hello-kubernetes.rolloutServiceName" -}}
+{{- if not .Values.rollouts.enabled -}}
+{{- include "hello-kubernetes.fullname" . -}}
+{{- else if eq .Values.rollouts.strategy "blueGreen" -}}
+{{- if .Values.rollouts.blueGreen.previewService -}}
 {{- .Values.rollouts.blueGreen.previewService -}}
 {{- else -}}
 {{- printf "%s-preview" (include "hello-kubernetes.fullname" .) -}}
 {{- end -}}
-{{- end -}}
-
-{{/*
-Rollout canary service name
-*/}}
-{{- define "hello-kubernetes.canaryServiceName" -}}
-{{- if and .Values.rollouts.enabled .Values.rollouts.canary.canaryService -}}
+{{- else if eq .Values.rollouts.strategy "canary" -}}
+{{- if .Values.rollouts.canary.canaryService -}}
 {{- .Values.rollouts.canary.canaryService -}}
 {{- else -}}
 {{- printf "%s-canary" (include "hello-kubernetes.fullname" .) -}}
+{{- end -}}
+{{- else -}}
+{{- fail "Unsupported rollouts.strategy; expected blueGreen or canary" -}}
 {{- end -}}
 {{- end -}}

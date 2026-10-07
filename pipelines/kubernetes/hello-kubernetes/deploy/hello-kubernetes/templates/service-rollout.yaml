@@ -1,5 +1,5 @@
-{{- if and .Values.rollouts.enabled (eq .Values.rollouts.strategy "canary") }}
-{{- $serviceName := include "hello-kubernetes.canaryServiceName" . -}}
+{{- if .Values.rollouts.enabled }}
+{{- $serviceName := include "hello-kubernetes.rolloutServiceName" . -}}
 ---
 {{- include "hello-kubernetes.service" (dict
   "serviceName" $serviceName

@@ -37,7 +37,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "hello-kubernetes.previewServiceName" . }}
+                name: {{ include "hello-kubernetes.rolloutServiceName" . }}
                 port:
                   number: {{ .Values.container.port }}
      {{- end }}

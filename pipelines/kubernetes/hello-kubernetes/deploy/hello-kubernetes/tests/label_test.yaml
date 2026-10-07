@@ -11,7 +11,7 @@ templates:
   - templates/deployment.yaml
   - templates/rollout.yaml
   - templates/service.yaml
-  - templates/service-preview.yaml
+  - templates/service-rollout.yaml
   - templates/serviceaccount.yaml
   - templates/pdb.yaml
   - templates/hpa.yaml

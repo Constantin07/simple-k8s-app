@@ -35,7 +35,7 @@ spec:
     {{- if $blueGreen }}
     blueGreen:
       activeService: {{ include "hello-kubernetes.serviceName" . }}
-      previewService: {{ include "hello-kubernetes.previewServiceName" . }}
+      previewService: {{ include "hello-kubernetes.rolloutServiceName" . }}
       {{- toYaml .Values.rollouts.blueGreen | nindent 6 }}
       {{- if and (hasKey .Values.rollouts.connectivityTest "enabled") .Values.rollouts.connectivityTest.enabled }}
       prePromotionAnalysis:
@@ -45,7 +45,7 @@ spec:
   {{- else if $canary }}
     canary:
       stableService: {{ include "hello-kubernetes.serviceName" . }}
-      canaryService: {{ include "hello-kubernetes.canaryServiceName" . }}
+      canaryService: {{ include "hello-kubernetes.rolloutServiceName" . }}
       {{- toYaml .Values.rollouts.canary | nindent 6 }}
       trafficRouting:
         plugins:

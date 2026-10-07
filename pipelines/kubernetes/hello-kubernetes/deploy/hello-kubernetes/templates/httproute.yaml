@@ -25,7 +25,7 @@ spec:
         - name: {{ include "hello-kubernetes.serviceName" $ }}
           port: {{ $.Values.service.port }}
       {{- if and $.Values.rollouts.enabled (eq $.Values.rollouts.strategy "canary") }}
-        - name: {{ include "hello-kubernetes.canaryServiceName" $ }}
+        - name: {{ include "hello-kubernetes.rolloutServiceName" $ }}
           port: {{ $.Values.service.port }}
       {{- end }}
     {{- end }}

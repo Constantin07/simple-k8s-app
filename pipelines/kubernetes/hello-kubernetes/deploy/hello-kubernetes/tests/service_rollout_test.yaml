@@ -1,0 +1,63 @@
+suite: Test service canary
+
+templates:
+  - templates/service-rollout.yaml
+
+release:
+  name: test-release
+
+set:
+  rollouts.enabled: true
+
+tests:
+  - it: should pass for canary
+    set:
+      rollouts.strategy: canary
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - contains:
+          path: spec.ports
+          content:
+            port: 8080
+            targetPort: 8080
+            protocol: TCP
+      - matchRegex:
+          path: spec.selector["app.kubernetes.io/name"]
+          pattern: hello-kubernetes
+
+  - it: should contain document for canary
+    set:
+      rollouts.strategy: canary
+    asserts:
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+        documentIndex: 0
+
+  - it: should pass for blueGreen
+    set:
+      rollouts.strategy: blueGreen
+    asserts:
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - contains:
+          path: spec.ports
+          content:
+            port: 8080
+            targetPort: 8080
+            protocol: TCP
+      - matchRegex:
+          path: spec.selector["app.kubernetes.io/name"]
+          pattern: hello-kubernetes
+
+  - it: should contain document for blueGreen
+    set:
+      rollouts.strategy: blueGreen
+    asserts:
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+        documentIndex: 0

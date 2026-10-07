@@ -1,4 +1,4 @@
-suite: Test httpRoute resource
+suite: Test preview httpRoute resource
 
 templates:
   - templates/httproute-preview.yaml

@@ -42,7 +42,7 @@ A Helm chart for a simple Hello Kubernetes application
 | resources.limits.memory | string | `"128Mi"` |  |
 | resources.requests.cpu | string | `"50m"` |  |
 | resources.requests.memory | string | `"100Mi"` |  |
-| rollouts | object | `{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":45,"previewReplicaCount":1,"scaleDownDelaySeconds":30},"canary":{"maxSurge":"25%","maxUnavailable":0,"scaleDownDelaySeconds":30},"connectivityTest":{"enabled":false,"url":"http://localhost:8080"},"enabled":false,"paused":false,"strategy":"blueGreen"}` | Whether to enable Argo Rollouts |
+| rollouts | object | `{"blueGreen":{"autoPromotionEnabled":true,"autoPromotionSeconds":45,"previewReplicaCount":1,"scaleDownDelaySeconds":30},"canary":{"maxSurge":"25%","maxUnavailable":0,"scaleDownDelaySeconds":30},"connectivityTest":{"enabled":false},"enabled":false,"paused":false,"strategy":"blueGreen"}` | Whether to enable Argo Rollouts |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.runAsGroup | int | `10001` |  |

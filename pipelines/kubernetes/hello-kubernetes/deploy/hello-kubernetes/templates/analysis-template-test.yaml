@@ -1,6 +1,7 @@
 {{- if and .Values.rollouts.enabled .Values.rollouts.connectivityTest.enabled }}
-{{- $previewURL := printf "http://%s:%v/" (include "hello-kubernetes.rolloutServiceName" .) .Values.service.port }}
-{{- $connectivityURL := default $previewURL .Values.rollouts.connectivityTest.url }}
+{{- $testService := include "hello-kubernetes.rolloutServiceName" . -}}
+{{- $testURL := printf "http://%s:%v/" $testService .Values.service.port -}}
+{{- $connectivityURL := default $testURL .Values.rollouts.connectivityTest.url }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate

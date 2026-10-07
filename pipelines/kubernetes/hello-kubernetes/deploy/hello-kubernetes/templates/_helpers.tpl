@@ -74,7 +74,7 @@ Rollout preview service name
 {{- end -}}
 
 {{/*
-Canary service name
+Rollout canary service name
 */}}
 {{- define "hello-kubernetes.canaryServiceName" -}}
 {{- if and .Values.rollouts.enabled .Values.rollouts.canary.canaryService -}}

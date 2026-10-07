@@ -46,7 +46,6 @@ rollouts:
 
   connectivityTest:
     enabled: false
-    # url: "http://localhost:8080"
 
 resources:
   requests:

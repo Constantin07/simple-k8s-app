@@ -37,6 +37,7 @@ rollouts:
   canary:
     maxUnavailable: 0
     maxSurge: 25%
+    scaleDownDelaySeconds: 30
   #  steps:
   #    - setWeight: 20
   #    - pause:

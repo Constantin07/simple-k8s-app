@@ -48,6 +48,11 @@ spec:
     canary:
       stableService: {{ include "hello-kubernetes.serviceName" . }}
       canaryService: {{ include "hello-kubernetes.rolloutServiceName" . }}
+      {{- if and (hasKey .Values.rollouts.connectivityTest "enabled") .Values.rollouts.connectivityTest.enabled }}
+      analysis:
+        templates:
+          - templateName: {{ include "hello-kubernetes.fullname" . }}-test
+      {{- end }}
       {{- toYaml .Values.rollouts.canary | nindent 6 }}
       trafficRouting:
         plugins:

@@ -19,9 +19,9 @@ metadata:
 spec:
   replicas: {{ .Values.replicaCount }}
   analysis:
-   successfulRunHistoryLimit: 3
-   unsuccessfulRunHistoryLimit: 3
-  revisionHistoryLimit: 3
+   successfulRunHistoryLimit: 5
+   unsuccessfulRunHistoryLimit: 5
+  revisionHistoryLimit: 5
   minReadySeconds: 3
   paused: {{ .Values.rollouts.paused }}
   selector:

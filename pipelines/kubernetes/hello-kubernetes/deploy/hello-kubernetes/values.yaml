@@ -26,6 +26,7 @@ deployment:
 # -- Whether to enable Argo Rollouts
 rollouts:
   enabled: false
+  paused: false
   strategy: blueGreen
   blueGreen:
     autoPromotionEnabled: true

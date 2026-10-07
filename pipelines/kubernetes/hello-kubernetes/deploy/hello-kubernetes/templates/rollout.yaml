@@ -23,6 +23,7 @@ spec:
    unsuccessfulRunHistoryLimit: 3
   revisionHistoryLimit: 3
   minReadySeconds: 3
+  paused: {{ .Values.rollouts.paused }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}

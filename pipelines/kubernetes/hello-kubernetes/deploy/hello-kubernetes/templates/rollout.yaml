@@ -22,6 +22,7 @@ spec:
    successfulRunHistoryLimit: 3
    unsuccessfulRunHistoryLimit: 3
   revisionHistoryLimit: 3
+  minReadySeconds: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "hello-kubernetes.name" . }}

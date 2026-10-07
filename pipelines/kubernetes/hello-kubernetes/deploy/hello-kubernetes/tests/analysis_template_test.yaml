@@ -9,12 +9,13 @@ release:
 
 set:
   rollouts.enabled: true
+  rollouts:.strategy: blueGreen
+  service.port: 8080
 
 tests:
   - it: should render AnalysisTemplate when connectivity test is enabled
     set:
       rollouts.connectivityTest.enabled: true
-      service.port: 8080
     asserts:
       - isKind:
           of: AnalysisTemplate
@@ -22,7 +23,6 @@ tests:
   - it: should use preview service when connectivity URL is not configured
     set:
       rollouts.connectivityTest.enabled: true
-      service.port: 8080
     asserts:
       - matchRegex:
           path: spec.metrics[0].provider.job.spec.template.spec.containers[0].command[2]

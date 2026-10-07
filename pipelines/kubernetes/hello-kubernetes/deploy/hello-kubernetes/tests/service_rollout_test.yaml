@@ -17,6 +17,9 @@ tests:
       - equal:
           path: spec.type
           value: ClusterIP
+      - equal:
+          path: metadata.name
+          value: test-release-hello-kubernetes-canary
       - contains:
           path: spec.ports
           content:
@@ -43,6 +46,9 @@ tests:
       - equal:
           path: spec.type
           value: ClusterIP
+      - equal:
+          path: metadata.name
+          value: test-release-hello-kubernetes-preview
       - contains:
           path: spec.ports
           content:

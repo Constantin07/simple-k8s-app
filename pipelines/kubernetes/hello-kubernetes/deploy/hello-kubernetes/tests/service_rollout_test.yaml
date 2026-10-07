@@ -1,4 +1,4 @@
-suite: Test service canary
+suite: Test service rollout
 
 templates:
   - templates/service-rollout.yaml

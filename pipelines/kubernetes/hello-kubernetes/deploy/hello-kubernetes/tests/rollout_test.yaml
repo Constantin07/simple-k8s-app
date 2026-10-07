@@ -37,12 +37,18 @@ tests:
 
   - it: should provide expected defaults for canary
     set:
-      deployment.enabled: false
+      deployment:
+        enabled: false
       rollouts:
         enabled: true
         strategy: canary
         canary:
           maxUnavailable: 0
+          steps:
+            - setWeight: 20
+            - pause:
+                duration: 15
+            - analysis: {}
     asserts:
       - isKind:
           of: Rollout
@@ -61,3 +67,5 @@ tests:
           value: test-release-hello-kubernetes-canary
       - exists:
           path: spec.strategy.canary
+      - exists:
+          path: spec.strategy.canary.steps[0]

@@ -53,7 +53,23 @@ spec:
         templates:
           - templateName: {{ include "hello-kubernetes.fullname" . }}-test
       {{- end }}
-      {{- toYaml .Values.rollouts.canary | nindent 6 }}
+      {{- if .Values.rollouts.canary.steps }}
+      steps:
+        {{- range .Values.rollouts.canary.steps }}
+          {{- if hasKey . "setWeight" }}
+        - setWeight: {{ .setWeight }}
+          {{- else if hasKey . "pause" }}
+        - pause:
+          {{- toYaml .pause | nindent 12 }}
+          {{- else if hasKey . "analysis" }}
+        - analysis:
+            templates:
+              - templateName: {{ include "hello-kubernetes.fullname" $ }}-test
+          {{- else }}
+          {{- fail "Unsupported canary step" }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
       trafficRouting:
         plugins:
           argoproj-labs/gatewayAPI:

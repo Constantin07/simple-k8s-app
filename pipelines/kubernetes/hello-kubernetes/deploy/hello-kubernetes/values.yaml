@@ -38,11 +38,11 @@ rollouts:
     maxUnavailable: 0
     maxSurge: 25%
     scaleDownDelaySeconds: 30
-  #  steps:
-  #    - setWeight: 20
-  #    - pause:
-  #        duration: 60s
-  #    - setWeight: 50
+#    steps:
+#      - setWeight: 20
+#      - pause:
+#          duration: 60s
+#      - analysis: {}
 
   connectivityTest:
     enabled: false
